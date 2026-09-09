@@ -1,4 +1,4 @@
-# 整章化知识图谱流水线（可独立运行副本 `new/`）
+# 整章化知识图谱流水线
 
 把一本**技术教材**变成可交付的 **知识图谱 + 逐知识点文档** 学习包：
 
@@ -7,16 +7,16 @@
 → S3 图谱物化(uuid) → S4 逐知识点文档 → S5 跨章关系 → S6 全书合并 → S7 图片收集 → S8 交付导出
 ```
 
-- 实例书：邱锡鹏《神经网络与深度学习》(nndl-v2)，交付在 `deeplearning/run/deliver/`。
-- 本目录是从 `f:/xschem` 复制的链路完整快照；改脚本需**双份同步**（见 §9）。
-- 实例级操作手册（面向主工作区路径）：`deeplearning/PIPELINE.md`。
+- 实例书：邱锡鹏《神经网络与深度学习》(nndl-v2)，交付样例在 `deeplearning/run/deliver/`。
+- 本仓库为链路完整快照，脚本改动即以此仓库为准。
+- 实例级操作手册：`deeplearning/PIPELINE.md`。
 
 ---
 
 ## 1. 快速上手
 
 ```powershell
-cd f:/xschem/new
+# 在仓库根目录执行；产物与 cfg 相对路径均基于仓库根
 python scripts/run_pipeline_whole.py --config config/dl_chapter.json --dry-run  # 预览：不调 LLM
 python scripts/run_pipeline_whole.py --config config/dl_chapter.json           # 一键全链（断点续跑）
 ```
@@ -120,7 +120,7 @@ python scripts/run_pipeline_whole.py --config config/dl_chapter.json           #
 
 | 参数 | 作用 |
 |---|---|
-| `--config` | 顶层配置（必填；相对路径基于 `new/` 根） |
+| `--config` | 顶层配置（必填；相对路径基于仓库根） |
 | `--from / --to` | 阶段范围：S0=0 … S8=8；不含 0 则不触发 S0/S0.5 |
 | `--only 章[,章]` | 只处理指定章 |
 | `--force` | LLM/纯脚本产物已存在也重跑（S4 将全量重写全部叶子） |
@@ -159,7 +159,7 @@ python scripts/run_pipeline_whole.py --config config/dl_chapter.json --from 5 --
 
 ## 8. 换一本新书（复用性）
 
-**主链路 9 个脚本零代码改动即可换书**——prompts 无领域残留、scripts 无 `f:/xschem` 等绝对路径硬编码、领域信息全收在顶层 cfg。换书只需 4 步：
+**主链路 9 个脚本零代码改动即可换书**——prompts 无领域残留、scripts 无本机绝对路径硬编码、领域信息全收在顶层 cfg。换书只需 4 步：
 
 | # | 做什么 | 说明 |
 |---|---|---|
@@ -170,9 +170,8 @@ python scripts/run_pipeline_whole.py --config config/dl_chapter.json --from 5 --
 
 ## 9. 已知边界与坑
 
-1. **双份同步**：`new/` 是 `f:/xschem` 的副本，脚本改动须两边一致（历史修复均主 + `new` 双写）。
-2. **PowerShell 中文路径乱码**：命令行 argv 含中文会被 GBK 破坏。规避：命令行只传 ASCII 路径（`config/dl_chapter.json`）；中文路径写在 cfg/脚本内部（UTF-8），不经 argv。
-3. **文档本地预览断图**：docs 引用 `images/xxx.jpg`，先跑 `scripts/_tmp_collect_imgs.py` 收图到 `docs_all/<章>/images/` 即可预览；交付渲染不受影响（S7/S8 已处理）。
-4. **缺图上限**：MinerU 有约 32 张图未切出（引用保留但无法解析），属已知上限，不影响链路。
-5. **识图缓存目录共用**：`desc_out` 是全书共用的 VL 缓存；`--only 章` 识图时只处理该章、缓存累积在同一个 `vl_cache.json`，换章不重复扣费。
-6. **残留命名**：计费 tracker 里的 `cn` 字样、`describe` 直跑不带 `--mineru-dir` 的兜底默认，均为旧链路的无害残留（经编排器跑时总是显式传参）。
+1. **PowerShell 中文路径乱码**：命令行 argv 含中文会被 GBK 破坏。规避：命令行只传 ASCII 路径（`config/dl_chapter.json`）；中文路径写在 cfg/脚本内部（UTF-8），不经 argv。
+2. **文档本地预览断图**：docs 引用 `images/xxx.jpg`，先跑 `scripts/_tmp_collect_imgs.py` 收图到 `docs_all/<章>/images/` 即可预览；交付渲染不受影响（S7/S8 已处理）。
+3. **缺图上限**：MinerU 有约 32 张图未切出（引用保留但无法解析），属已知上限，不影响链路。
+4. **识图缓存目录共用**：`desc_out` 是全书共用的 VL 缓存；`--only 章` 识图时只处理该章、缓存累积在同一个 `vl_cache.json`，换章不重复扣费。
+5. **残留命名**：计费 tracker 里的 `cn` 字样、`describe` 直跑不带 `--mineru-dir` 的兜底默认，均为旧链路的无害残留（经编排器跑时总是显式传参）。
