@@ -1,0 +1,7 @@
+{
+  "skeleton": "F:\\xschem\\new\\deeplearning\\run\\per_chapter\\01_绪论\\chapter_skeleton.json",
+  "chapter": "第1章 绪论",
+  "out": "F:\\xschem\\new\\deeplearning\\run\\per_chapter\\01_绪论\\relations.json",
+  "model": "qwen3.7-plus",
+  "tracker": "relate_cn1"
+}

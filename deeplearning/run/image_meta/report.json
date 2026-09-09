@@ -1,0 +1,15 @@
+{
+ "scan": {
+  "files": 1,
+  "total_refs": 10,
+  "equation": 0,
+  "image": 10,
+  "unmatched": 0
+ },
+ "write": {
+  "files": 1,
+  "described": 0,
+  "ignored": 0,
+  "kept": 10
+ }
+}

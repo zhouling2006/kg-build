@@ -25,9 +25,8 @@ Thumbs.db
 Desktop.ini
 .DS_Store
 
-# --- heavy / regenerable data (rebuilt by the pipeline, do not commit) ---
+# --- heavy / regenerable data ---
+# deeplearning/ is fully tracked: the source PDF & MinerU outputs are from the open-licensed nndl-v2 book.
+# Other *.pdf anywhere else stay ignored by default (rule below).
 *.pdf
-deeplearning/_mineru/
-deeplearning/run/*
-# keep a small end-to-end deliver sample as showcase
-!deeplearning/run/deliver/
+!deeplearning/**/*.pdf

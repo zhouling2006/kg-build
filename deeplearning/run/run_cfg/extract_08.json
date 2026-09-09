@@ -1,0 +1,7 @@
+{
+  "chapter_md": "F:\\wholeextract\\deeplearning\\run\\chapters\\08_注意力机制与Transformer.md",
+  "chapter": "第8章 注意力机制与Transformer",
+  "out": "F:\\wholeextract\\deeplearning\\run\\per_chapter\\08_注意力机制与Transformer\\chapter_skeleton.json",
+  "model": "qwen3.7-plus",
+  "tracker": "extract_cn8"
+}

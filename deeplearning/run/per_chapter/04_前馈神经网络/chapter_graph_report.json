@@ -1,0 +1,12 @@
+{
+  "book": "深度学习",
+  "chapter": "第4章 前馈神经网络",
+  "out": "f:\\xschem\\deeplearning\\run\\per_chapter\\04_前馈神经网络\\chapter_graph.json",
+  "n_index": 14,
+  "n_topic": 18,
+  "n_tree_edges": 31,
+  "n_rel_edges": 28,
+  "dup_titles": [],
+  "missing_refs": [],
+  "leaf_mismatch": false
+}

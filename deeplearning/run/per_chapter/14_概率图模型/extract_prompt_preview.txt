@@ -1,0 +1,1349 @@
+=== SYSTEM ===
+你是教材的知识点提炼引擎。输入是一章教材的完整原文（可能含表格、协议字段说明、代码块等）。
+
+任务：把这一章可学的知识整理成一份"知识单元树"——像一份带索引/目录的学习清单：大主题下面有分组，分组下面是具体可学习的知识单元。层级按知识本身的逻辑组织（不必照搬书本章节小节划分），顺序大致按原文出现顺序/学习依赖先后。
+
+组织原则：
+1. 叶子 = 一个可以独立学习、需要掌握的点：一个概念/定义、一个机制、一个原理、一个流程、一种方法、一个重要结论。
+   强相关、需要连着学的概念可以合成一个叶子，例如成对/成套的概念（如"电路交换与分组交换""TCP与UDP的对比"）合为一条来学；
+   联系弱、各自独立的知识就分开各自成叶。同一概念在正文不同小节/不同位置多次展开时，合并进同一个叶子，不要拆开重复。
+2. 分组 = 同一主题下的若干叶子聚在一起。
+3. 合并与否由内容决定：可以合并，也可以不合并，关键是"适合作为一个学习单元"。
+4. 层级一般 2~3 层：主题（可选） > 分组 > 叶子；不要为了好看堆出 4 层以上。
+
+条目要求：
+- title：规范术语（≤50字），去掉"叫做/称为/是一种"等叙述。
+- summary：所有节点都必须写，不允许为空。
+  叶子：1~3 句（60~150字），讲清"是什么 + 关键条件/机制/结论"，重要参数、协议字段或公式用原文记号写进 summary；
+  分组/主题（非叶子）：写一段连贯导读（80~200字），内容自然覆盖三个层面——这一组讲了什么
+  （覆盖其下所有叶子的范围）、为什么要学（解决什么问题、在学科体系/本章脉络中的位置）、
+  学了有什么用（能做什么、后续哪些知识点依赖它）。语言自由组织，不要用固定小标题逐条罗列，
+  但三个层面都要覆盖到，缺失或空洞会被视为不合格。
+  这段导读将来直接作为知识目录该分组的 index_content。
+- 命名与结构约束：同一父节点下的兄弟节点 title 不得重复；任一节点 title 不得与其祖先或后代节点相同
+  （目录层与知识点层不得同名，避免索引与链接歧义）。
+- 内容覆盖：把整章扫完，每一处值得学的都要进树，不要因为正文靠后而遗漏。
+- 忽略课后习题、"本章的重要概念"等汇总小节、与正文无关的排版内容。
+
+输出：仅输出 JSON，不要 markdown 代码块包装，不要多余文字。
+格式：{"units":[{"title":"...","summary":"...","children":[
+        {"title":"...","summary":"...","children":[...]}]}]}
+children 可省略（叶子）。树的顺序即学习顺序。
+
+
+=== USER ===
+【本章标题】第14章 概率图模型
+
+【整章原文】
+## 第14章 概率图模型
+
+概率论只不过是把常识归纳为计算问题.
+
+——皮埃尔-西蒙·拉普拉斯(Pierre-Simon Laplace)
+
+概率图模型（Probabilistic Graphical Model，PGM），简称图模型（Graphical Model,GM），是指一种用图结构来描述多元随机变量之间条件独立关系的概率模型，从而给研究高维空间中的概率模型带来了很大的便捷性.
+
+对于一个K维随机向量 $\pmb { X } = [ X _ { 1 } , X _ { 2 } , \cdots , X _ { K } ] ^ { \intercal }$ ，其联合概率为高维空间中的分布，一般难以直接建模.假设每个变量为离散变量并有M个取值，在不作任何独立假设条件下，则需要 $M ^ { K }$ -1个参数才能表示其概率分布.当 $M = 2 , K =$ 100时，参数量约为 $1 0 ^ { 3 0 }$ ，远远超出了实际建模和计算能够直接承受的规模.
+
+一种有效减少参数量的方法是独立性假设.一个K维随机向量X的联合概率分解为K个条件概率的乘积，
+
+在本书中，随机变量用斜体的大写字母表示，其取值用斜体的小写字母表示；随机向量用粗斜体的大写字母表示，其取值用粗斜体的小写字母表示.
+
+$$
+p ( { \pmb x } ) \triangleq P ( { \pmb X } = { \pmb x } )\tag{14.1}
+$$
+
+$$
+= \prod _ { k = 1 } ^ { K } p ( x _ { k } | x _ { 1 } , \cdots , x _ { k - 1 } ) ,\tag{14.2}
+$$
+
+其中 $x _ { k }$ 表示变量 $X _ { k }$ 的取值.如果某些变量之间存在条件独立，其参数量就可以大幅减少.
+
+假设有四个二值变量 $X _ { 1 } , X _ { 2 } , X _ { 3 } , X _ { 4 }$ ，在不知道这几个变量依赖关系的情况下，可以用一个联合概率表来记录每一种取值的概率 $p ( \pmb { x } _ { 1 : 4 } )$ ,共需要 $2 ^ { 4 } - 1 =$ 15个参数.假设在已知 $X _ { 1 }$ 时， $X _ { 2 }$ 和 $X _ { 3 }$ 独立，即有
+
+$$
+\begin{array} { r } { p ( x _ { 2 } | x _ { 1 } , x _ { 3 } ) = p ( x _ { 2 } | x _ { 1 } ) , } \end{array}\tag{14.3}
+$$
+
+$$
+\begin{array} { r } { p ( x _ { 3 } | x _ { 1 } , x _ { 2 } ) = p ( x _ { 3 } | x _ { 1 } ) . } \end{array}\tag{14.4}
+$$
+
+在已知 $X _ { 2 }$ 和 $X _ { 3 }$ 时， $X _ { 4 }$ 也和 $X _ { 1 }$ 独立，即有
+
+$$
+\begin{array} { r } { p ( x _ { 4 } | x _ { 1 } , x _ { 2 } , x _ { 3 } ) = p ( x _ { 4 } | x _ { 2 } , x _ { 3 } ) , } \end{array}\tag{14.5}
+$$
+
+那么其联合概率 $p ( { \pmb x } )$ 可以分解为
+
+$$
+p ( { \pmb x } ) = p ( x _ { 1 } ) p ( x _ { 2 } | x _ { 1 } ) p ( x _ { 3 } | x _ { 1 } , x _ { 2 } ) p ( x _ { 4 } | x _ { 1 } , x _ { 2 } , x _ { 3 } ) ,\tag{14.6}
+$$
+
+$$
+= p ( x _ { 1 } ) p ( x _ { 2 } | x _ { 1 } ) p ( x _ { 3 } | x _ { 1 } ) p ( x _ { 4 } | x _ { 2 } , x _ { 3 } ) ,\tag{14.7}
+$$
+
+即4个局部条件概率的乘积.如果分别用4个表格来记录这4个条件概率的话，只需要 $1 + 2 + 2 + 4 = 9$ 个独立参数.
+
+当概率模型中的变量数量比较多时，其条件依赖关系也比较复杂．我们可以使用图结构的方式将概率模型可视化，以一种直观、简单的方式描述随机变量之间的条件独立性，并可以将一个复杂的联合概率模型分解为一些简单条件概率模型的组合.图14.1给出了上述例子中4个变量之间的条件独立性的图形化描述.图中每个节点表示一个变量，每条连边表示变量之间的依赖关系.
+
+![](images/7220b0cc70c9e10e2e9dc48648b0269230a4e6757cde63c2f4732c81aff45a74.jpg)（描述：这是一个表示四个变量X1、X2、X3、X4之间条件独立性的有向图模型，节点代表变量，箭头表示依赖关系）  
+图 14.1 变量 $X _ { 1 }$ 2 $X _ { 2 }$ $X _ { 3 }$ $X _ { 4 }$ 之间条件独立性的图形化表示
+
+图模型的基本问题 图模型有三个基本问题：
+
+（1）表示问题：对于一个概率模型，如何通过图结构来描述变量之间的依赖关系.
+
+（2）学习问题：图模型的学习包括图结构的学习和参数的学习.在本章中，我们只关注在给定图结构时的参数学习，即参数估计问题
+
+（3）推断问题:在已知部分变量时，计算其他变量的条件概率分布
+
+图模型与机器学习很多机器学习模型都可以归结为概率模型，即建模输入和输出之间的条件概率分布.因此，图模型提供了一套统一语言：先明确哪些变量可观测、哪些变量不可观测，再写出联合分布如何分解，最后讨论如何学习参数和如何做后验推断，这个视角有助于理解不同模型之间的联系，也有助于设计新模型.即使在神经网络模型中，图模型思想仍然很有用：神经网络常被用来参数化局部条件分布、势函数或近似后验分布，而图模型则说明这些模块应如何组合成一个一致的概率模型
+
+## 14.1 模型表示
+
+图由一组节点和节点之间的边组成.在概率图模型中，每个节点都表示一个随机变量（或一组随机变量），边表示这些随机变量之间的概率依赖关系.
+
+常见的概率图模型可以分为两类:有向图模型和无向图模型
+
+(1)有向图模型使用有向非循环图（Directed Acyclic Graph,DAG）来描述变量之间的条件依赖关系.如果两个节点之间有连边，表示在该图的分解结构下，一个变量的局部条件分布会直接依赖于另一个变量；只有在额外赋予因果语义时，这种连边才可以进一步解释为因果影响.
+
+(2)无向图模型使用无向图（Undirected Graph)来描述变量之间的关系.每条边代表两个变量之间存在直接的概率依赖关系，但通常不区分方向，也不直接表达因果语义.
+
+图14.2给出了两个代表性图模型（有向图和无向图）的示例，分别表示了四个变量 $\{ X _ { 1 } , X _ { 2 } , X _ { 3 } , X _ { 4 } \}$ 之间的依赖关系．图中带阴影的节点表示可观测到的变量，不带阴影的节点表示隐变量，连边表示两变量间的条件依赖关系.
+
+在本章后文中，节点、随机变量、变量的概念会经常混用.每个节点对应一个随机变量.
+
+![](images/685ba1819dbe2c4c3c3ceb34be8bee582d4ade89b06479b547216be1eb9a982e.jpg)（描述：有向图示意图，展示四个随机变量X1、X2、X3、X4之间的依赖关系，用于说明贝叶斯网络结构）  
+(a) 有向图：贝叶斯网络
+
+![](images/a319ba5e89c48577b55e5897353a81926c621c6a55fc8aa3a9498f983807df53.jpg)（描述：无向图示例，展示四个节点X1、X2、X3、X4之间的连接关系）  
+(b) 无向图:马尔可夫随机场  
+图14.2 有向图和无向图示例
+
+## 14.1.1 有向图模型
+
+有向图模型（Directed Graphical Model），也称为贝叶斯网络（BayesianNetwork）或信念网络（Belief Network，BN），是一类用有向图来描述随机向量概率分布的模型.
+
+定义14.1-贝叶斯网络：对于一个K维随机向量X和一个有K个节点的有向非循环图G,G中的每个节点都对应一个随机变量，每个连接 $e _ { i j }$ 表示两个随机变量 $X _ { i }$ 和 $X _ { j }$ 之间存在直接的条件依赖关系.令 $X _ { \pi _ { k } }$ 表示变量$X _ { k }$ 的所有父节点变量集合， $P ( X _ { k } | X _ { \pi _ { k } } )$ 表示每个随机变量的局部条件概率分布(Local Conditional Probability Distribution). 如果 X 的联合概率分布可以分解为每个随机变量 $X _ { k }$ 的局部条件概率的连乘形式，即
+
+$$
+p ( \pmb { x } ) = \prod _ { k = 1 } ^ { K } p ( x _ { k } | \pmb { x } _ { \pi _ { k } } ) ,\tag{14.8}
+$$
+
+那么(G,X)构成了一个贝叶斯网络.
+
+条件独立性 在贝叶斯网络中，如果两个节点是直接连接的，它们一般表示存在直接的概率依赖关系.父节点出现在子节点的局部条件分布中；只有在额外引入因果假设时，父子关系才可以进一步解释为“因”和“果”.
+
+如果两个节点不是直接连接的，但可以由一条经过其他节点的路径来连接，那么这两个节点之间是否条件独立，就取决于路径上的局部结构以及哪些变量已被观测.以三个节点的贝叶斯网络为例，给定三个节点 $X _ { 1 } , X _ { 2 } , X _ { 3 }$ ,其中 $X _ { 1 }$ 和$X _ { 3 }$ 不直接连接，而是通过节点 $X _ { 2 }$ 连接.这三个节点之间可以有四种基本结构，如图14.3所示.在图14.3a和图14.3b中， $X _ { 1 }$ $X _ { 3 } | \emptyset$ ,但 $X _ { 1 } \bot \bot X _ { 3 } | X _ { 2 }$ ;在图14.3c中，$X _ { 1 }$ $X _ { 3 } | \emptyset$ ,但 $X _ { 1 }$ $X _ { 3 } | X _ { 2 }$ ;在图14.3d中， $X _ { 1 }$ $X _ { 3 } | \emptyset$ ,但 $X _ { 1 } \downarrow \downarrow X _ { 3 } | X _ { 2 }$
+
+![](images/77652e3ac8ebcd04ac7be7ab990e355e5ff4a68e0a6f969b2dae10549e356c0f.jpg)（描述：这是一个贝叶斯网络的结构图，展示三个节点X1、X2、X3之间的有向连接关系，其中X2是中间节点，连接X1和X3，用于说明条件独立性。）  
+(a)
+
+![](images/18686273c576c7bf7be2d4afed652db44bdc5e4cd47966712cab874e65499ec6.jpg)（描述：这是一个表示变量序列的流程图，包含三个节点X1、X2和X3，通过箭头连接表示顺序关系）  
+(b)
+
+![](images/93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg)（描述：这是一个有向图，表示变量X2指向X1和X3的因果关系或依赖关系）  
+(c)
+
+![](images/ec1ceaa4470b659084826259daabee8c8f69acc550a18094fb97363a6ffb661f.jpg)（描述：这是一个表示三个变量依赖关系的有向图，其中X1和X3指向X2，展示变量间的因果或依赖关系。）  
+(d)  
+图14.3 三个变量的依赖关系示例
+
+图14.3中的四种关系分别为：
+
+参见习题14-2.
+
+（1）链式结构（图14.3a）：当 $X _ { 2 }$ 已知时， $X _ { 1 }$ 和 $X _ { 3 }$ 条件独立，即 $X _ { 1 }$ Ⅱ$X _ { 3 } | X _ { 2 }$
+
+（2）链式结构（图14.3b）：当 $X _ { 2 }$ 已知时， $X _ { 1 }$ 和 $X _ { 3 }$ 条件独立，即 $X _ { 1 }$ $X _ { 3 } | X _ { 2 }$
+
+(3）分叉结构（图14.3c)：当 $X _ { 2 }$ 未知时， $X _ { 1 }$ 和 $X _ { 3 }$ 一般不独立；当 $X _ { 2 }$ 已知时， $X _ { 1 }$ 和 $X _ { 3 }$ 条件独立，即 $X _ { 1 }$ Ⅱ $X _ { 3 } | X _ { 2 }$
+
+（4）汇聚结构（图14.3d)：当 $X _ { 2 }$ 未知时， $X _ { 1 }$ 和 $X _ { 3 }$ 独立；当 $X _ { 2 }$ 已知时， $X _ { 1 }$ 和 $X _ { 3 }$ 一般不独立，即 $X _ { 1 }$ 4 $X _ { 3 } | X _ { 2 }$ .这种“观测结果后反而引入依赖”的现象也称为解释消除.
+
+这三类局部结构—链式结构、分叉结构和汇聚结构—构成了贝叶斯网络中更一般条件独立性判断的基础，也就是d-分离（d-separation）的核心直觉：在链式和分叉结构中，观测中间节点会阻断路径；而在汇聚结构中，未观测汇聚节点及其后代时路径是阻断的，一旦观测汇聚节点或其后代，路径就会被打开
+
+局部马尔可夫性质 对一个更一般的贝叶斯网络，其局部马尔可夫性质为：每个随机变量在给定父节点的情况下，条件独立于它的非后代节点
+
+$$
+X _ { k } \perp \perp Z | X _ { \pi _ { k } } ,
+$$
+
+从公式(14.2)和公式(14.8) 可得到. 参见习题14-5.
+
+(14.9)
+
+其中 $Z$ 为 $X _ { k }$ 的非后代变量.
+
+## 14.1.2 常见的有向图模型
+
+很多经典的机器学习模型可以使用有向图模型来描述，比如朴素贝叶斯分类器、隐马尔可夫模型、深度信念网络等.
+
+## 14.1.2.1 Sigmoid信念网络
+
+为了减少模型参数，可以使用参数化模型来建模有向图模型中的条件概率分布.一种简单的参数化模型为 Sigmoid 信念网络[Neal, 1992].
+
+更复杂的深度信念网络，参见第15.3节.
+
+Sigmoid信念网络（Sigmoid Belief Network，SBN）中的变量取值为{0, 1}. 对于变量 $X _ { k }$ 和它的父节点集合 $\pi _ { k }$ ,其条件概率分布表示为
+
+$$
+p ( x _ { k } = 1 | \pmb { x } _ { \pi _ { k } } ; \theta ) = \sigma ( \theta _ { 0 } + \sum _ { x _ { i } \in \pmb { x } _ { \pi _ { k } } } \theta _ { i } x _ { i } ) ,\tag{14.10}
+$$
+
+其中 $\sigma ( \cdot )$ 是 Logistic 函数， $\theta _ { i }$ 是可学习的参数． 假设变量 $X _ { k }$ 的父节点数量为M，如果使用表格来记录条件概率需要 $2 ^ { M }$ 个参数，如果使用参数化模型只需要M+1个参数.如果对不同的变量的条件概率都共享使用一个参数化模型，其参数数量又可以大幅减少.
+
+值得一提的是，Sigmoid信念网络与Logistic回归模型都采用Logistic函数来计算条件概率．如果假设Sigmoid信念网络中只有一个叶子节点，其所有的父节点之间没有连接，且取值为实数，那么Sigmoid信念网络的网络结构和Logistic回归模型类似，如图14.4所示.但是，这两个模型的区别在于，Logistic回归模型中的x通常作为给定的观测输入，而不是需要由模型解释的随机变量.因此，Logistic回归模型只建模条件概率 $p ( y | \mathbf { \boldsymbol { x } } )$ ，是一种判别模型；而Sigmoid信念网络建模联合概率 $p ( { \pmb x } , { \pmb y } )$ ，是一种生成模型
+
+Logistic 回归模型也经 常被看作一种条件无 向图模型.
+
+![](images/278d6052d63551c9deac78cf8892fc6d7b6aa442a115afffa7cfec303d0bcde8.jpg)（描述：这是一个结构图，展示了多个输入变量X1到XM共同指向一个输出变量Y的有向图模型，用于表示Sigmoid信念网络的结构）  
+(a) 只有一层的简单Sigmoid信念网络
+
+![](images/a8447a3a22ac40b74a10d22ed4c4734629c1b23cd64046b670cf5d8d1641e3f0.jpg)（描述：结构图，展示多个输入变量X1至XM指向一个输出变量Y的Sigmoid信念网络结构）  
+(b) Logistic 回归模型  
+图 14.4 Sigmoid信念网络和Logistic回归模型的比较
+
+## 14.1.2.2 朴素贝叶斯分类器
+
+朴素贝叶斯（NaiveBayes，NB）分类器是一类简单的概率分类器，在强(朴素)独立性假设的条件下运用贝叶斯公式来计算每个类别的条件概率.
+
+给定一个有M维特征的样本x和类别 $y$ ,类别y的条件概率为
+
+$$
+\begin{array} { c } { { p ( y | x ; \theta ) = \displaystyle \frac { p ( x _ { 1 } , \cdots , x _ { M } | y ; \theta ) p ( y ; \theta ) } { p ( x _ { 1 } , \cdots , x _ { M } ) } } } \\ { { \propto p ( x _ { 1 } , \cdots , x _ { M } | y ; \theta ) p ( y ; \theta ) , } } \end{array}\tag{14.11}
+$$
+
+(14.12)
+
+其中θ为概率分布的参数
+
+在朴素贝叶斯分类器中，假设在给定Y的情况下， $X _ { m }$ 之间是条件独立的，即 $X _ { m }$ $X _ { k } | Y , \forall m \neq k .$ 图14.5给出了朴素贝叶斯分类器的图模型表示.
+
+![](images/e13cc11bbf125129d50ec357c738f9fa1f26d6c8629b45200b50f85356d1c292.jpg)（描述：图14.5是朴素贝叶斯模型的图模型表示，展示了一个有向无环图，其中变量y指向多个特征变量x1到xM，表示在给定y的情况下特征之间的条件独立性。）  
+图 14.5 朴素贝叶斯模型
+
+条件概率分布 $p ( y | \mathbf { \boldsymbol { x } } )$ 可以分解为
+
+$$
+p ( \boldsymbol { y } | \boldsymbol { x } ; \boldsymbol { \theta } ) \propto p ( \boldsymbol { y } | \boldsymbol { \theta } _ { c } ) \prod _ { m = 1 } ^ { M } p ( x _ { m } | \boldsymbol { y } ; \boldsymbol { \theta } _ { m } ) ,\tag{14.13}
+$$
+
+其中 $\theta _ { c }$ 是 $y$ 的先验概率分布的参数， $\theta _ { m }$ 是条件概率分布 $p ( x _ { m } | y ; \theta _ { m } )$ 的参数.若$x _ { m }$ 为连续值， $p ( x _ { m } | y ; \theta _ { m } )$ 可以用高斯分布建模；若 $x _ { m }$ 为离散值， $p ( x _ { m } | y ; \theta _ { m } )$ 可以用多项分布建模.
+
+虽然朴素贝叶斯分类器的条件独立性假设很强，但是在实际应用中，它在不少任务上仍能得到有竞争力的结果，并且模型简单，在少样本场景下不易过拟合.
+
+## 14.1.2.3 隐马尔可夫模型
+
+隐马尔可夫模型(Hidden Markov Model, HMM) [Baum et al., 1966] 是用来表示一种含有隐变量的马尔可夫过程
+
+图14.6给出隐马尔可夫模型的图模型表示，其中 $X _ { 1 : T }$ 为可观测变量， $Y _ { 1 : T }$ 为隐变量．所有的隐变量构成一个马尔可夫链，每个可观测标量 $X _ { t }$ 依赖当前时刻的隐变量 $Y _ { t }$
+
+![](images/f5894c10ee638c380589a9ac5a7b0c8364d89955ff143c209e37ff797641e40a.jpg)（描述：隐马尔可夫模型的图模型表示，展示隐变量Y序列构成马尔可夫链，每个可观测变量X依赖于对应时刻的隐变量Y）  
+图 14.6 隐马尔可夫模型
+
+隐马尔可夫模型的联合概率可以分解为
+
+$$
+p ( \pmb { x } , \pmb { y } ; \theta ) = \prod _ { t = 1 } ^ { T } p ( y _ { t } | y _ { t - 1 } ; \theta _ { \mathrm { s } } ) p ( x _ { t } | y _ { t } ; \theta _ { \mathrm { o } } ) ,\tag{14.14}
+$$
+
+为了描述方便，这里用$p ( y _ { 1 } | y _ { 0 } )$ 表示 $p ( y _ { 1 } )$
+
+其中x和 $\textbf {  { y } }$ 分别为可观测变量和隐变量的取值，条件概率 $p ( x _ { t } | y _ { t } ; \theta _ { \mathrm { o } } )$ 称为输出概率，条件概率 $p ( y _ { t } | y _ { t - 1 } ; \theta _ { \mathrm { s } } )$ 称为转移概率， $\theta _ { \mathrm { s } }$ 和 $\theta _ { \mathrm { o } }$ 分别表示两类条件概率的参数.
+
+## 14.1.3 无向图模型
+
+无向图模型，也称为马尔可夫随机场(Markov Random Field,MRF)或马尔可夫网络（MarkovNetwork），是一类用无向图来描述一组具有局部马尔可夫性质的随机向量X的联合概率分布的模型
+
+定义14.2-马尔可夫随机场：对于一个随机向量 $\pmb { X } = [ X _ { 1 } , \cdots , X _ { K } ] ^ { \intercal }$ 和一个有K个节点的无向图 $G ( \mathcal { V } , \mathcal { E } )$ (可以存在循环)，图G中的节点k表示随机变量 $X _ { k } , 1 \le k \le K$ .如果(G,X)满足局部马尔可夫性质，即一个变量$X _ { k }$ 在给定它的邻居的情况下独立于所有其他变量，
+
+$$
+p ( \boldsymbol { x } _ { k } | \boldsymbol { x } _ { \setminus k } ) = p ( \boldsymbol { x } _ { k } | \boldsymbol { x } _ { \mathcal { N } ( k ) } ) ,\tag{14.15}
+$$
+
+其中 $\mathcal { N } ( k )$ 为变量 $X _ { k }$ 的邻居集合，\k为除 $X _ { k }$ 外其他变量的集合，那么$( G , X )$ 就构成了一个马尔可夫随机场.
+
+无向图的局部马尔可夫性质 无向图中的局部马尔可夫性质可以表示为
+
+$$
+X _ { k } \perp \perp X _ { \setminus \mathcal { N } ( k ) , \setminus k } \mid X _ { \mathcal { N } ( k ) } ,
+$$
+
+其中 $X _ { \backslash \mathcal { N } ( k ) , \backslash k }$ 表示除 $X _ { \mathcal { N } ( k ) }$ 和 $X _ { k }$ 外的其他变量.
+
+对于图14.2b中的4个变量，根据马尔可夫性质，可以得到 $X _ { 1 } \perp \perp X _ { 4 } | X _ { 2 } , X _ { 3 }$ 和 $X _ { 2 }$ Ⅱ $X _ { 3 } | X _ { 1 } , X _ { 4 }$
+
+## 14.1.4 无向图模型的概率分解
+
+团由于无向图模型并不提供一个变量的拓扑顺序，因此无法用链式法则对$p ( { \pmb x } )$ 进行逐一分解.无向图模型的联合概率一般以全连通子图为单位进行分解.无向图中的一个全连通子图，称为团（Clique），即团内的所有节点之间都连边，在图14.7所示的无向图中共有7个团，包括 $\left\{ X _ { 1 } , X _ { 2 } \right\} , \left\{ X _ { 1 } , X _ { 3 } \right\} , \left\{ X _ { 2 } , X _ { 3 } \right\}$ $\left\{ X _ { 3 } , X _ { 4 } \right\} , \left\{ X _ { 2 } , X _ { 4 } \right\} , \left\{ X _ { 1 } , X _ { 2 } , X _ { 3 } \right\} , \left\{ X _ { 2 } , X _ { 3 } , X _ { 4 } \right\}$
+
+在所有团中，如果一个团不能被其他的团包含，这个团就是一个最大团(Maximal Clique).
+
+![](images/51c38027e1b2dcfbc7b58d9ea697de9043398f74425fcb8509335883ecaca3cd.jpg)（描述：无向图模型中的团和最大团示意图，用实线椭圆和虚线椭圆分别标出团和最大团）  
+图14.7 无向图模型中的团和最大团
+
+因子分解无向图中的联合概率可以分解为一系列定义在最大团上的非负函数的乘积形式.
+
+定理14.1-Hammersley-Clifford定理：如果一个分布 $p ( { \pmb x } ) > 0$ 满足无向图G中的局部马尔可夫性质，当且仅当 $p ( { \pmb x } )$ 可以表示为一系列定义在最大团上的非负函数的乘积形式，即
+
+$$
+p ( \pmb { x } ) = \frac { 1 } { Z } \prod _ { c \in \mathcal { C } } \phi _ { c } ( \pmb { x } _ { c } ) ,\tag{14.16}
+$$
+
+其中 $\mathcal { C }$ 为 $G$ 中的最大团集合， $\phi _ { c } ( { \pmb x } _ { c } ) \geq 0$ 是定义在团c上的势能函数（Po-tential Function）,Z是配分函数（Partition Function）,用来将乘积归—化为概率形式：
+
+$$
+Z = \sum _ { \pmb { x } \in \mathcal { X } } \prod _ { c \in \mathcal { C } } \phi _ { c } ( \pmb { x } _ { c } ) ,\tag{14.17}
+$$
+
+其中 X 为随机向量 X的取值空间.
+
+Hammersley-Clifford 定理的证明可以参考 [Koller et al., 2009]. 无向图模型与有向图模型的一个重要区别是有配分函数Z. 配分函数的计算复杂度是指数级的，因此在推断和参数学习时都需要重点考虑
+
+配分函数的计算参见第14.3.1.2节.
+
+吉布斯分布 公式(14.16)中定义的分布形式也称为吉布斯分布(Gibbs Distri-bution）.根据Hammersley-Clifford定理，在正分布条件下，无向图模型和吉布斯分布是一致的：吉布斯分布满足马尔可夫随机场的条件独立性质，马尔可夫随机场的概率分布也可以表示成吉布斯分布.
+
+为了保证势能函数为正，我们通常将其定义为
+
+$$
+\phi _ { c } ( \pmb { x } _ { c } ) = \exp ( - E _ { c } ( \pmb { x } _ { c } ) ) ,\tag{14.18}
+$$
+
+其中 $E _ { c } ( { \pmb x } _ { c } )$ 为能量函数（Energy Function).
+
+这里的负号是遵从物理上习惯，即能量越低意味着概率越高.
+
+因此，无向图上定义的概率分布可以表示为
+
+$$
+P ( \pmb { x } ) = \frac { 1 } { Z } \prod _ { c \in \mathcal { C } } \exp ( - E _ { c } ( \pmb { x } _ { c } ) )\tag{14.19}
+$$
+
+$$
+= \frac { 1 } { Z } \exp \Big ( \sum _ { c \in \mathcal { C } } - E _ { c } ( \pmb { x } _ { c } ) \Big ) .\tag{14.20}
+$$
+
+这种形式的分布又称为玻尔兹曼分布（Boltzmann Distribution）.满足上述正性条件的无向图模型都可以用公式(14.20)来表示其联合概率.
+
+玻尔兹曼分布参见第15.1节.
+
+## 14.1.5 常见的无向图模型
+
+很多经典的机器学习模型可以使用无向图模型来描述，比如对数线性模型(也叫最大熵模型)、条件随机场、玻尔兹曼机、受限玻尔兹曼机等.
+
+玻尔兹曼机参见第15.1节.
+
+## 14.1.5.1 对数线性模型
+
+受限玻尔兹曼机参见第15.2节.
+
+势能函数一般定义为
+
+$$
+\phi _ { c } ( \pmb { x } _ { c } | \theta _ { c } ) = \exp { \Big ( \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } _ { c } ) \Big ) } ,\tag{14.21}
+$$
+
+其中函数 $f _ { c } ( { \pmb x } _ { c } )$ 为定义在 $\mathbf { \delta } _ { \mathbf { x } _ { c } }$ 上的特征向量， $\theta _ { c }$ 为权重向量.这样联合概率 $p ( { \pmb x } )$ 的对数形式为
+
+$$
+\log p ( \pmb { x } ; \theta ) = \sum _ { c \in \mathcal { C } } \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } _ { c } ) - \log Z ( \theta ) ,\tag{14.22}
+$$
+
+其中θ代表所有势能函数中的参数 $\theta _ { c } .$ 这种形式的无向图模型也称为对数线性模型(Log-Linear Model)或最大熵模型(Maximum Entropy Model) [Bergeret al., 1996; Della Pietra et al., 1997]. 图14.8a所示是一个常用的最大熵模型.
+
+如果用对数线性模型来建模条件概率 $p ( y | \mathbf { \boldsymbol { x } } )$
+
+$$
+p ( \boldsymbol { y } | \mathbf { x } ; \boldsymbol { \theta } ) = \frac { 1 } { Z ( \mathbf { x } ; \boldsymbol { \theta } ) } \exp \Big ( \boldsymbol { \theta } ^ { \intercal } f ( \mathbf { x } , \boldsymbol { y } ) \Big ) ,\tag{14.23}
+$$
+
+其中 $\begin{array} { r } { Z ( \mathbf { \boldsymbol { x } } ; \boldsymbol { \theta } ) = \sum _ { \boldsymbol { y } ^ { \prime } \in \mathcal { Y } } \exp \left( \theta ^ { \intercal } \boldsymbol { f } ( \mathbf { \boldsymbol { x } } , \boldsymbol { y } ^ { \prime } ) \right) } \end{array}$ 为归一化因子，求和遍历所有候选类别对数线性模型也称为条件最大熵模型或Softmax回归模型.
+
+## 14.1.5.2 条件随机场
+
+条件随机场(Conditional Random Field, CRF) [Lafferty et al., 2001]是一种直接建模条件概率的无向图模型.
+
+和条件最大熵模型不同，条件随机场建模的条件概率 $p ( \pmb { y } | \pmb { x } )$ 中，y一般为随机向量，因此需要对 $p ( \pmb { y } | \pmb { x } )$ 进行因子分解．假设条件随机场的最大团集合为C，其条件概率为
+
+$$
+p ( \pmb { y } | \pmb { x } ; \theta ) = \frac { 1 } { Z ( \pmb { x } ; \theta ) } \exp \Big ( \sum _ { c \in \mathcal { C } } \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } , \pmb { y } _ { c } ) \Big ) ,\tag{14.24}
+$$
+
+其中 $\begin{array} { r } { Z ( \pmb { x } ; \theta ) = \sum _ { \pmb { u } } \mathrm { e x p } ( \sum _ { c \in \mathcal { C } } f _ { c } ( \pmb { x } , \pmb { y } _ { c } ) ^ { \top } \theta _ { c } ) } \end{array}$ 为归一化项.
+
+一种常见的条件随机场为图14.8中所示的链式结构，称为线性链条件随机场（Linear-Chain CRF）,其条件概率为
+
+$$
+p ( \pmb { y } | \pmb { x } ; \theta ) = \frac { 1 } { Z ( \pmb { x } ; \theta ) } \exp \Big ( \sum _ { t = 1 } ^ { T } \theta _ { 1 } ^ { \top } f _ { 1 } ( \pmb { x } , y _ { t } ) + \sum _ { t = 1 } ^ { T - 1 } \theta _ { 2 } ^ { \top } f _ { 2 } ( \pmb { x } , y _ { t } , y _ { t + 1 } ) \Big ) ,\tag{14.25}
+$$
+
+其中 $f _ { 1 } ( x , y _ { t } )$ 为状态特征，一般和位置t相关， $f _ { 2 } ( x , y _ { t } , y _ { t + 1 } )$ 为转移特征，一般可以简化为 $f _ { 2 } ( y _ { t } , y _ { t + 1 } )$ 并使用状态转移矩阵来表示.
+
+![](images/32110a1069b4e2a8716ff7251baae0bb9fc720a8d0eadd944b380604f3223dae.jpg)（描述：状态转移图，展示变量Y与X之间的关系，用于表示最大熵模型中的状态特征）  
+(a) 最大熵模型
+
+![](images/24001094ec7e8ae77d4087e471c6db5e5c9ba985b76fea98fef4e5c6c8c4b6e4.jpg)（描述：结构图，展示线性链条件随机场中变量Y1到YT与输入X之间的依赖关系）  
+(b) 线性链的条件随机场  
+图14.8 最大熵模型和线性链条件随机场
+
+## 14.1.6 有向图和无向图之间的转换
+
+有向图和无向图可以相互转换，但将无向图转为有向图通常比较困难.在实际应用中，将有向图转为无向图更加重要，这样可以利用无向图上的精确推断算法，比如联合树算法(Junction Tree Algorithm).
+
+无向图模型可以自然表示有向图模型不便表达的一些对称依赖关系，比如循环依赖；但它不区分边的方向，因此不能直接表示有向图中由方向编码的非对称关系.只有在额外引入因果语义时，这种非对称关系才可以进一步解释为因果方向.
+
+以图14.9中的有向图（图14.9a）为例，其联合概率分布可以分解为
+
+$$
+\begin{array} { r } { p ( { \pmb x } ) = p ( x _ { 1 } ) p ( x _ { 2 } ) p ( x _ { 3 } ) p ( x _ { 4 } | x _ { 1 } , x _ { 2 } , x _ { 3 } ) , } \end{array}\tag{14.26}
+$$
+
+其中 $p ( x _ { 4 } | x _ { 1 } , x _ { 2 } , x _ { 3 } )$ 和四个变量都相关．如果要转换为无向图，需要将这四个变量都归属于一个团中．因此，需要将 $x _ { 4 }$ 的三个父节点之间都加上连边，如图14.9b所示.这个过程称为道德化（Moralization）.转换后的无向图称为道德图（Moral Graph）.在道德化的过程中，原来有向图的一些独立性会丢失，比如上面例子中 $X _ { 1 } , X _ { 2 }$ 和 $X _ { 3 }$ 在无观测时相互独立这一性质，在道德图中不再成立
+
+道德化的名称来源是：有共同儿子的父节点都必须结婚（即有连边).
+
+![](images/bb1aad4e61209f05221d49ddd1e55b08e81eb650e71ad491183416e118b4afe2.jpg)（描述：有向图，展示四个节点X1、X2、X3指向X4的结构关系）  
+(a) 有向图
+
+![](images/f19a358c1d586ea764679a9a09f48927615e4f08a5d3b1e39ed66793c69c8bd8.jpg)（描述：有向图的结构示意图，展示四个节点X1、X2、X3、X4之间的连接关系）  
+(b) 道德图  
+图14.9 具有“共果关系”的有向图的道德化示例
+
+## 14.2 学习
+
+图模型的学习可以分为两部分：一是网络结构学习，即寻找适合数据和先验假设的网络结构；二是网络参数估计，即已知网络结构，估计每个条件概率分布的参数.
+
+网络结构学习比较困难，可以依赖领域知识，也可以通过打分搜索、条件独立性检验或带约束的结构优化来完成；如果图具有因果解释，还需要额外的因果假设.本节只讨论在给定网络结构条件下的参数估计问题.图模型的参数估计问题又分为不包含隐变量时的参数估计问题和包含隐变量时的参数估计问题．需要注意的是，含隐变量模型的学习通常离不开对隐变量后验分布的推断，因此参数学习和推断并不是完全分离的两个问题；其中EM算法正是“先推断隐变量后验、再更新参数”的典型代表.
+
+## 14.2.1 不含隐变量的参数估计
+
+如果图模型中不包含隐变量，即所有变量都是可观测的，那么网络参数一般可以直接通过最大似然来进行估计.
+
+有向图模型在有向图模型中，所有变量x的联合概率分布可以分解为每个随机变量 $x _ { k }$ 的局部条件概率 $p ( x _ { k } | x _ { \pi _ { k } } ; \theta _ { k } )$ 的连乘形式，其中 $\theta _ { k }$ 为第k个变量的局部条件概率的参数
+
+给定N个训练样本 $\mathcal { D } = \{ \pmb { x } ^ { ( n ) } \} _ { n = 1 } ^ { N }$ ,其对数似然函数为
+
+$$
+\begin{array} { l } { \displaystyle \mathcal { L } ( \mathcal { D } ; \theta ) = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \log p ( \pmb { x } ^ { ( n ) } ; \theta ) } \\ { \displaystyle \ = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \sum _ { k = 1 } ^ { K } \log p ( x _ { k } ^ { ( n ) } | x _ { \pi _ { k } } ^ { ( n ) } ; \theta _ { k } ) , } \end{array}\tag{14.27}
+$$
+
+(14.28)
+
+其中 $\theta _ { k }$ 为第k个局部条件分布的参数
+
+因为所有变量都是可观测的，最大化对数似然 $\mathcal { L } ( \mathcal { D } ; \theta )$ ，只需要分别最大化每个变量的条件似然来估计其参数.
+
+$$
+\theta _ { k } = \arg \operatorname* { m a x } \sum _ { n = 1 } ^ { N } \log p ( x _ { k } ^ { ( n ) } | x _ { \pi _ { k } } ^ { ( n ) } ; \theta _ { k } ) .\tag{14.29}
+$$
+
+如果变量x是离散的，简单直接的方式是在训练集上统计每个变量的条件概率表.但是条件概率表需要的参数比较多.假设条件概率 $p ( x _ { k } | x _ { \pi _ { k } } )$ 的父节点数量为M，所有变量为二值变量，其条件概率表需要 $2 ^ { M }$ 个参数.为了减少参数数量，可以使用参数化的模型，比如Sigmoid信念网络.如果变量x是连续的，可以使用高斯函数来表示条件概率分布，称为高斯信念网络.在此基础上，还可以通过让所有的条件概率分布共享使用同一组参数来进一步减少参数的数量.
+
+无向图模型在无向图模型中，所有变量x的联合概率分布可以分解为定义在最大团上的势能函数的连乘形式.以对数线性模型为例，
+
+$$
+p ( \pmb { x } ; \theta ) = \frac { 1 } { Z ( \theta ) } \exp \bigg ( \sum _ { c \in \mathcal { C } } \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } _ { c } ) \bigg ) ,\tag{14.30}
+$$
+
+其中 $\begin{array} { r } { Z ( \theta ) = \sum _ { \pmb { x } } \exp ( \sum _ { c \in \mathcal { C } } \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } _ { c } ) ) } \end{array}$
+
+给定N个训练样本 $\mathcal { D } = \{ \pmb { x } ^ { ( n ) } \} _ { n = 1 } ^ { N }$ ,其对数似然函数为
+
+$$
+\begin{array} { l } { \displaystyle \mathcal { L } ( \mathcal { D } ; \theta ) = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \log p ( \pmb { x } ^ { ( n ) } ; \theta ) } \\ { \displaystyle \ = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \Big ( \sum _ { c \in \mathcal { C } } \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } _ { c } ^ { ( n ) } ) \Big ) - \log Z ( \theta ) , } \end{array}\tag{14.31}
+$$
+
+(14.32)
+
+其中 $\theta _ { c }$ 为定义在团 $c$ 上的势能函数的参数
+
+采用梯度上升方法进行最大似然估计， $\mathcal { L } ( \mathcal { D } ; \theta )$ 关于参数 $\theta _ { c }$ 的偏导数为
+
+$$
+\frac { \partial \mathcal { L } ( \mathcal { D } ; \theta ) } { \partial \theta _ { c } } = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \left( f _ { c } ( \pmb { x } _ { c } ^ { ( n ) } ) \right) - \frac { \partial \log Z ( \theta ) } { \partial \theta _ { c } }\tag{14.33}
+$$
+
+其中
+
+$$
+\begin{array} { r } { \displaystyle \frac { \partial \log Z ( \theta ) } { \partial \theta _ { c } } = \sum _ { \pmb { x } } \frac { 1 } { Z ( \theta ) } \cdot \exp \Big ( \sum _ { c \in \mathcal { C } } \theta _ { c } ^ { \top } f _ { c } ( \pmb { x } _ { c } ) \Big ) \cdot f _ { c } ( \pmb { x } _ { c } ) } \\ { \displaystyle = \sum _ { \pmb { x } } p ( \pmb { x } ; \theta ) f _ { c } ( \pmb { x } _ { c } ) \triangleq \mathbb { E } _ { \pmb { x } \sim p ( \pmb { x } ; \theta ) } \Big [ f _ { c } ( \pmb { x } _ { c } ) \Big ] . } \end{array}\tag{14.34}
+$$
+
+(14.35)
+
+因此，
+
+$$
+\begin{array} { r l r } {  { \frac { \partial \mathcal { L } ( \mathcal { D } ; \theta ) } { \partial \theta _ { c } } = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } f _ { c } ( \pmb { x } _ { c } ^ { ( n ) } ) - \mathbb { E } _ { \pmb { x } \sim p ( \pmb { x } ; \theta ) } \bigg [ f _ { c } ( \pmb { x } _ { c } ) \bigg ] } } \\ & { } & { = \mathbb { E } _ { \pmb { x } \sim \widetilde { p } ( \pmb { x } ) } \bigg [ f _ { c } ( \pmb { x } _ { c } ) \bigg ] - \mathbb { E } _ { \pmb { x } \sim p ( \pmb { x } ; \theta ) } \bigg [ f _ { c } ( \pmb { x } _ { c } ) \bigg ] , } \end{array}\tag{14.36}
+$$
+
+(14.37)
+
+其中 $\tilde { p } ( { \boldsymbol { x } } )$ 定义为经验分布（Empirical Distribution）.由于在最优点时梯度为0，因此无向图的最大似然估计的优化目标等价于：对于每个团c上的特征$f _ { c } ( { \pmb x } _ { c } )$ ,使得其在经验分布 $\tilde { p } ( { \boldsymbol x } )$ 下的期望等于其在模型分布 $p ( { \pmb x } ; { \boldsymbol \theta } )$ 下的期望.
+
+对比公式(14.29)和公式(14.37)可以看出，无向图模型的参数估计通常比有向图更复杂.在参数不共享时，有向图中每个局部条件概率的参数可以分开估计；而在无向图中，配分函数把所有参数耦合在一起，无法直接分解为彼此独立的局部估计问题
+
+对于一般的无向图模型，公式(14.37)中的 $\mathbb { E } _ { { \pmb x } \sim p ( { \pmb x } ; \theta ) } [ f _ { c } ( { \pmb x } _ { c } ) ]$ 往往很难计算，因为涉及在联合概率分布 $p ( { \boldsymbol { x } } ; { \boldsymbol { \theta } } )$ 下计算期望.当模型变量比较多时，这个计算往往无法实现.因此，无向图的参数估计通常采用近似的方法：1）利用采样或变分方法近似计算模型期望；2）采用伪似然等局部替代目标绕开全局配分函数；3）在玻尔兹曼机等模型中使用对比散度或随机梯度方法进行近似学习.
+
+## 14.2.2 含隐变量的参数估计
+
+如果图模型中包含隐变量，即有部分变量是不可观测的，参数估计通常需要同时处理隐变量后验推断问题，常用方法包括EM算法、变分方法和采样方法.
+
+## 14.2.2.1 EM算法
+
+在一个包含隐变量的图模型中，令X定义可观测变量集合，Z定义隐变量集合，一个样本 x的边际似然函数（Marginal Likelihood)为
+
+$$
+p ( \pmb { x } ; \theta ) = \sum _ { z } p ( \pmb { x } , z ; \theta ) ,\tag{14.38}
+$$
+
+其中θ为模型参数.边际似然也称为证据（Evidence）.
+
+图14.10给出了带隐变量的贝叶斯网络的图模型结构，其中矩形表示其中的变量重复N次. 这种表示方法称为盘子表示法（PlateNotation），是图模型中表示重复变量的方法.
+
+![](images/5f2a14e684e34cdd4c2d7c02587c1d806edb34dd3a28b993bf29c7bc44a490ae.jpg)（描述：带隐变量的贝叶斯网络结构图，使用盘子表示法展示变量z和x的重复关系）  
+图14.10 带隐变量的贝叶斯网络
+
+给定N个训练样本 $\mathcal { D } = \{ \pmb { x } ^ { ( n ) } \} _ { n = 1 } ^ { N }$ ,整个训练集的对数边际似然为
+
+$$
+\begin{array} { c l l } { \displaystyle \mathcal { L } ( \mathcal { D } ; \theta ) = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \log p ( \pmb { x } ^ { ( n ) } ; \theta ) } \\ { \displaystyle = \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \log \sum _ { z } p ( \pmb { x } ^ { ( n ) } , z ; \theta ) . } \end{array}\tag{14.39}
+$$
+
+(14.40)
+
+通过最大化整个训练集的对数边际似然 $\mathcal { L } ( \mathcal { D } ; \theta )$ ，可以估计出最优的参数$\theta ^ { * }$ .然而计算边际似然函数时涉及 $p ( x )$ 的推断问题，需要在对数函数的内部进行求和（或积分）.这样，当计算参数θ的梯度时，这个求和操作依然存在.除非$p ( \pmb { x } , \pmb { z } ; \theta )$ 的形式非常简单，否则这个求和难以直接计算.
+
+为了计算 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ ，我们引入一个额外的变分函数 $q ( z ) , q ( z )$ 为定义在隐变量Z上的分布.样本x的对数边际似然函数为
+
+$$
+\log p ( \pmb { x } ; \theta ) = \log \sum _ { z } q ( z ) \frac { p ( \pmb { x } , z ; \theta ) } { q ( z ) }\tag{14.41}
+$$
+
+$$
+\geq \sum _ { z } q ( z ) \log { \frac { p ( x , z ; \theta ) } { q ( z ) } }\tag{14.42}
+$$
+
+$$
+\triangleq E L B O ( q , \pmb { x } ; \theta ) ,\tag{14.43}
+$$
+
+其中 $E L B O ( q , \pmb { x } ; \theta )$ 为对数边际似然函数 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 的下界，称为证据下界(Evidence Lower BOund,ELBO).
+
+公式(14.42)使用了Jensen不等式，即对于凹函数 $g , g \left( \mathbb { E } [ X ] \right) \geq \mathbb { E } \left[ g ( X ) \right]$ 成立.由Jensen不等式的性质可知，仅当 $q ( \pmb { z } ) = p ( \pmb { z } | \pmb { x } ; \theta )$ 时，对数边际似然函数$\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 和其下界 $E L B O ( q , \pmb { x } ; \theta )$ 相等,即 $\log p ( \pmb { x } ; \theta ) = E L B O ( q , \pmb { x } ; \theta )$
+
+这样，在后验分布可以精确计算时，最大化对数边际似然函数 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 的过程可以分解为两个步骤：
+
+(1)先找到近似分布 $q ( z )$ 使得 $\log p ( \pmb { x } ; \theta ) = E L B O ( q , \pmb { x } ; \theta )$
+
+（2）再寻找参数θ最大化 $E L B O ( q , \pmb { x } ; \theta )$ ，即期望最大化（Expectation-Maximization,EM)算法.
+
+EM算法是含隐变量图模型的常用参数估计方法，通过迭代的方法来最大化边际似然.EM算法具体分为两个步骤：E步和M步.这两步不断重复，直到收敛到某个局部最优解.在第t步更新时，E步和M步分别为：
+
+(1)E步（Expectation Step)：固定参数 $\theta _ { t }$ ，找到一个分布 $q _ { t + 1 } ( z )$ 使得证据下界 $E L B O ( q , \pmb { x } ; \theta _ { t } )$ 等于 $\log p ( { \pmb x } ; { \boldsymbol \theta } _ { t } )$
+
+根据Jensen不等式的性质， $q ( \boldsymbol { z } ) = p ( \boldsymbol { z } | \mathbf { { x } } ; \boldsymbol { \theta } _ { t } )$ 时， $E L B O ( q , \pmb { x } ; \theta _ { t } )$ 最大. 因此在精确E步中，最理想的分布 $q ( z )$ 等于后验分布 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } _ { t } )$ .而计算后验分布$p ( z | \mathbf { \boldsymbol { x } } ; \boldsymbol { \theta } _ { t } )$ 是一个推断(Inference)问题.如果 $_ z$ 是有限的一维离散变量（比如混合高斯模型中的类别变量)， $p ( z | \mathbf { \boldsymbol { x } } ; \boldsymbol { \theta } _ { t } )$ 计算起来还比较容易；否则， $p ( z | \mathbf { x } ; \theta _ { t } ) -$ 般很难计算，需要通过变分推断或采样方法来进行近似估计.
+
+推断参见第14.3节.
+
+(2)M步（Maximization Step)：固定 $q _ { t + 1 } ( z )$ ，找到一组参数使得证据下界最大,即
+
+$$
+\boldsymbol { \theta } _ { t + 1 } = \mathop { \arg \operatorname* { m a x } } _ { \boldsymbol { \theta } } E L B O ( q _ { t + 1 } , \boldsymbol { x } ; \boldsymbol { \theta } ) .\tag{14.44}
+$$
+
+https://nndl.ai/
+
+这一步可以看作全观测变量图模型的参数估计问题，可以使用第14.2.1节中方法进行参数估计.
+
+收敛性证明 假设在第t步时的模型参数为 $\theta _ { t }$ ，在E步时找到一个分布 $q _ { t + 1 } ( z )$ 使得 $\log p ( \pmb { x } ; \theta _ { t } ) = E L B O ( q _ { t + 1 } , \pmb { x } ; \theta _ { t } )$ .在M步时固定 $q _ { t + 1 } ( z )$ 找到一组参数$\theta _ { t + 1 }$ ,使得 $E L B O ( q _ { t + 1 } , \pmb { x } ; \theta _ { t + 1 } ) \geq E L B O ( q _ { t + 1 } , \pmb { x } ; \theta _ { t } )$ .因此有
+
+$$
+\log p ( \pmb { x } ; \theta _ { t + 1 } ) \geq E L B O ( q _ { t + 1 } , \pmb { x } ; \theta _ { t + 1 } ) \geq E L B O ( q _ { t + 1 } , \pmb { x } ; \theta _ { t } ) = \log p ( \pmb { x } ; \theta _ { t } ) ,\tag{14.45}
+$$
+
+即每经过一次迭代，对数边际似然增加，即 $\log p ( \pmb { x } ; \theta _ { t + 1 } ) \geq \log p ( \pmb { x } ; \theta _ { t } )$
+
+信息论的视角对数边际似然 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 可以通过下面方式进行分解：
+
+首先因为 $p ( \pmb { x } , \pmb { z } ; \theta ) = p ( \pmb { z } | \pmb { x } ; \theta ) p ( \pmb { x } ; \theta )$ ,有 $\log p ( { \pmb x } , { \pmb z } ; \theta ) = \log p ( { \pmb z } | { \pmb x } ; \theta ) +$ $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ ,进一步有 $\log p ( { \pmb x } ; \theta ) = \log p ( { \pmb x } , z ; \theta ) - \log p ( z | { \pmb x } ; \theta )$
+
+这样，对数边际似然 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 可以分解为
+
+$$
+\log p ( { \pmb x } ; \theta ) = \sum _ { z } q ( z ) \log p ( { \pmb x } ; \theta )\tag{14.46}
+$$
+
+$$
+\begin{array} { r } { \sum _ { z } q ( z ) = 1 . } \end{array}
+$$
+
+$$
+= \sum _ { z } q ( z ) \Big ( \log p ( { \pmb x } , z ; \theta ) - \log p ( { z } | { \pmb x } ; \theta ) \Big )\tag{14.47}
+$$
+
+$$
+= \sum _ { z } q ( z ) \log \frac { p ( { \pmb x } , z ; \theta ) } { q ( { \pmb z } ) } - \sum _ { z } q ( z ) \log \frac { p ( { z } | { \pmb x } ; \theta ) } { q ( z ) }\tag{14.48}
+$$
+
+$$
+\begin{array} { r } { = E L B O ( q , \pmb { x } ; \theta ) + \mathrm { K L } ( q ( \pmb { z } ) \| p ( \pmb { z } | \pmb { x } ; \theta ) ) , } \end{array}\tag{14.49}
+$$
+
+其中KL $\displaystyle | \boldsymbol { q } ( \boldsymbol { z } ) \| p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } ) )$ 为分布 q(z)和后验分布 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 的KL散度.
+
+参见第E.3.2节.
+
+由于 $\mathrm { K L } ( q ( \boldsymbol { z } ) \| p ( \boldsymbol { z } | \boldsymbol { x } ; \theta ) ) \ge 0$ ，因此 $E L B O ( q , \pmb { x } ; \theta )$ 为 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 的一个下界. 当且仅当 $q ( \pmb { z } ) = p ( \pmb { z } | \pmb { x } ; \theta )$ 时， $\mathrm { K L } ( q ( \boldsymbol { z } ) \| p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } ) ) = 0 , E L B O ( q , \boldsymbol { x } ; \boldsymbol { \theta } ) =$ $\log p ( { \pmb x } ; { \boldsymbol \theta } )$
+
+图14.11为EM算法在第t步迭代时的示例.
+
+（1）图14.11a表示第t步迭代时的初始状态.
+
+此时参数为 $\theta _ { t }$ ,并且通常有 $\mathrm { K L } ( q ( \boldsymbol { z } ) \| p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } _ { t } ) ) > 0$
+
+(2)图14.11b表示E步更新.
+
+固定参数 $\theta _ { t }$ ，找到分布 $q _ { t + 1 } ( z )$ 使得 $\mathrm { K L } ( q _ { t + 1 } ( \boldsymbol { z } ) \| p ( \boldsymbol { z } | \mathbf { x } ; \boldsymbol { \theta } _ { t } ) ) = 0$ ，这时证据下界 $E L B O ( q _ { t + 1 } , \pmb { x } ; \theta _ { t } )$ 和 $\log p ( \pmb { x } ; \boldsymbol { \theta } _ { t } )$ 相等.
+
+(3)图14.11c表示M步更新.
+
+固定分布 $q _ { t + 1 } ( z )$ ，寻找参数 $\theta _ { t + 1 }$ 使得证据下界 $E L B O ( q _ { t + 1 } , x ; \theta _ { t + 1 } )$ 最大.由公式(14.49)可知，新的对数边际似然不小于新的证据下界，因此在精确EM中有 $\log p ( \pmb { x } ; \theta _ { t + 1 } ) \geq \log p ( \pmb { x } ; \theta _ { t } )$
+
+![](images/90f332090d24c0f12b99477ffec11cf8a07ddb5156da08771ffb5b4ff9882514.jpg)（描述：示意图，展示证据下界（ELBO）与对数似然之间的关系，包含KL散度和ELBO的垂直分层结构）  
+(a) 初始状态
+
+![](images/c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg)（描述：该图为ELBO（证据下界）与对数似然之间的关系示意图，展示了KL散度为零时ELBO与log p(x;θ_t)相等的状态）  
+(b) E步更新
+
+![](images/5908f6db83822a58c062fe03ac2332e770ca27b8a8237d2dd84e343d14abc185.jpg)（描述：示意图，展示EM算法中ELBO、KL散度和对数似然之间的关系）  
+图 14.11 EM算法在第t步迭代时的示例  
+(c) M步更新
+
+## 14.2.2.2 高斯混合模型
+
+本节介绍一个EM算法的应用例子:高斯混合模型
+
+高斯混合模型（Gaussian Mixture Model,GMM）是由多个高斯分布组成的模型，其总体密度函数为多个高斯密度函数的加权组合.如果一个连续随机变量或连续随机向量的分布比较复杂，那么可以用高斯混合模型来近似其多峰或分群结构.
+
+不失一般性，这里考虑一维的情况.假设样本x是从K个高斯分布中的一个分布生成的，但是无法观测到具体由哪个分布生成.我们引入一个隐变量 $z \in$ $\{ 1 , \cdots , K \}$ 来表示样本x来自于哪个高斯分布，z服从多项分布：
+
+$$
+p ( z = k ; \pi ) = \pi _ { k } , \qquad 1 \leq k \leq K ,\tag{14.50}
+$$
+
+其中 ${ \pmb \pi } = [ \pi _ { 1 } , \pi _ { 2 } , \cdots , \pi _ { K } ]$ 为多项分布的参数，并满足 $\begin{array} { r } { \pi _ { k } \geq 0 , \forall k , \sum _ { k = 1 } ^ { K } \pi _ { k } = 1 } \end{array}$ $\pi _ { k }$ 表示样本x由第k个高斯分布生成的概率.
+
+给定z = k,条件分布 $p ( x | z = k )$ 为高斯分布：
+
+$$
+\begin{array} { l } { \displaystyle { p ( x | z = k ; \mu _ { k } , \sigma _ { k } ) = \mathcal N ( x ; \mu _ { k } , \sigma _ { k } ) } } \\ { \displaystyle { \quad = \frac { 1 } { \sqrt { 2 \pi } \sigma _ { k } } \exp \Big ( - \frac { ( x - \mu _ { k } ) ^ { 2 } } { 2 \sigma _ { k } ^ { 2 } } \Big ) } , } \end{array}\tag{14.51}
+$$
+
+(14.52)
+
+其中 $\mu _ { k }$ 和 $\sigma _ { k }$ 分别为第k个高斯分布的均值和标准差，方差为 $\sigma _ { k } ^ { 2 } .$
+
+从高斯混合模型中生成一个样本x的过程可以分为两步：
+
+（1）首先根据多项分布 $p ( z ; \pi )$ 随机选取一个高斯分布.
+
+（2）假设选中第k个高斯分布（即 $z = k )$ ，再从高斯分布 $\mathcal N ( \boldsymbol x ; \boldsymbol \mu _ { k } , \boldsymbol \sigma _ { k } )$ 中选取一个样本x.
+
+图14.12给出了高斯混合模型的图模型表示.
+
+![](images/becbd59f800841017375509b45fbe666e4568eb7fa9d81c304a6bde7546e6579.jpg)（描述：高斯混合模型的图模型表示，包含隐变量z(n)、观测变量x(n)以及参数μk、σk和K的结构关系）  
+图 14.12 高斯混合模型
+
+在高斯混合模型中，随机变量x的概率密度函数为
+
+$$
+p ( x ) = \sum _ { k = 1 } ^ { K } \pi _ { k } \mathcal { N } ( x ; \mu _ { k } , \sigma _ { k } ) .\tag{14.53}
+$$
+
+参数估计 给定N个由高斯混合模型生成的训练样本 $x ^ { ( 1 ) } , x ^ { ( 2 ) } , \cdots , x ^ { ( N ) }$ ，希望能学习其中的参数 $\pi _ { k } , \mu _ { k } , \sigma _ { k } , 1 \leq k \leq K$ 由于我们无法观测样本 $x ^ { ( n ) }$ 是从哪个高斯分布生成的，直接最大化边际似然通常没有闭式更新，因此可用EM算法交替估计后验责任度和模型参数.
+
+对每个样本 $x ^ { ( n ) }$ ,其对数边际分布为
+
+$$
+\begin{array} { r } { \log p ( \boldsymbol { x } ^ { ( n ) } ) = \log \displaystyle \sum _ { z ^ { ( n ) } } p ( z ^ { ( n ) } ) p ( \boldsymbol { x } ^ { ( n ) } | z ^ { ( n ) } ) } \\ { = \log \displaystyle \sum _ { k = 1 } ^ { K } \pi _ { k } \mathcal { N } ( \boldsymbol { x } ^ { ( n ) } ; \boldsymbol { \mu } _ { k } , \boldsymbol { \sigma } _ { k } ) . } \end{array}\tag{14.54}
+$$
+
+(14.55)
+
+根据EM算法，参数估计可以分为两步进行迭代：
+
+(1)E步 先固定参数 $\pi , \mu , \sigma$ ,计算后验分布 $p ( z ^ { ( n ) } | x ^ { ( n ) } )$ ,即
+
+$$
+\begin{array} { r l } & { \gamma _ { n k } \triangleq p ( z ^ { ( n ) } = k | x ^ { ( n ) } ) } \\ & { \quad = \frac { p ( z ^ { ( n ) } ) p ( x ^ { ( n ) } | z ^ { ( n ) } ) } { p ( x ^ { ( n ) } ) } } \\ & { \quad = \frac { \pi _ { k } \mathcal { N } ( x ^ { ( n ) } ; \mu _ { k } , \sigma _ { k } ) } { \sum _ { j = 1 } ^ { K } \pi _ { j } \mathcal { N } ( x ^ { ( n ) } ; \mu _ { j } , \sigma _ { j } ) } , } \end{array}\tag{14.56}
+$$
+
+(14.57)
+
+(14.58)
+
+其中 $\gamma _ { n k }$ 定义了样本 $x ^ { ( n ) }$ 属于第k个高斯分布的后验概率.
+
+(2)M步令 $q ( z = k ) = \gamma _ { n k }$ ，训练集D的证据下界为
+
+$$
+\begin{array} { l } { \displaystyle \mathit { E L B O } ( \gamma , \mathcal { D } ; \pi , \mu , \sigma ) = \sum _ { n = 1 } ^ { N } \sum _ { k = 1 } ^ { K } \gamma _ { n k } \log \frac { p ( x ^ { ( n ) } , z ^ { ( n ) } = k ) } { \gamma _ { n k } } } \\ { \displaystyle = \sum _ { n = 1 } ^ { N } \sum _ { k = 1 } ^ { K } \gamma _ { n k } \bigg ( \log \mathcal { N } ( x ^ { ( n ) } ; \mu _ { k } , \sigma _ { k } ) + \log \frac { \pi _ { k } } { \gamma _ { n k } } \bigg ) } \end{array}\tag{14.59}
+$$
+
+(14.60)
+
+$$
+= \sum _ { n = 1 } ^ { N } \sum _ { k = 1 } ^ { K } \gamma _ { n k } \left( \frac { - ( x ^ { ( n ) } - \mu _ { k } ) ^ { 2 } } { 2 \sigma _ { k } ^ { 2 } } - \log \sigma _ { k } + \log \pi _ { k } \right) + C ,\tag{14.61}
+$$
+
+其中C为和参数无关的常数.
+
+将参数估计问题转为优化问题：
+
+$$
+\begin{array} { l } { \displaystyle \operatorname* { m a x } _ { \boldsymbol { \pi } , \mu , \boldsymbol { \sigma } } E L B O ( \gamma , \mathcal { D } ; \boldsymbol { \pi } , \mu , \boldsymbol { \sigma } ) , } \\ { \mathrm { s . t . } \quad \displaystyle \sum _ { k = 1 } ^ { K } \pi _ { k } = 1 . } \end{array}\tag{14.62}
+$$
+
+利用拉格朗日乘数法来求解上面的等式约束优化问题，分别求拉格朗日函数 $\begin{array} { r } { E L B O ( \gamma , \mathcal { D } ; \pi , \mu , \sigma ) + \lambda ( \sum _ { k = 1 } ^ { K } \pi _ { k } - 1 ) } \end{array}$ 关于 $\pi _ { k } , \mu _ { k } , \sigma _ { k }$ 的偏导数，并令其等于0.可得
+
+$$
+\pi _ { k } = \frac { N _ { k } } { N } ,\tag{14.63}
+$$
+
+$$
+\mu _ { k } = \frac { 1 } { N _ { k } } \sum _ { n = 1 } ^ { N } \gamma _ { n k } x ^ { ( n ) } ,\tag{14.64}
+$$
+
+参见习题14-11.
+
+$$
+\sigma _ { k } ^ { 2 } = \frac { 1 } { N _ { k } } \sum _ { n = 1 } ^ { N } \gamma _ { n k } ( x ^ { ( n ) } - \mu _ { k } ) ^ { 2 } ,\tag{14.65}
+$$
+
+其中
+
+$$
+N _ { k } = \sum _ { n = 1 } ^ { N } \gamma _ { n k } .\tag{14.66}
+$$
+
+高斯混合模型的参数学习过程如算法14.1所示
+
+算法 14.1 高斯混合模型的参数学习过程  
+输入：训练样本 $: x ^ { ( 1 ) } , x ^ { ( 2 ) } , \cdots , x ^ { ( N ) }$ 10  
+1 随机初始化参数 $: \pi _ { k } , \mu _ { k } , \sigma _ { k } , 1 \leq k \leq K ;$   
+2 repeat  
+$/ /$ E步  
+3 固定参数，根据公式(14.58)计算 $\gamma _ { n k } , 1 \le k \le K , 1 \le n \le N ;$   
+$/ /$ M步  
+4 固定 $\gamma _ { n k }$ ,根据公式(14.63)、公式(14.64)和公式(14.65),计算 $\pi _ { k } , \mu _ { k } , \sigma _ { k } ^ { 2 }$   
+$1 \leq k \leq K ;$   
+5 until 对数边际分布 $\textstyle \sum _ { n = 1 } ^ { N } \log p ( x ^ { ( n ) } )$ 收敛;  
+输出： $\pi _ { k } , \mu _ { k } , \sigma _ { k } , 1 \leq k \leq K$
+
+图14.13给出一个高斯混合模型训练过程的简单示例.给定一组数据，我们用两个高斯分布来估计这组数据的分布情况.
+
+![](images/495173611585641eb3a57a3785aa7ea562a5c42374380bce872513264edaec1d.jpg)  
+(a) 初始化
+
+![](images/e40647fee98e39a17fb8393c87d6ece0a244d1660442c8749f50ed07a1bcc625.jpg)  
+(b) 第1次迭代
+
+![](images/b3cd033f0be0b87d8e94fe6fd450255ddf17564f6a9f54822799ea75c2974840.jpg)  
+(c) 第4次迭代
+
+![](images/a5f892259954f7b84f6fccd30f697ac2aa577a5784fc72a826d46feb8789aa8b.jpg)  
+(d) 第8次迭代
+
+![](images/84d28abf696d468906fc4f9cc64c1a5afcefe1b0f2a77a3aae9b68a93a1f7570.jpg)  
+(e) 第12次迭代
+
+![](images/bb62a4d3bffd3c2051ea049f8562879a6f7f2db1bd8182e7a7f6eae734d62f2f.jpg)  
+(f) 第16次迭代  
+图 14.13 高斯混合模型训练过程示例
+
+## 14.3 推断
+
+在图模型中，推断（Inference）是指在观测到部分变量 $\boldsymbol { e } = \{ e _ { 1 } , e _ { 2 } , \cdots , e _ { M } \}$ 时，计算其他变量的某个子集 $\pmb q = \{ q _ { 1 } , q _ { 2 } , \cdots , q _ { N } \}$ 的条件概率 $p ( \pmb q | \pmb { e } )$
+
+假设一个图模型中，除了变量 $_ { e , q }$ 外，其余变量表示为z.根据贝叶斯公式有
+
+$$
+p ( { \pmb q } | { \boldsymbol e } ) = \frac { p ( { \pmb q } , { \pmb e } ) } { p ( { \pmb e } ) }
+$$
+
+不失一般性，这里假设所有变量都为离散变量.
+
+(14.67)
+
+$$
+= \frac { \sum _ { z } p ( \pmb { q } , \pmb { e } , z ) } { \sum _ { \pmb { q } , z } p ( \pmb { q } , \pmb { e } , z ) } .\tag{14.68}
+$$
+
+因此，图模型的推断问题的关键为求任意一个变量子集的边际概率分布问题
+
+在图模型中，常用的推断算法可以分为精确推断算法和近似推断算法两类
+
+## 14.3.1 精确推断
+
+精确推断（Exact Inference）算法是指可以计算出条件概率 $p ( \pmb q | \pmb { e } )$ 的精确解的算法.
+
+## 14.3.1.1 变量消除法
+
+以图14.2a的有向图为例，假设推断问题为计算后验概率 $p ( x _ { 1 } | x _ { 4 } )$ ，需要计算两个边际概率 $p ( x _ { 1 } , x _ { 4 } )$ 和 $p ( x _ { 4 } )$
+
+根据条件独立性假设，有
+
+$$
+p ( x _ { 1 } , x _ { 4 } ) = \sum _ { x _ { 2 } , x _ { 3 } } p ( x _ { 1 } ) p ( x _ { 2 } | x _ { 1 } ) p ( x _ { 3 } | x _ { 1 } ) p ( x _ { 4 } | x _ { 2 } , x _ { 3 } ) ,\tag{14.69}
+$$
+
+假设每个变量取K个值，计算上面的边际分布需要 $K ^ { 2 }$ 次加法以及 $K ^ { 2 } \times 3$ 次乘法.
+
+根据乘法的分配律，
+
+$$
+a b + a c = a ( b + c ) ,\tag{14.70}
+$$
+
+边际概率 $p ( x _ { 1 } , x _ { 4 } )$ 可以写为
+
+$$
+p ( x _ { 1 } , x _ { 4 } ) = p ( x _ { 1 } ) \sum _ { x _ { 3 } } p ( x _ { 3 } | x _ { 1 } ) \sum _ { x _ { 2 } } p ( x _ { 2 } | x _ { 1 } ) p ( x _ { 4 } | x _ { 2 } , x _ { 3 } ) .\tag{14.71}
+$$
+
+这样计算量可以减少到 $K ^ { 2 } + K$ 次加法和 $K ^ { 2 } + K + 1$ 次乘法.
+
+这种方法是利用动态规划的思想，每次消除一个变量，来减少计算边际分布的计算复杂度，称为变量消除法（Variable Elimination Algorithm）.变量消除法的计算量与消除顺序密切相关，好的消除顺序可以减小中间因子的规模
+
+变量消除法可以按照不同的顺序来消除变量．比如上面的推断问题也可以按照 $x _ { 3 } , x _ { 2 }$ 的消除顺序进行计算
+
+同理，边际概率 $p ( x _ { 4 } )$ 可以通过以下方式计算：
+
+$$
+p ( x _ { 4 } ) = \sum _ { x _ { 3 } } \sum _ { x _ { 2 } } p ( x _ { 4 } | x _ { 2 } , x _ { 3 } ) \sum _ { x _ { 1 } } p ( x _ { 3 } | x _ { 1 } ) p ( x _ { 2 } | x _ { 1 } ) p ( x _ { 1 } ) .\tag{14.72}
+$$
+
+变量消除法的一个缺点是在计算多个边际分布时存在很多重复的计算.比如在上面的图模型中，计算边际概率 $p ( x _ { 4 } )$ 和 $p ( x _ { 3 } )$ 时很多局部的求和计算是一样的.
+
+## 14.3.1.2 信念传播算法
+
+信念传播（Belief Propagation，BP）算法，也称为和积（Sum-Product）算法或消息传递（MessagePassing）算法，是将变量消除法中的和积（Sum-Product）操作看作消息（Message），并保存起来，这样可以节省大量的计算资源.
+
+我们先介绍链式结构上的信念传播算法
+
+![](images/355736f8771e3386c4029f9291b2aa147fb1f6273ccb210776d97908e8b9be57.jpg)（描述：示意图，展示无向马尔可夫链中变量节点间的消息传递过程，包含双向消息流和变量标记）  
+图14.14 无向马尔可夫链的消息传递过程
+
+本节以无向图为例来介绍信念传播算法，但其同样适用于有向图.
+
+以图14.14所示的无向马尔可夫链为例，其联合概率 $p ( { \pmb x } )$ 为
+
+$$
+\begin{array} { l } { \displaystyle { p ( \pmb { x } ) = \frac { 1 } { Z } \prod _ { c \in \mathcal { C } } \phi _ { c } ( \pmb { x } _ { c } ) } } \\ { \displaystyle { \phantom { \frac { 1 } { Z } } } } \\ { \displaystyle { \phantom { \frac { 1 } { Z } } } } \end{array}\tag{14.73}
+$$
+
+(14.74)
+
+其中 $\phi ( x _ { t } , x _ { t + 1 } )$ 是定义在团 $( x _ { t } , x _ { t + 1 } )$ 上的势能函数.
+
+第t个变量的边际概率 $p ( x _ { t } )$ 为
+
+$$
+\begin{array} { l } { p ( x _ { t } ) = \displaystyle \sum _ { x _ { 1 } } \cdots \sum _ { x _ { t - 1 } } \sum _ { x _ { t + 1 } } \cdots \sum _ { x _ { T } } p ( \pmb { x } ) } \\ { \quad = \displaystyle \frac { 1 } { Z } \sum _ { x _ { 1 } } \cdots \sum _ { x _ { t - 1 } } \sum _ { x _ { t + 1 } } \cdots \sum _ { x _ { T } } \prod _ { t = 1 } ^ { T - 1 } \phi ( x _ { t } , x _ { t + 1 } ) . } \end{array}\tag{14.75}
+$$
+
+(14.76)
+
+假设每个变量取K个值，不考虑归一化项，通过公式(14.76)计算边际分布需要$K ^ { T - 1 }$ 次加法以及 $K ^ { T - 1 } \times ( T - 1 )$ 次乘法.
+
+根据乘法的分配律，边际概率 $p ( x _ { t } )$ 可以通过下面方式进行计算：
+
+$$
+\begin{array} { c } { \displaystyle p ( x _ { t } ) = \frac { 1 } { Z } \left( \sum _ { x _ { 1 } } \cdots \sum _ { x _ { t - 1 } } ^ { t - 1 } \prod _ { j = 1 } ^ { t - 1 } \phi ( x _ { j } , x _ { j + 1 } ) \right) \cdot \left( \sum _ { x _ { t + 1 } } \cdots \sum _ { x _ { T } } \prod _ { j = t } ^ { T - 1 } \phi ( x _ { j } , x _ { j + 1 } ) \right) } \\ { = \displaystyle \frac { 1 } { Z } \left( \sum _ { x _ { t - 1 } } \phi ( x _ { t - 1 } , x _ { t } ) \cdots \left( \sum _ { x _ { 2 } } \phi ( x _ { 2 } , x _ { 3 } ) \Big ( \sum _ { x _ { 1 } } \phi ( x _ { 1 } , x _ { 2 } ) \Big ) \right) \right) \cdot } \\ { \displaystyle \left( \sum _ { x _ { t + 1 } } \phi ( x _ { t } , x _ { t + 1 } ) \cdots \left( \sum _ { x _ { T - 1 } } \phi ( x _ { T - 2 } , x _ { T - 1 } ) \Big ( \sum _ { x _ { T } } \phi ( x _ { T - 1 } , x _ { T } ) \Big ) \right) \right) } \\ { = \displaystyle \frac { 1 } { Z } \mu _ { t - 1 , t } ( x _ { t } ) \mu _ { t + 1 , t } ( x _ { t } ) , } \end{array}
+$$
+
+其中 $\mu _ { t - 1 , t } ( x _ { t } )$ 定义为变量 $X _ { t - 1 }$ 向变量 $X _ { t }$ 传递的消息，定义为
+
+$$
+\mu _ { t - 1 , t } ( x _ { t } ) \triangleq \sum _ { x _ { t - 1 } } \phi ( x _ { t - 1 } , x _ { t } ) \mu _ { t - 2 , t - 1 } ( x _ { t - 1 } ) .\tag{14.78}
+$$
+
+$\mu _ { t + 1 , t } ( x _ { t } )$ 是变量 $X _ { t + 1 }$ 向变量 $X _ { t }$ 传递的消息，定义为
+
+$$
+\mu _ { t + 1 , t } ( x _ { t } ) \triangleq \sum _ { x _ { t + 1 } } \phi ( x _ { t } , x _ { t + 1 } ) \mu _ { t + 2 , t + 1 } ( x _ { t + 1 } ) .\tag{14.79}
+$$
+
+$\mu _ { t - 1 , t } ( x _ { t } )$ 和 $\mu _ { t + 1 , t } ( x _ { t } )$ 都可以递归计算，因此，边际概率 $p ( x _ { t } )$ 的计算复杂度减少为 $O ( T K ^ { 2 } )$ .如果要计算整个序列上所有变量的边际概率，不需要将消息传递的过程重复T次，因为其中每两个相邻节点上的消息是相同的.
+
+链式结构图模型的消息传递过程为：
+
+（1）依次计算前向传递的消息 $\mu _ { t - 1 , t } ( x _ { t } ) , t = 1 , \cdots , T - 1$
+
+（2）依次计算反向传递的消息 $\mu _ { t + 1 , t } ( x _ { t } ) , t = T - 1 , \cdots , 1 .$
+
+（3）在任意节点t上计算配分函数Z，
+
+$$
+Z = \sum _ { x _ { t } } \mu _ { t - 1 , t } ( x _ { t } ) \mu _ { t + 1 , t } ( x _ { t } ) .\tag{14.80}
+$$
+
+这样，我们可以通过公式(14.77)计算所有变量的边际概率.
+
+树结构上的信念传播算法信念传播算法也可以推广到具有树结构的图模型上．如果一个有向图满足任意两个变量只有一条路径（忽略方向），且只有一个没有父节点的节点，那么这个有向图为树结构，其中唯一没有父节点的节点称为根节点.如果一个无向图满足任意两个变量只有一条路径，那么这个无向图也为树结构.在树结构的无向图中，任意一个节点都可以作为根节点.
+
+树结构图模型的消息传递过程为：
+
+（1）从叶子节点到根节点依次计算并传递消息.
+
+（2）从根节点开始到叶子节点，依次计算并传递消息.
+
+（3）在每个节点上计算所有接收消息的乘积（如果是无向图还需要归一化），就得到了所有变量的边际概率.
+
+如果图结构中存在环路，可以使用联合树算法（Junction Tree Algorithm)[Lauritzen et al., 1988]来将图结构转换为无环图.
+
+## 14.3.2 近似推断
+
+在实际应用中，精确推断一般用于结构比较简单的推断问题.当图模型的结构比较复杂时，精确推断的计算开销会比较大.此外，如果图模型中的变量是连续的，并且其积分函数没有闭式（Closed-Form）解，那么也无法使用精确推断.因此，在很多情况下也常常采用近似的方法来进行推断
+
+近似推断（Approximate Inference）主要有以下三种方法：
+
+（1）环路信念传播：当图模型中存在环路，使用信念传播算法时，消息会在环路中反复传递，可能收敛也可能不收敛.环路信念传播（LoopyBeliefPropagation，LBP）是在具有环路的图上依然使用信念传播算法；它一般不能保证精确，但在一些任务中可以给出有用的近似.
+
+（2）变分推断：图模型中有些变量的局部条件分布可能非常复杂，或其积分无法计算.变分推断（Variational Inference）是引入一个变分分布（通常是比较简单的分布）来近似目标后验分布，然后通过迭代的方法进行计算．首先更新变分分布的参数来减小变分分布和真实后验的差异（比如KL散度），然后再根据变分分布来进行推断
+
+（3）采样法（SamplingMethod）：通过模拟的方式来采集符合某个分布$p ( { \pmb x } )$ 的一些样本，并用这些样本来估计和分布 $p ( { \pmb x } )$ 有关的运算，比如期望等.
+
+其中，环路信念传播依然沿用信念传播的消息更新思想，但由于图中存在环，算法可能收敛也可能不收敛；即使收敛，也不一定得到精确解.本章重点介绍后两类更具普适性的近似推断方法.
+
+## 14.4 变分推断
+
+变分法（Calculus of Variations）是17世纪末发展起来的一个数学分支，主要研究变分问题，即泛函的极值问题
+
+函数（Function）是表示自变量到因变量的映射关系： $y = f ( x )$ ．而泛函（Functional）是函数的函数，即它的输入是函数，输出是实数： $F ( f ( x ) )$ ，一般称$F ( f ( x ) )$ 为 $f ( x )$ 的泛函.具体的变分问题会规定允许搜索的函数空间，并可能要求函数满足一定的边界条件和光滑性条件.一个泛函的例子是熵，其输入是一个概率分布 $p ( x )$ ,输出是该分布的不确定性.
+
+概率分布可以看作一个函数.熵的定义参见第E.1节.
+
+传统的微积分通常可以用来寻找函数 $f ( x )$ 的极值点，而变分法则是用来寻找一个函数 $f ( x )$ 使得泛函 $F ( f ( x ) )$ 取得极大或极小值.变分法的应用十分广泛，比如最大熵问题，即寻找一个概率分布，使得该概率分布的熵最大
+
+假设在一个贝叶斯模型中，x为一组观测变量，z为一组隐变量（参数也看作随机变量，包含在z中），我们的推断问题为计算条件概率密度 $p ( \boldsymbol { z } | \boldsymbol { x } )$ . 根据贝叶斯公式，条件概率密度 $p ( \boldsymbol { z } | \boldsymbol { x } )$ 可以写为
+
+不失一般性，这里假设x和z为连续随机向量.
+
+$$
+p ( z | \boldsymbol { x } ) = \frac { p ( \boldsymbol { x } , z ) } { p ( \boldsymbol { x } ) } = \frac { p ( \boldsymbol { x } , z ) } { \int p ( \boldsymbol { x } , z ) \mathrm { d } z } .\tag{14.81}
+$$
+
+对于很多模型来说，计算上面公式中的积分是不可行的，要么积分没有闭式解，要么是指数级的计算复杂度.
+
+变分推断（Variational Inference）是变分法在推断问题中的应用，是寻找一个简单分布 $q ^ { * } ( z )$ 来近似条件概率密度 $p ( \boldsymbol { z } | \boldsymbol { x } )$ ，也称为变分贝叶斯（Varia-tional Bayesian）.这样，推断问题转换为一个泛函优化问题：
+
+闭式解是指问题的解为闭式（closed-form)函数，从解的函数中就可以算出任何对应值.闭式解也称为解析解，和数值解相对应.
+
+$$
+\begin{array} { r l } & { q ^ { * } ( z ) = \underset { q ( z ) \in \mathcal { Q } } { \arg \operatorname* { m i n } } \mathrm { K L } \big ( q ( z ) \| p ( z | x ) \big ) , } \end{array}\tag{14.82}
+$$
+
+参见习题14-13.
+
+其中 $\mathcal { Q }$ 为候选的概率分布族.由于 $p ( \boldsymbol { z } | \boldsymbol { x } )$ 难以直接计算，因此我们不能直接优化上面公式的KL散度.
+
+我们在EM算法中已经证明
+
+EM 算法参见第14.2.2.1节.
+
+$$
+\begin{array} { r } { \log p ( \pmb { x } ) = E L B O ( q , \pmb { x } ) + \mathrm { K L } ( q ( \pmb { z } ) \| p ( \pmb { z } | \pmb { x } ) ) . } \end{array}\tag{14.83}
+$$
+
+参见公式(14.49).
+
+https://nndl.ai/
+
+在EM算法的E步中，我们假设 $p ( \boldsymbol { z } | \boldsymbol { x } )$ 是可计算的，并让 $q ( \boldsymbol { z } ) = p ( \boldsymbol { z } | \boldsymbol { x } )$ ，这样$E L B O ( q , x )$ 等于 $\log p ( { \pmb x } )$ ．而变分推断可以看作EM算法的扩展版，主要处理不能精确推断 $p ( \boldsymbol { z } | \boldsymbol { x } )$ 的情况.
+
+结合公式(14.82)和公式(14.83),有
+
+$$
+q ^ { * } ( z ) = \underset { q ( z ) \in \mathcal { Q } } { \arg \operatorname* { m i n } } \left( \log p ( \pmb { x } ) - E L B O ( q , \pmb { x } ) \right)\tag{14.84}
+$$
+
+$$
+\begin{array} { r } { = \underset { q ( z ) \in \mathcal { Q } } { \arg \operatorname* { m a x } } E L B O ( q , \pmb { x } ) . } \end{array}\tag{14.85}
+$$
+
+这样，公式(14.82)中优化问题转换为寻找一个简单分布 $q ^ { * } ( z )$ 来最大化证据下界$E L B O ( q , x )$
+
+在变分推断中，候选分布族Q的复杂性决定了优化问题的复杂性.一个通常的选择是平均场（mean-field）分布族，即z可以分拆为多组相互独立的变量.概率密度 $q ( z )$ 可以分解为
+
+$$
+q ( \boldsymbol { z } ) = \prod _ { m = 1 } ^ { M } q _ { m } ( z _ { m } ) ,\tag{14.86}
+$$
+
+其中 $z _ { m }$ 是隐变量的子集，可以是单变量，也可以是一组多元变量.
+
+证据下界 $E L B O ( q , x )$ 可以写为
+
+(14.87)
+
+$$
+\begin{array} { r l r } {  { E L B O ( q , \pmb { x } ) = \int q ( z ) \log \frac { p ( \pmb { x } , z ) } { q ( z ) } \mathrm { d } z } } \\ & { } & { \quad = \int q ( z ) \Big ( \log p ( \pmb { x } , z ) - \log q ( z ) \Big ) \mathrm { d } z } \\ & { } & { \quad = \displaystyle \int \prod _ { m = 1 } ^ { M } q _ { m } ( z _ { m } ) \Big ( \log p ( \pmb { x } , z ) - \sum _ { m = 1 } ^ { M } \log q _ { m } ( z _ { m } ) \Big ) \mathrm { d } z . } \end{array}\tag{14.88}
+$$
+
+(14.89)
+
+假设只关心隐变量的子集 $z _ { j }$ 的近似分布 $q _ { j } ( z _ { j } )$ ，上式可以写为
+
+$$
+\begin{array} { r l } { E L B O ( q , \pmb { x } ) = \displaystyle \int q _ { j } \left( \underbrace { \int \prod _ { m \neq j } q _ { m } \log p ( \pmb { x } , z ) \mathrm { d } z _ { m } } _ { - \displaystyle \int q _ { j } \log q _ { j } \mathrm { d } z _ { j } + \mathrm { c o n s t } } \right) \mathrm { d } z _ { j } } & { } \\ { \displaystyle } & { = \displaystyle \int q _ { j } \overbrace { \log \tilde { p } ( \pmb { x } , z _ { j } ) } ^ { \mathrm { ~ d ~ } } \mathrm { d } z _ { j } - \int q _ { j } \log q _ { j } \mathrm { d } z _ { j } + \mathrm { c o n s t } , } \end{array}
+$$
+
+这里 $q _ { m } ( z _ { m } )$ 用简写$q _ { m }$ 表示.
+
+(14.90)
+
+const 为一个常数.
+
+(14.91)
+
+其中 $\tilde { p } ( \boldsymbol { x } , z _ { j } )$ 可以看作一个关于 $z _ { j }$ 的未归一化的分布，并有
+
+$$
+\log \tilde { p } ( \pmb { x } , z _ { j } ) = \int \prod _ { m \neq j } q _ { m } \log p ( \pmb { x } , z ) \mathrm { d } z _ { m }\tag{14.92}
+$$
+
+https://nndl.ai/
+
+$$
+= \mathbb { E } _ { q ( \boldsymbol { z } _ { \backslash j } ) } [ \log p ( \boldsymbol { x } , \boldsymbol { z } ) ] + \mathrm { c o n s t } ,\tag{14.93}
+$$
+
+其中 $z _ { \mathrm { \backslash } j }$ 为除变量子集 $z _ { j }$ 外的其他隐变量.
+
+假设我们固定 $z _ { \backslash j }$ 不变，先优化 $q _ { j } ( z _ { j } )$ 使得 $E L B O ( q , x )$ 最大. 根据公式(14.91), $E L B O ( q , x )$ 可以看作一 $\mathrm { K L } ( q _ { j } ( \boldsymbol { z } _ { j } ) \| \tilde { p } ( \boldsymbol { x } , \boldsymbol { z } _ { j } ) )$ 加上一个常数.因此，最小化KL散度 $\mathrm { K L } ( q _ { j } ( \boldsymbol { z } _ { j } ) \| \tilde { p } ( \boldsymbol { x } , \boldsymbol { z } _ { j } ) )$ 就等价于最大化公式(14.91)，即最优的$q _ { j } ^ { * } ( z _ { j } )$ 正比于对数联合概率密度 $\log p ( { \pmb x } , { \pmb z } )$ 的期望的指数：
+
+$$
+q _ { j } ^ { * } ( z _ { j } ) = \tilde { p } ( \pmb { x } , z _ { j } ) \propto \exp \Big ( \mathbb { E } _ { q ( z _ { \backslash j } ) } [ \log p ( \pmb { x } , z ) ] \Big ) ,\tag{14.94}
+$$
+
+其中期望是根据 $q ( z _ { \backslash j } )$ 计算的.我们可以通过选择合适的 $q _ { m } ( z _ { m } ) , 1 \leq m \leq M$ 使得这个期望具有闭式解.
+
+由于 $q _ { j } ^ { * } ( z _ { j } )$ 的计算要依赖于其他隐变量，我们可以用坐标上升法（Coordi-nate Ascent Algorithm)来迭代地优化每个 $q _ { j } ^ { * } ( z _ { j } ) , j = 1 , \cdots , M$ 通过不断循环迭代地应用公式(14.94)，证据下界 $E L B O ( q , x )$ 通常会单调改进，并收敛到一个局部最优解或驻点
+
+传统的坐标上升变分推断逐变量迭代更新，在大规模数据上效率较低.常见的扩展包括：随机变分推断（Stochastic Variational Inference，SVI）利用随机梯度下降处理大规模数据集；黑盒变分推断（Black-Box Variational Inference,BBVI）通过分数函数估计器（REINFORCE）或重参数化技巧估计ELBO的梯度，使得变分推断可以适用于更广泛的概率模型；摊销变分推断（AmortizedVariational Inference）则用神经网络直接将观测数据映射到变分参数，避免对每个数据点做独立优化—这正是变分自编码器(VAE，第16章)的核心思想.
+
+变分推断通常和参数学习一起使用，比如应用在EM算法的E步中来近似条件分布 $p ( z | \boldsymbol { x } )$ .在变分推断中，我们通常选择一些比较简单的分布 $q ( z )$ 来近似推断 $p ( \boldsymbol { z } | \boldsymbol { x } )$ .当 $p ( \boldsymbol { z } | \boldsymbol { x } )$ 比较复杂时，近似效果不佳.这时可以利用神经网络的强大拟合能力来近似 $p ( \boldsymbol { z } | \boldsymbol { x } )$ ，这种思想被应用在变分自编码器中.
+
+## 14.5 基于采样法的近似推断
+
+在很多实际机器学习任务中，推断某个概率分布并不是最终目的，而是基于这个概率分布进一步计算并作出决策.通常这些计算和期望相关
+
+采样也叫抽样.
+
+不失一般性，假设要推断的概率分布为 $p ( x )$ ，并基于 $p ( x )$ 来计算函数 $f ( x )$ 的期望：
+
+$$
+\mathbb { E } _ { p } [ f ( x ) ] = \int _ { x } f ( x ) p ( x ) \mathrm { d } x .\tag{14.95}
+$$
+
+在本节中，我们假设x为连续变量. 如果 x是离散变量，可以将积分替换为求和.
+
+当 $p ( x )$ 比较复杂或难以精确推断时，我们可以通过采样法来近似计算期望$\mathbb { E } _ { p } [ f ( x ) ]$ 的解.
+
+## 14.5.1 采样法
+
+采样法（SamplingMethod)也称为蒙特卡罗方法(Monte Carlo Method)或统计模拟方法，是20世纪40年代中期提出的一种通过随机采样来近似估计一些计算问题数值解的方法.随机采样指从给定概率密度函数 $p ( x )$ 中抽取出符合其概率分布的样本.
+
+蒙特卡罗方法诞生于20世纪40年代美国的“曼哈顿计划”，其名字来源于摩纳哥的一个以赌博业闻名的城市蒙特卡罗，象征概率.
+
+由于电子计算机的出现和快速发展，这种方法作为一种独立方法被提出来，使得当时很多难以计算的问题都可以通过随机模拟的方法来进行估计
+
+为了计算公式(14.95)中的 $\mathbb { E } _ { p } [ f ( x ) ]$ ，我们可以通过数值解的方法来近似计算.首先从 $p ( x )$ 中独立抽取N个样本 $x ^ { ( 1 ) } , x ^ { ( 2 ) } , \cdots , x ^ { ( N ) } , f ( x )$ 的期望可以用这N个样本的均值 $\bar { f } _ { N }$ 来近似，即
+
+数值解就是用数值方法求出解，给出一系列对应的自变量和解.数值解和解析解或闭式解相对应.
+
+$$
+\bar { f } _ { N } = \frac { 1 } { N } \left( f ( x ^ { ( 1 ) } ) + \cdots + f ( x ^ { ( N ) } ) \right) .\tag{14.96}
+$$
+
+根据大数定律，当N趋向于无穷大时，样本均值收敛于期望值
+
+$$
+{ \bar { f } } _ { N } \stackrel { P } {  } \mathbb { E } _ { p } [ f ( x ) ] \quad \quad { \\stackrel { \mathrm { \tiny ~ { \underline { { * } } } \underline { { { \cal V } } } } } {  } } N  \infty .\tag{14.97}
+$$
+
+这就是采样法的理论依据.
+
+采样法的一个最简单的应用例子是计算圆周率 $\pi .$ 我们知道半径为r的圆的面积为 $\pi r ^ { 2 }$ ，而直径为 $2 r$ 的正方形的面积为 $4 r ^ { 2 }$ .当我们用正方形去嵌套一个相切的圆时，它们的面积之比是 $\scriptstyle { \frac { 1 } { 4 } } \pi$ .当不知道 $\pi$ 时，我们无法计算圆的面积.因此，需要通过模拟的方法来进行近似估计，首先在正方形内部按均匀采样的方式随机生成若十点，计算它们与圆心点的距离，从而判断它们是否落在圆的内部.然后去统计落在圆内部的点占到所有点的比例.当样本数量足够大时，这个比例会接近于 $\scriptstyle { \frac { 1 } { 4 } } \pi$ ,从而近似估算出π的值.
+
+随机采样 采样法的难点是如何进行随机采样，即如何让计算机生成满足概率密度函数 $p ( x )$ 的样本.我们知道，计算机可以比较容易地随机生成一个在[0,1]区间上均布分布的样本 $\xi .$ 如果要随机生成服从某个非均匀分布的样本，就需要一些间接的采样方法.
+
+如果一个分布的概率密度函数为 $p ( x )$ ，其累积分布函数 $\operatorname { c d f } ( x )$ 为连续的严格增函数，且存在逆函数 $\operatorname { c d f } ^ { - 1 } ( y ) , y \in [ 0 , 1 ]$ ，那么我们可以利用累积分布函数的逆函数来生成服从该随机分布的样本.假设 $\xi$ 是[0,1]区间上均匀分布的随机变量,则 $\operatorname { c d f } ^ { - 1 } ( \xi )$ 服从概率密度函数为 $p ( x )$ 的分布.
+
+参见习题14-10.
+
+但当 $p ( x )$ 非常复杂，其累积分布函数的逆函数难以计算，或者不知道 $p ( x )$ 的精确值，只知道未归一化的分布 $\hat { p } ( x )$ 时，就难以直接对 $p ( x )$ 进行采样，往往需要使用一些间接的采样策略，比如拒绝采样、重要性采样、马尔可夫链蒙特卡罗采样等，这些方法一般是先根据一个比较容易采样的分布进行采样，然后通过一些策略来间接得到符合 $p ( x )$ 分布的样本.
+
+$\boldsymbol { p } ( \boldsymbol { x } ) = \frac { 1 } { Z } \hat { \boldsymbol { p } } ( \boldsymbol { x } )$ ，其中Z为配分函数.
+
+## 14.5.2 拒绝采样
+
+拒绝采样（Rejection Sampling）是一种间接采样方法，也称为接受-拒绝采样(Acceptance-Rejection Sampling).
+
+假设原始分布 $p ( x )$ 难以直接采样，我们可以引入一个容易采样的分布 $q ( x )$ 一般称为提议分布（Proposal Distribution），然后以某个标准来拒绝一部分的样本使得最终采集的样本服从分布 $p ( x )$ .在拒绝采样中，我们不需要知道归一化的分布函数，假设 $\hat { p } ( x )$ 为未归一化的目标函数，我们构建提议分布 $q ( x )$ 和常数k,使得 $k q ( x )$ 可以覆盖函数 $\hat { p } ( x )$ ,即 $k q ( x ) \geq \hat { p } ( x )$ ,∀x,如图14.15所示.
+
+![](images/6e34b4c8b650e9f6978a9bb47cdfa04f27d101a63c41b9c454112c0ea018f81f.jpg)  
+图 14.15 拒绝采样
+
+对于每次抽取的样本x,计算接受概率（Acceptance Probability):
+
+$$
+\alpha ( \hat { x } ) = \frac { \hat { p } ( \hat { x } ) } { k q ( \hat { x } ) } ,\tag{14.98}
+$$
+
+并以概率 $\alpha ( \hat { x } )$ 来接受样本x.拒绝采样的采样过程如算法14.2所示.
+
+为简单起见，我们把概率密度函数为p(x)的分布简称为分布 $p ( x )$ 下同.
+
+判断一个拒绝采样方法的重要指标是采样效率，即总体的接受率.如果函数$k q ( x )$ 远大于未归一化的目标函数 $\hat { p } ( x )$ ，拒绝率会比较高，采样效率会很低.但要找到一个和 ${ \hat { p } } ( x )$ 比较接近的提议分布往往比较困难.特别是在高维空间中，其接受率通常会迅速下降，导致实际应用受到限制.
+
+提议分布在很多文献中也翻译为参考分布.
+
+## 算法14.2 拒绝采样的采样过程
+
+输入：提议分布 $q ( x )$ ,常数 $k ,$ 样本集合 $\mathcal { V } = \varnothing ;$   
+1 repeat  
+2 根据 $q ( x )$ 随机生成一个样本x;  
+3 计算接受概率α(x);  
+4 从(0,1)的均匀分布中随机生成一个值 $z ;$   
+5 if z ≤ α(x) then // 以 α(x)的概率接受x  
+6 | ν = ν ∪ {x};  
+7 end  
+8 until 获得 N 个样本 (|ν| = N);  
+输出：样本集合ν
+
+## 14.5.3 重要性采样
+
+如果采样的目的是计算分布 $p ( x )$ 下函数 $f ( x )$ 的期望，那么实际上抽取的样本不需要严格服从分布 $p ( x )$ .也可以通过另一个分布，即提议分布 $q ( x )$ ，直接采样并估计 $\mathbb { E } _ { p } [ f ( x ) ]$
+
+函数f(x)在分布 $p ( x )$ 下的期望可以写为
+
+$$
+\mathbb { E } _ { p } [ f ( x ) ] = \int _ { x } f ( x ) p ( x ) \mathrm { d } x\tag{14.99}
+$$
+
+$$
+= \int _ { x } f ( x ) { \frac { p ( x ) } { q ( x ) } } q ( x ) { \mathrm { d } } x\tag{14.100}
+$$
+
+$$
+= \int _ { x } f ( x ) w ( x ) q ( x ) \mathrm { d } x\tag{14.101}
+$$
+
+$$
+= \mathbb { E } _ { q } [ f ( x ) w ( x ) ] .\tag{14.102}
+$$
+
+其中w(x)称为重要性权重.
+
+重要性采样（Importance Sampling）是通过引入重要性权重，将分布 $p ( x )$ 下 $f ( x )$ 的期望变为在分布 $q ( x )$ 下 $f ( x ) w ( x )$ 的期望，从而可以近似为
+
+$$
+\hat { f } _ { N } = \frac { 1 } { N } \left( f ( x ^ { ( 1 ) } ) w ( x ^ { ( 1 ) } ) + \cdots + f ( x ^ { ( N ) } ) w ( x ^ { ( N ) } ) \right) ,\tag{14.103}
+$$
+
+其中 ${ \boldsymbol x } ^ { ( 1 ) } , \cdots , { \boldsymbol x } ^ { ( N ) }$ 为独立从 $q ( x )$ 中随机抽取的点.
+
+重要性采样也可以在只知道未归一化的分布 $\hat { p } ( x )$ 的情况下计算函数 $f ( x )$ 的期望.
+
+$\textstyle p ( x ) = { \frac { { \hat { p } } ( x ) } { Z } }$ ,Z为配分函数.
+
+$$
+\mathbb { E } _ { p } [ f ( x ) ] = \int _ { x } f ( x ) \frac { \hat { p } ( x ) } { Z } \mathrm { d } x\tag{14.104}
+$$
+
+$$
+\begin{array} { r l } & { = \frac { \int _ { x } \hat { p } ( x ) f ( x ) d x } { \int _ { x } \hat { p } ( x ) \mathrm { d } x } } \\ & { \approx \frac { \sum _ { n = 1 } ^ { N } f ( x ^ { ( n ) } ) \hat { w } \left( x ^ { ( n ) } \right) } { \sum _ { n = 1 } ^ { N } \hat { w } \left( x ^ { ( n ) } \right) } , } \end{array}\tag{14.105}
+$$
+
+(14.106)
+
+其中 $\begin{array} { r } { \hat { w } ( x ) = \frac { \hat { p } ( x ) } { q ( x ) } , x ^ { ( 1 ) } , \cdots , x ^ { ( N ) } } \end{array}$ 为独立从 $q ( x )$ 中随机抽取的点.
+
+## 14.5.4 马尔可夫链蒙特卡罗方法
+
+在高维空间中，拒绝采样和重要性采样常受到维数灾难影响，效率会随空间维数的增加迅速降低. 马尔可夫链蒙特卡罗（Markov Chain Monte Carlo，MCMC）方法提供了一类更可行的高维采样思路，但其效率仍然依赖于转移分布、混合速度和样本相关性.
+
+MCMC方法也有很多不同的具体采样方法，但其核心思想是将采样过程看作一个马尔可夫链.
+
+$$
+x _ { 1 } , x _ { 2 } , \cdots , x _ { t - 1 } , x _ { t } , x _ { t + 1 } , \cdots
+$$
+
+马尔可夫链参见第D.3.1.1节.
+
+第t +1次采样依赖于第t次抽取的样本 ${ \mathbf { } } _ { { \mathbf { } } _ { \pmb { x } _ { t } } }$ 以及状态转移分布（即提议分布）$q ( \pmb { x } | \pmb { x } _ { t } )$ .如果这个马尔可夫链的平稳分布为 $p ( { \pmb x } )$ ，那么在状态平稳时抽取的样本就服从 $p ( { \pmb x } )$ 的分布.
+
+MCMC方法的关键是如何构造出平稳分布为 $p ( { \pmb x } )$ 的马尔可夫链，并且该马尔可夫链的状态转移分布 $q ( { \pmb x } | { \pmb x } ^ { \prime } )$ 一般为比较容易采样的分布.当x为离散变量时， $q ( { \pmb x } | { \pmb x } ^ { \prime } )$ 可以是一个状态转移矩阵；当x为连续变量时， $q ( { \pmb x } | { \pmb x } ^ { \prime } )$ 可以是参数密度函数，比如各向同性的高斯分布 $q ( \pmb { x } | \pmb { x } ^ { \prime } ) = \mathcal { N } ( \pmb { x } | \pmb { x } ^ { \prime } , \sigma ^ { 2 } I )$ ，其中 $\sigma ^ { 2 }$ 为超参数.
+
+使用MCMC方法进行采样时需要注意两点.1）马尔可夫链需要经过一段时间的随机游走才能接近平稳状态，这段时间称为预烧期（Burn-inPeriod）.预烧期内的采样点通常需要丢弃，2）基于马尔可夫链抽取的相邻样本往往具有相关性.可以每间隔M次随机游走抽取一个样本来减弱自相关，但这并不能保证样本严格独立；实际应用中还需要检查混合情况和有效样本量.
+
+## 14.5.4.1 Metropolis-Hastings 算法
+
+Metropolis-Hastings算法（Metropolis-HastingsAlgorithm），简称MH算法，是一种应用广泛的MCMC方法.假设马尔可夫链的状态转移分布（即提议分布) $q ( { \pmb x } | { \pmb x } ^ { \prime } )$ 为一个比较容易采样的分布，其平稳分布往往不是 $p ( { \pmb x } )$ ．为此，MH算法引入拒绝采样的思想来修正提议分布，使得修正后的马尔可夫链以$p ( { \pmb x } )$ 为平稳分布.
+
+在MH算法中，假设第t次采样的样本为 $\mathbf { \boldsymbol { x } } _ { t }$ ，首先根据提议分布 $q ( \pmb { x } | \pmb { x } _ { t } )$ 抽取一个样本 $\hat { \textbf { \textit { x } } }$ ,并以概率 $A ( \hat { \pmb x } , \pmb x _ { t } )$ 来接受 $\hat { \textbf { \textit { x } } }$ 作为第t+1次的采样样本 $\mathbf { \boldsymbol { x } } _ { t + 1 }$
+
+$$
+A ( \hat { \pmb x } , \pmb x _ { t } ) = \mathrm { m i n } \left( 1 , \frac { p ( \hat { \pmb x } ) q ( \pmb x _ { t } | \hat { \pmb x } ) } { p ( \pmb x _ { t } ) q ( \hat { \pmb x } | \pmb x _ { t } ) } \right) .\tag{14.107}
+$$
+
+MH算法的采样过程如算法14.3所示.
+
+算法 14.3 Metropolis-Hastings算法的采样过程  
+输入：提议分布 $q ( \pmb { x } | \pmb { x } ^ { \prime } )$ ,采样间隔M,样本集合 $\mathcal { V } = \varnothing ;$   
+1 随机初始化 ${ \mathbf { } } x _ { 0 } , t = 0 ;$   
+2 repeat  
+// 预热过程  
+3 根据 $q ( \pmb { x } | \pmb { x } _ { t } )$ 随机生成一个样本 ${ \hat { x } } ;$   
+4 计算接受概率 $A ( \hat { \pmb x } , \pmb x _ { t } ) ;$   
+5 从(0,1)的均匀分布中随机生成一个值z;  
+6 if $z \leq A ( \hat { x } , x _ { t } )$ then //以 $A ( \hat { \boldsymbol x } , \boldsymbol x _ { t } )$ 的概率接受x  
+7 $\boldsymbol { x } _ { t + 1 } = \boldsymbol { \hat { x } } ;$   
+8 else // 拒绝接受∞  
+9 $\boldsymbol { x } _ { t + 1 } = \boldsymbol { x } _ { t } ;$   
+10 end  
+11 $t + + ;$   
+12 if 未到平稳状态 then continue;  
+13 if t mod M = 0 then //采样过程,每隔M次采一个样本  
+14 $\mathcal { V } = \mathcal { V } \cup \{ x _ { t } \}$   
+15 end  
+16 until 获得 N 个样本 (|ν| = N);  
+输出：样本集合ν
+
+在MH算法中，因为每次 $q ( \pmb { x } | \pmb { x } _ { t } )$ 随机生成一个样本x，并以概率 $A ( \hat { \pmb x } , \pmb x _ { t } )$ 的方式接受，所以修正的马尔可夫链状态转移概率为
+
+$$
+q ^ { \prime } ( \hat { \pmb x } | \pmb x _ { t } ) = q ( \hat { \pmb x } | \pmb x _ { t } ) A ( \hat { \pmb x } , \pmb x _ { t } ) ,\tag{14.108}
+$$
+
+该修正的马尔可夫链可以达到平稳状态，且平稳分布为 $p ( { \pmb x } )$
+
+证明．根据马尔可夫链的细致平稳条件，有
+
+细致平稳条件参见定 理D.1.
+
+$$
+\begin{array} { l } { p ( { \pmb x } _ { t } ) q ^ { \prime } ( \hat { \pmb x } | { \pmb x } _ { t } ) = p ( { \pmb x } _ { t } ) q ( \hat { \pmb x } | { \pmb x } _ { t } ) A ( \hat { \pmb x } , { \pmb x } _ { t } ) } \\ { = p ( { \pmb x } _ { t } ) q ( \hat { \pmb x } | { \pmb x } _ { t } ) \operatorname* { m i n } \left( 1 , \frac { p ( \hat { \pmb x } ) q ( { \pmb x } _ { t } | \hat { \pmb x } ) } { p ( { \pmb x } _ { t } ) q ( \hat { \pmb x } | { \pmb x } _ { t } ) } \right) } \end{array}\tag{14.109}
+$$
+
+(14.110)
+
+$$
+= \operatorname* { m i n } \Big ( p ( \pmb { x } _ { t } ) q ( \hat { \pmb x } | \pmb { x } _ { t } ) , p ( \hat { \pmb x } ) q ( \pmb { x } _ { t } | \hat { \pmb x } ) \Big )\tag{14.111}
+$$
+
+$$
+= p ( \hat { \pmb x } ) q ( \pmb x _ { t } | \hat { \pmb x } ) \operatorname* { m i n } \left( \frac { p ( \pmb x _ { t } ) q ( \hat { \pmb x } | \pmb x _ { t } ) } { p ( \hat { \pmb x } ) q ( \pmb x _ { t } | \hat { \pmb x } ) } , 1 \right)\tag{14.112}
+$$
+
+$$
+= p ( \hat { \pmb x } ) q ( \pmb x _ { t } | \hat { \pmb x } ) A ( \pmb x _ { t } , \hat { \pmb x } )\tag{14.113}
+$$
+
+$$
+\begin{array} { r } { \mathbf { \Sigma } = p ( \hat { \pmb x } ) q ^ { \prime } ( \pmb { x } _ { t } | \hat { \pmb x } ) . } \end{array}\tag{14.114}
+$$
+
+因此， $p ( { \pmb x } )$ 是状态转移概率为 $q ^ { \prime } ( \hat { \pmb x } | \pmb x _ { t } )$ 的马尔可夫链的平稳分布.
+
+## 14.5.4.2 Metropolis 算法
+
+如果MH算法中的提议分布是对称的，即 $q ( \hat { { \pmb x } } | { \pmb x } _ { t } ) = q ( { \pmb x } _ { t } | \hat { { \pmb x } } )$ ,第 $t + 1$ 次采样的接受率可以简化为
+
+$$
+A ( \hat { \pmb x } , \pmb x _ { t } ) = \operatorname* { m i n } \left( 1 , \frac { p ( \hat { \pmb x } ) } { p ( \pmb x _ { t } ) } \right) .\tag{14.115}
+$$
+
+这种 MCMC 方法称为Metropolis算法（Metropolis Algorithm).
+
+## 14.5.4.3 吉布斯采样
+
+吉布斯采样（Gibbs Sampling）是一种有效地对高维空间中的分布进行采样的MCMC方法，可以看作Metropolis-Hastings算法的特例. 吉布斯采样使用全条件概率（Full Conditional Probability）作为提议分布来依次对每个维度进行采样，并设置接受率为A=1.
+
+对于一个M维的随机向量 $\pmb { X } = [ X _ { 1 } , X _ { 2 } , \cdots , X _ { M } ] ^ { \intercal }$ ，其第m个变量 $X _ { m }$ 的全条件概率为
+
+$$
+p ( x _ { m } | \pmb { x } _ { \backslash m } ) \triangleq P ( X _ { m } = x _ { m } | X _ { \backslash m } = \pmb { x } _ { \backslash m } )\tag{14.116}
+$$
+
+$$
+\begin{array} { r } { = p ( x _ { m } | x _ { 1 } , x _ { 2 } , \cdots , x _ { m - 1 } , x _ { m + 1 } , \cdots , x _ { M } ) , } \end{array}\tag{14.117}
+$$
+
+其中 $\pmb { x } _ { \backslash m } = [ x _ { 1 } , x _ { 2 } , \cdots , x _ { m - 1 } , x _ { m + 1 } , \cdots , x _ { M } ] ^ { \intercal }$ 表示除 $X _ { m }$ 外其他变量的取值.
+
+吉布斯采样可以按照任意的顺序根据全条件分布依次对每个变量进行采样．假设从一个随机的初始化状态 $\pmb { x } ^ { ( 0 ) } = [ x _ { 1 } ^ { ( 0 ) } , x _ { 2 } ^ { ( 0 ) } , \cdots , x _ { M } ^ { ( 0 ) } ] ^ { \intercal }$ 开始，按照下标顺序依次对M个变量进行采样.
+
+$$
+\begin{array} { r } { x _ { 1 } ^ { ( 1 ) } \sim p ( x _ { 1 } | x _ { 2 } ^ { ( 0 ) } , x _ { 3 } ^ { ( 0 ) } , \cdots , x _ { M } ^ { ( 0 ) } ) , } \end{array}\tag{14.118}
+$$
+
+$$
+\begin{array} { r } { x _ { 2 } ^ { ( 1 ) } \sim p ( x _ { 2 } | x _ { 1 } ^ { ( 1 ) } , x _ { 3 } ^ { ( 0 ) } \cdots , x _ { M } ^ { ( 0 ) } ) , } \end{array}\tag{14.119}
+$$
+
+$$
+\boldsymbol { x } _ { M } ^ { ( 1 ) } \sim p ( \boldsymbol { x } _ { M } | \boldsymbol { x } _ { 1 } ^ { ( 1 ) } , \boldsymbol { x } _ { 2 } ^ { ( 1 ) } \cdots , \boldsymbol { x } _ { M - 1 } ^ { ( 1 ) } ) ,\tag{14.120}
+$$
+
+$$
+\boldsymbol { x } _ { 1 } ^ { ( t ) } \sim p ( x _ { 1 } | \boldsymbol { x } _ { 2 } ^ { ( t - 1 ) } , \boldsymbol { x } _ { 3 } ^ { ( t - 1 ) } , \cdots , \boldsymbol { x } _ { M } ^ { ( t - 1 ) } ) ,\tag{14.121}
+$$
+
+$$
+\boldsymbol { x } _ { 2 } ^ { ( t ) } \sim p ( x _ { 2 } | \boldsymbol { x } _ { 1 } ^ { ( t ) } , \boldsymbol { x } _ { 3 } ^ { ( t - 1 ) } \cdots , \boldsymbol { x } _ { M } ^ { ( t - 1 ) } ) ,\tag{14.122}
+$$
+
+$$
+\boldsymbol { x } _ { M } ^ { ( t ) } \sim p ( \boldsymbol { x } _ { M } | \boldsymbol { x } _ { 1 } ^ { ( t ) } , \boldsymbol { x } _ { 2 } ^ { ( t ) } \cdots , \boldsymbol { x } _ { M - 1 } ^ { ( t ) } ) ,\tag{14.123}
+$$
+
+其中 $x _ { m } ^ { ( t ) }$ 是第t次迭代时变量 $X _ { m }$ 的采样.
+
+吉布斯采样的每单步采样也构成一个马尔可夫链.假设每个单步（采样维度为第m维）的状态转移概率 $q ( { \pmb x } | { \pmb x } ^ { \prime } )$ 为
+
+$$
+q ( \pmb { x } | \pmb { x } ^ { \prime } ) = \left\{ \begin{array} { c c l } { \frac { p ( \pmb { x } ) } { p ( \pmb { x } _ { \backslash m } ^ { \prime } ) } } & { \mathrm { i f } } & { \pmb { x } _ { \backslash m } = \pmb { x } _ { \backslash m } ^ { \prime } } \\ { 0 } & { \mathrm { o t h e r w i s e } , } \end{array} \right.\tag{14.124}
+$$
+
+其中边际分布 $\begin{array} { r } { p ( \pmb { x } _ { \backslash m } ^ { \prime } ) = \sum _ { \pmb { x } _ { m } ^ { \prime } } p ( \pmb { x } ^ { \prime } ) } \end{array}$ ，等式 ${ \pmb x } _ { \backprime n } = { \pmb x } _ { \backprime n } ^ { \prime }$ 表示 $x _ { k } = x _ { k } ^ { \prime }$ ∀k $\neq m$ 因此有 $p ( \pmb { x } _ { \backslash m } ^ { \prime } ) = p ( \pmb { x } _ { \backslash m } )$ ,并可以得到
+
+$$
+p ( { \pmb x } ^ { \prime } ) q ( { \pmb x } | { \pmb x } ^ { \prime } ) = p ( { \pmb x } ^ { \prime } ) \frac { p ( { \pmb x } ) } { p ( { \pmb x } _ { \backslash m } ^ { \prime } ) } = p ( { \pmb x } ) \frac { p ( { \pmb x } ^ { \prime } ) } { p ( { \pmb x } _ { \backslash m } ) } = p ( { \pmb x } ) q ( { \pmb x } ^ { \prime } | { \pmb x } ) .\tag{14.125}
+$$
+
+根据细致平稳条件，公式(14.124)中定义的状态转移概率 $q ( { \pmb x } | { \pmb x } ^ { \prime } )$ 的马尔可夫链的平稳分布为 $p ( { \pmb x } )$ .随着迭代次数t的增加，样本 $\pmb { x } ^ { ( t ) } = [ x _ { 1 } ^ { ( t ) } , x _ { 2 } ^ { ( t ) } , \cdots , x _ { M } ^ { ( t ) } ] ^ { \intercal }$ 将收敛于概率分布 $p ( { \pmb x } )$
+
+## 14.6 总结和扩展阅读
+
+概率图模型的核心在于借助图结构把复杂联合分布拆解为一组局部、可解释、可计算的因子.有向图通过局部条件分布来组织联合分布，无向图通过团势函数来刻画变量之间的相容性；二者形式不同，但都在回答同一个问题：如何用尽可能简单的局部关系，描述一个高维随机系统的整体分布.
+
+本章介绍了概率图模型的三个基本问题.第一，如何表示：通过贝叶斯网络、马尔可夫随机场等形式，把联合分布写成局部条件概率或势函数的乘积.第二，如何推断：给定部分变量，计算边际分布、后验分布或最优赋值，这对应变量消除、信念传播以及近似推断等方法.第三，如何学习：在参数已知结构已知、参数未知或含隐变量等不同设定下，分别得到极大似然学习、EM算法、变分推断和采样方法等一整套工具.
+
+图14.16给出了概率图模型所涵盖的内容.
+
+![](images/1e9da73bd83d43b765dc3a625a4f2a38d16c23fd1bc842cb4e6c22f372a64268.jpg)（描述：这是一张概率图模型的结构分类图，以树状图形式展示了概率图模型在模型表示、学习和推断三个方面的细分内容，包括有向/无向图模型、参数/结构学习方法以及精确/近似推断算法。）  
+图14.16 概率图模型所涵盖内容的简单概括
+
+与神经网络和深度生成模型的联系许多深度生成模型可以看作在图模型框架中，用神经网络替换手工设计的概率表或简单指数族分布.在这个框架下，图模型回答的是“模型应该分解成哪些概率因子”，神经网络回答的是“这些因子如何用可学习函数表示”，优化算法则回答“如何在不可精确推断时仍然学习参数”.因此，在设计深度生成模型时，仍然可以沿用本章的三个问题：先确定变量和分解结构，再判断关键后验是否可计算，最后选择最大似然、ELBO、采样近似或其他可优化目标.后续深度生成模型一章中的VAE、GAN、扩散模型和流模型，虽然形式差异很大，但都可以从这个框架中找到相应位置
+
+因此，本章也是理解深度生成模型的重要基础，后续很多深度生成模型虽然表面上不再强调“图”，但其训练与推断仍然与ELBO、后验近似和随机采样密切相关，当模型包含高维隐变量或复杂依赖时，精确边际化往往不可行，变分推断、摊销推断、重参数化技巧和采样方法提供了可优化的近似路径.从这个意义上说，神经网络并没有取代概率图模型，而是为图模型中的局部概率因子和近似推断过程提供了更强的参数化能力.
+
+如果希望建立完整、系统的图模型框架，可优先阅读Koller和Friedman的专著[Koller et al.,2009]；如果希望从条件独立、贝叶斯网络和结构表达的角度把握图模型思想，可阅读Pearl的经典著作[Pearl, 2014]；如果希望从机器学习入门教材的视角快速回顾常见模型与算法，可参考Bishop教材中的相关章节[Bishop, 2007]. 在具体模型方面,条件随机场[Lafferty et al., 2001]展示了无向图模型在结构化预测中的典型用法，潜在狄利克雷分配[Blei et al., 2003]展示了含隐变量概率模型在文本主题建模中的代表性应用.读这些材料时，建议始终围绕以下问题展开：模型的条件独立结构是什么，联合分布如何分解，推断为何困难，学习又依赖哪一种近似.

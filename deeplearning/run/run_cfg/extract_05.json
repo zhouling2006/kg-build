@@ -1,0 +1,7 @@
+{
+  "chapter_md": "F:\\wholeextract\\deeplearning\\run\\chapters\\05_卷积神经网络.md",
+  "chapter": "第5章 卷积神经网络",
+  "out": "F:\\wholeextract\\deeplearning\\run\\per_chapter\\05_卷积神经网络\\chapter_skeleton.json",
+  "model": "qwen3.7-plus",
+  "tracker": "extract_cn5"
+}

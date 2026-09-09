@@ -1,0 +1,7 @@
+{
+  "chapter_md": "F:\\wholeextract\\deeplearning\\run\\chapters\\02_机器学习概述.md",
+  "chapter": "第2章 机器学习概述",
+  "out": "F:\\wholeextract\\deeplearning\\run\\per_chapter\\02_机器学习概述\\chapter_skeleton.json",
+  "model": "qwen3.7-plus",
+  "tracker": "extract_cn2"
+}

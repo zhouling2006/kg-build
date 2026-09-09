@@ -1,0 +1,1141 @@
+=== SYSTEM ===
+你是教材的知识点提炼引擎。输入是一章教材的完整原文（可能含表格、协议字段说明、代码块等）。
+
+任务：把这一章可学的知识整理成一份"知识单元树"——像一份带索引/目录的学习清单：大主题下面有分组，分组下面是具体可学习的知识单元。层级按知识本身的逻辑组织（不必照搬书本章节小节划分），顺序大致按原文出现顺序/学习依赖先后。
+
+组织原则：
+1. 叶子 = 一个可以独立学习、需要掌握的点：一个概念/定义、一个机制、一个原理、一个流程、一种方法、一个重要结论。
+   强相关、需要连着学的概念可以合成一个叶子，例如成对/成套的概念（如"电路交换与分组交换""TCP与UDP的对比"）合为一条来学；
+   联系弱、各自独立的知识就分开各自成叶。同一概念在正文不同小节/不同位置多次展开时，合并进同一个叶子，不要拆开重复。
+2. 分组 = 同一主题下的若干叶子聚在一起。
+3. 合并与否由内容决定：可以合并，也可以不合并，关键是"适合作为一个学习单元"。
+4. 层级一般 2~3 层：主题（可选） > 分组 > 叶子；不要为了好看堆出 4 层以上。
+
+条目要求：
+- title：规范术语（≤50字），去掉"叫做/称为/是一种"等叙述。
+- summary：所有节点都必须写，不允许为空。
+  叶子：1~3 句（60~150字），讲清"是什么 + 关键条件/机制/结论"，重要参数、协议字段或公式用原文记号写进 summary；
+  分组/主题（非叶子）：写一段连贯导读（80~200字），内容自然覆盖三个层面——这一组讲了什么
+  （覆盖其下所有叶子的范围）、为什么要学（解决什么问题、在学科体系/本章脉络中的位置）、
+  学了有什么用（能做什么、后续哪些知识点依赖它）。语言自由组织，不要用固定小标题逐条罗列，
+  但三个层面都要覆盖到，缺失或空洞会被视为不合格。
+  这段导读将来直接作为知识目录该分组的 index_content。
+- 命名与结构约束：同一父节点下的兄弟节点 title 不得重复；任一节点 title 不得与其祖先或后代节点相同
+  （目录层与知识点层不得同名，避免索引与链接歧义）。
+- 内容覆盖：把整章扫完，每一处值得学的都要进树，不要因为正文靠后而遗漏。
+- 忽略课后习题、"本章的重要概念"等汇总小节、与正文无关的排版内容。
+
+输出：仅输出 JSON，不要 markdown 代码块包装，不要多余文字。
+格式：{"units":[{"title":"...","summary":"...","children":[
+        {"title":"...","summary":"...","children":[...]}]}]}
+children 可省略（叶子）。树的顺序即学习顺序。
+
+
+=== USER ===
+【本章标题】第3章 线性模型
+
+【整章原文】
+## 第3章 线性模型
+
+正确的判断来自于经验，而经验来自于错误的判断.——弗雷德里克·布鲁克斯(Frederick P. Brooks)1999年图灵奖获得者
+
+线性模型（LinearModel）是机器学习中最基础、最常用的模型之一，指通过样本特征的线性组合来进行预测的模型.给定一个D维样本$\pmb { x } = [ x _ { 1 } , \cdots , x _ { D } ] ^ { \intercal }$ ，其线性组合函数为
+
+$$
+f ( \pmb { x } ; \pmb { w } ) = w _ { 1 } x _ { 1 } + w _ { 2 } x _ { 2 } + \cdots + w _ { D } x _ { D } + b\tag{3.1}
+$$
+
+$$
+= { \pmb w } ^ { \top } { \pmb x } + b ,\tag{3.2}
+$$
+
+为简单起见，这里我们用 $f ( \pmb { x } ; \pmb { w } )$ 来表示$f ( \pmb { x } ; \pmb { w } , b )$
+
+其中 $\pmb { w } = [ w _ { 1 } , \cdots , w _ { D } ] ^ { \intercal }$ 为D维的权重向量，b为偏置.上一章中介绍的线性回归就是典型的线性模型，直接用 $f ( \pmb { x } ; \pmb { w } )$ 来预测输出目标 $y = f ( \pmb { x } ; \pmb { w } )$
+
+在分类问题中，由于输出目标 $y$ 是一些离散的标签，而 $f ( { \pmb x } ; { \pmb w } )$ 的值域为实数，因此无法直接用 $f ( \pmb { x } ; \pmb { w } )$ 来进行预测，需要引入一个非线性的决策函数(Decision Function) $g ( \cdot )$ 来预测输出目标
+
+$$
+y = g ( f ( { \pmb x } ; { \pmb w } ) ) ,\tag{3.3}
+$$
+
+其中 $f ( \pmb { x } ; \pmb { w } )$ 也称为判别函数(Discriminant Function).
+
+对于二分类问题， $g ( \cdot )$ 可以是符号函数（Sign Function）,定义为
+
+$$
+g \big ( f ( \pmb { x } ; \pmb { w } ) \big ) = \mathrm { s g n } \big ( f ( \pmb { x } ; \pmb { w } ) \big )\tag{3.4}
+$$
+
+$$
+\triangleq \left\{ \begin{array} { l l } { + 1 } & { \mathrm { i f } f ( x ; w ) > 0 , } \\ { 0 } & { \mathrm { i f } f ( x ; w ) = 0 , } \\ { - 1 } & { \mathrm { i f } f ( x ; w ) < 0 . } \end{array} \right.\tag{3.5}
+$$
+
+当 $f ( { \pmb x } ; { \pmb w } ) = 0$ 时，模型输出0，表示位于决策边界上，暂不做正负类判断.公式(3.5)定义了一个典型的二分类问题的决策函数，其结构如图3.1所示.
+
+![](images/ff2f04bcc830408f1bd287abf72443877608e19f4c1175bde01477ff3290f212.jpg)（描述：这是一个二分类线性模型的结构示意图，展示了输入特征通过权重加权求和后经激活函数输出正负类别的过程）  
+图 3.1 二分类的线性模型
+
+在后续训练算法中，通常把 $y f ( \pmb { x } ; \pmb { w } ) \le 0$ 都视为错误或不确定的情形，需要进一步更新参数.
+
+在本章，我们主要介绍四种不同线性分类模型：Logistic回归、Softmax回归、感知器和支持向量机.这些模型的判别函数都建立在线性函数 $f ( { \pmb x } ; { \pmb w } )$ 之上，这些模型的核心差别主要体现在损失函数和相应的学习准则上.
+
+线性模型也是理解神经网络的起点.一个人工神经元本质上先计算线性加权和 ${ \pmb w } ^ { \top } { \pmb x } + b$ ，再经过非线性激活函数；而多分类神经网络的最后一层通常正是Softmax回归.换句话说，后续章节中的深层网络可以看作先学习一个新的表示$\pmb { h } ( \pmb { x } )$ ，再在这个表示空间中使用线性分类器.线性模型的决策边界、损失函数和梯度更新，都会在神经网络中反复出现.
+
+## 3.1 线性判别函数和决策边界
+
+从公式(3.3)可知，一个线性分类模型或线性分类器（Linear Classifier），是由一个（或多个）线性的判别函数 $f ( \pmb { x } ; \pmb { w } ) = \pmb { w } ^ { \top } \pmb { x } + b$ 和非线性的决策函数 $g ( \cdot )$ 组成.我们首先考虑二分类的情况，然后再扩展到多分类的情况.
+
+## 3.1.1 二分类
+
+二分类（BinaryClassification）问题的类别标签y只有两种取值，通常可以设为 $\{ + 1 , - 1 \}$ 或{0,1}. 在二分类问题中，常用正例（Positive Sample）和负例（Negative Sample)来分别表示属于类别+1和—1的样本.
+
+在二分类问题中，我们只需要一个线性判别函数 $f ( \pmb { x } ; \pmb { w } ) = \pmb { w } ^ { \top } \pmb { x } + b$ 特征空间 $\mathbb { R } ^ { D }$ 中所有满足 $f ( { \pmb x } ; { \pmb w } ) = 0$ 的点组成一个分割超平面（Hyperplane），称为决策边界（Decision Boundary)或决策平面（Decision Surface).决策边界将特征空间一分为二，每个区域对应一个类别.
+
+所谓“线性分类模型”就是指其决策边界是线性超平面.该超平面与权重向量w正交.特征空间中每个样本点到决策边界的有向距离（Signed Distance）
+
+超平面就是三维空间中的平面在更高维空间的推广.D维空间中的超平面是D-1维的.在二维空间中，决策边界是一条直线；在三维空间中，决策边界是一个平面；在更高维空间中，决策边界是一个超平面.
+
+为
+
+$$
+\gamma = \frac { f ( \pmb { x } ; \pmb { w } ) } { \| \pmb { w } \| } .\tag{3.6}
+$$
+
+参见习题3-2.
+
+γ也可以看作点x在w方向上的投影.
+
+图3.2给出了一个二分类问题的线性决策边界示例，其中样本特征向量 ${ \textbf { \em x } } =$ $[ x _ { 1 } , x _ { 2 } ]$ ,权重向量 $\pmb { w } = [ w _ { 1 } , w _ { 2 } ]$
+
+![](images/74637df34c6909f72b2974ed0e2b37ceb66f951552a77fd9d0a88d862a2b6027.jpg)（描述：二维平面上的二分类决策边界示意图，包含两类样本点、线性分隔超平面w^Tx+b=0以及权重向量w的方向）  
+图 3.2 二分类的决策边界示例
+
+给定N个样本的训练集 $\mathcal { D } = \{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ，其中 $y ^ { ( n ) } \in \{ + 1 , - 1 \}$ ，线性模型试图学习到参数 $\ b { w } ^ { * }$ ，使得对于每个样本 $( \mathbf { \boldsymbol { x } } ^ { ( n ) } , \boldsymbol { y } ^ { ( n ) } )$ 尽量满足
+
+$$
+\begin{array} { r l } { f ( \pmb { x } ^ { ( n ) } ; \pmb { w } ^ { * } ) > 0 \quad } & { \mathrm { i f } \quad y ^ { ( n ) } = 1 , } \\ { f ( \pmb { x } ^ { ( n ) } ; \pmb { w } ^ { * } ) < 0 \quad } & { \mathrm { i f } \quad y ^ { ( n ) } = - 1 . } \end{array}\tag{3.7}
+$$
+
+上面两个公式也可以合并，即参数 $\boldsymbol { w } ^ { * }$ 尽量满足
+
+$$
+y ^ { ( n ) } f ( { \pmb x } ^ { ( n ) } ; { \pmb w } ^ { \ast } ) > 0 , \qquad \forall n \in [ 1 , N ] .\tag{3.8}
+$$
+
+定义3.1-两类线性可分：对于训练集 $\mathcal { D } = \left\{ ( { \boldsymbol { x } } ^ { ( n ) } , y ^ { ( n ) } ) \right\} _ { n = 1 } ^ { N }$ ，如果存在权重向量 $\ b { w } ^ { * }$ ，使得对所有样本都满足
+
+$$
+y ^ { ( n ) } f ( { \pmb x } ^ { ( n ) } ; { \pmb w } ^ { \ast } ) > 0 , \qquad \forall n \in \{ 1 , \cdots , N \} ,\tag{3.9}
+$$
+
+那么训练集D是线性可分的.
+
+为了学习参数 $\textbf { \em w }$ ，我们需要定义合适的损失函数以及优化方法.对于二分类问题，最直接的损失函数为0-1损失函数，即
+
+$$
+\mathcal { L } _ { 0 1 } \big ( y , f ( \pmb { x } ; \pmb { w } ) \big ) = I \big ( y f ( \pmb { x } ; \pmb { w } ) < 0 \big ) ,\tag{3.10}
+$$
+
+其中 $I ( \cdot )$ 为指示函数.但0-1损失函数是不连续且非凸的：它关于参数ω几乎处处梯度为0，而在分类边界处又不可导，因此很难直接用基于梯度的方法来优化w.
+
+## 数学小知识|替代损失函数
+
+0-1损失是阶跃型函数：错分类时为常数1，正确时为0，其梯度几乎处处为0，无法为参数更新提供有效信号.实际中常使用连续、凸的替代损失（SurrogateLoss）来近似0-1损失，如Hinge损失、交叉熵损失Logistic损失等.替代损失函数通常是0-1损失的连续上界，使得最小化替代损失的模型在0-1损失上也有较好的表现.
+
+## 3.1.2 多分类
+
+多分类(Multi-class Classification)问题是指分类的类别数C大于2.多分类一般需要多个线性判别函数，但设计这些判别函数有很多种方式.
+
+假设一个多分类问题的类别为 $\{ 1 , 2 , \cdots , C \}$ ，常用的方式有以下三种：
+
+（1）“一对其余”方式：把多分类问题转换为C个“一对其余”的二分类问题.这种方式共需要C个判别函数，其中第c个判别函数 $f _ { c }$ 是将类别c的样本和不属于类别c的样本分开.
+
+（2）“一对一”方式：把多分类问题转换为 $C ( C - 1 ) / 2$ 个“一对一”的二分类问题.这种方式共需要 $C ( C - 1 ) / 2$ 个判别函数，其中第(i,j)个判别函数是把类别i和类别 $j$ 的样本分开.
+
+$$
+1 \leq i < j \leq C
+$$
+
+（3）“argmax”方式：这是一种改进的“一对其余”方式，共需要C个判别函数
+
+$$
+f _ { c } ( \pmb { x } ; \pmb { w } _ { c } ) = \pmb { w } _ { c } ^ { \top } \pmb { x } + b _ { c } , \qquad c \in \{ 1 , \cdots , C \}\tag{3.11}
+$$
+
+对于样本x，如果存在一个类别c，相对于所有的其他类别 $\tilde { c } ( \tilde { c } \mathrm { ~ \scriptsize ~ \neq ~ \ c \ ) ~ }$ 有$f _ { c } ( { \pmb x } ; { \pmb w } _ { c } ) > f _ { \tilde { c } } ( { \pmb x } ; { \pmb w } _ { \tilde { c } } )$ ,那么x属于类别c.“argmax”方式的预测函数定义为
+
+$$
+y = \underset { c = 1 } { \arg \operatorname* { m a x } } f _ { c } ( \pmb { x } ; \pmb { w } _ { c } ) .\tag{3.12}
+$$
+
+前两种方式本质上都是把多分类问题分解为多个二分类问题，而“argmax”方式则直接给出一个统一的多类线性模型.后续的Softmax回归主要采用的就是这种统一建模方式
+
+“一对其余”方式和“一对一”方式都存在一个缺陷：特征空间中可能出现一些难以确定类别的区域，而“argmax”方式可以避免这一问题.图3.3给出了用这三种方式进行多分类的示例，其中红色直线表示判别函数f(·)=0的直线，不同颜色的区域表示预测的三个类别的区域 $( \omega _ { 1 } , \omega _ { 2 }$ 和 $\omega _ { 3 } ~ )$ 和难以确定类别的区域（?’).在“argmax”方式中，相邻两类i和 $j$ 的决策边界实际上是由$f _ { i } ( { \pmb x } ; { \pmb w } _ { i } ) - f _ { j } ( { \pmb x } ; { \pmb w } _ { j } ) = 0$ 决定，其法向量为 ${ \pmb w } _ { i } - { \pmb w } _ { j }$
+
+![](images/0bcb11bce7895c7e9904d42db1bb87f6f733773570afb11e0c1992f859c5b399.jpg)（描述：示意图，展示三种多分类方式的决策区域，包含三个类别ω₁、ω₂、ω₃的划分以及难以确定类别的区域（？），并标注了判别函数f₁、f₂、f₃的边界线）  
+(a)“一对其余”方式
+
+![](images/446b16ea44f17b9b5a13cad56d0302818e2b03f8a9f517e6536d37e3b909339f.jpg)（描述：示意图，展示三个区域ω1、ω2、ω3和三个交点f13、f12、f23的几何关系，中心点P为三条线的交点）  
+(b)“一对一”方式
+
+![](images/6e98dcd2876315db7f66d62a3ae6ec4306f92afdb6f884a57731ebb0481fae99.jpg)（描述：示意图，展示多分类问题中三个类别ω1、ω2、ω3由三条决策边界f1、f2、f3划分的几何关系）  
+(c) “argmax”方式  
+图3.3 多分类问题的三种方式
+
+定义3.2-多类线性可分：对于训练集 $\mathcal { D } = \left\{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \right\} _ { n = 1 } ^ { N }$ ，如果存在C个权重向量 $\pmb { w } _ { 1 } ^ { * } , \cdots , \pmb { w } _ { C } ^ { * }$ ，使得对任意样本 $( \mathbf { \boldsymbol { x } } ^ { ( n ) } , \boldsymbol { y } ^ { ( n ) } )$ ，当 $y ^ { ( n ) } = c$ 时，都有
+
+$$
+f _ { c } ( \pmb { x } ^ { ( n ) } ; \pmb { w } _ { c } ^ { * } ) > f _ { \widetilde { c } } ( \pmb { x } ^ { ( n ) } ; \pmb { w } _ { \widetilde { c } } ^ { * } ) , \qquad \forall \widetilde { c } \neq c ,\tag{3.13}
+$$
+
+那么训练集D是线性可分的.
+
+从上面定义可知，如果数据集是多类线性可分的，那么一定存在一个“argmax”方式的线性分类器可以将它们正确分开.
+
+参见习题3-5.
+
+## 3.2 Logistic 回归
+
+Logistic回归（Logistic Regression,LR）是一种常用的处理二分类问题的线性模型.与前面的符号函数只能输出类别不同，Logistic回归进一步把线性打分映射为条件概率.在本节中，我们采用 $y \in \{ 0 , 1 \}$ 以符合Logistic回归的描述习惯.
+
+为了解决连续的线性函数不适合进行分类的问题，我们引入非线性函数 $g$ .一 $\mathbb { R } \to ( 0 , 1 )$ 来预测类别标签的条件概率 $p ( y = 1 | x )$
+
+$$
+p ( \boldsymbol { y } = 1 | \boldsymbol { x } ) = g ( f ( \boldsymbol { x } ; \boldsymbol { w } ) ) ,\tag{3.14}
+$$
+
+其中 $g ( \cdot )$ 通常称为激活函数（ActivationFunction），其作用是把线性函数的值域从实数区间“挤压”到了(0,1)之间，可以用来表示概率.在统计文献中， $g ( \cdot )$ 的逆函数 $g ^ { - 1 } ( \cdot )$ 也称为联系函数(Link Function).
+
+在Logistic回归中，我们使用Logistic函数来作为激活函数.虽然输出概率经过了非线性映射，但模型的决策边界仍由线性方程 ${ \pmb w } ^ { \top } { \pmb x } = 0$ 决定，因此它依然属于线性分类模型.样本x的标签 $y = 1$ 的条件概率为
+
+$$
+p ( y = 1 | \pmb { x } ) = \sigma ( \pmb { w } ^ { \top } \pmb { x } ) \triangleq \frac { 1 } { 1 + \exp ( - \pmb { w } ^ { \top } \pmb { x } ) } ,\tag{3.15}
+$$
+
+为简单起见，这里 $\pmb { x } = [ x _ { 1 } , \cdots , x _ { D }$ 1] 和 $\pmb { w } = [ w _ { 1 } , \cdots , w _ { D } , b ] ^ { \intercal }$ 分别为 $D + 1$ 维的增广特征向量和增广权重向量.
+
+将公式(3.15)进行变换后得到
+
+$$
+\pmb { w } ^ { \mathsf { T } } \pmb { x } = \log \frac { p ( y = 1 | \pmb { x } ) } { 1 - p ( y = 1 | \pmb { x } ) }\tag{3.16}
+$$
+
+$$
+= \log { \frac { p ( y = 1 | x ) } { p ( y = 0 | x ) } } ,\tag{3.17}
+$$
+
+其中 $\frac { p ( y = 1 | \pmb { x } ) } { p ( y = 0 | \pmb { x } ) }$ 为样本x属于正例和负例的条件概率比值，称为几率（Odds），几率的对数称为对数几率（Log Odds，或Logit). 公式(3.16) 中等号的左边是线性函数，这样Logistic回归可以看作预测值为“标签的对数几率”的线性回归模型.因此，Logistic回归也称为对数几率回归（Logit Regression），简称对率回归.
+
+图3.4给出了使用线性回归和Logistic回归来解决一维数据的二分类问题的示例.
+
+![](images/d03ba65879788388dc8b2ef791d1d8c145a621d1e87809ca52455defe5ef8fc8.jpg)  
+(a) 线性回归
+
+![](images/2e9df9fed4da2f491d451806f7cabe5160369328a6e632b68895d2a361661b0d.jpg)  
+(b) Logistic 回归  
+图3.4 一维数据的二分类问题示例
+
+## 3.2.1 参数学习
+
+Logistic回归采用交叉熵作为损失函数，并使用梯度下降法来对参数进行优化.
+
+给定N个训练样本 $\{ ( \pmb { x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ，用Logistic回归模型对每个样本 $\mathbf { \boldsymbol { x } } ^ { ( n ) }$ 进行预测，输出其标签为1的条件概率，记为 $\hat { y } ^ { ( n ) }$
+
+$$
+\hat { y } ^ { ( n ) } = \sigma ( \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } ) , \qquad 1 \leq n \leq N .\tag{3.18}
+$$
+
+如果把所有增广样本写成样本矩阵，则记为
+
+$$
+\begin{array} { r } { \pmb { X } = [ \pmb { x } ^ { ( 1 ) } , \cdots , \pmb { x } ^ { ( N ) } ] \in \mathbb { R } ^ { ( D + 1 ) \times N } , } \end{array}\tag{3.19}
+$$
+
+并将所有标签和预测组成列向量
+
+$$
+\begin{array} { r } { \pmb { y } = [ \pmb { y } ^ { ( 1 ) } , \cdots , \pmb { y } ^ { ( N ) } ] ^ { \top } , \qquad \hat { \pmb { y } } = [ \hat { y } ^ { ( 1 ) } , \cdots , \hat { y } ^ { ( N ) } ] ^ { \top } = \sigma ( \pmb { X } ^ { \top } \pmb { w } ) \in \mathbb { R } ^ { N } , } \end{array}\tag{3.20}
+$$
+
+其中 $\sigma ( \cdot )$ 逐元素作用.
+
+由于 $y ^ { ( n ) } \in \{ 0 , 1 \}$ ,样本 $( \mathbf { \boldsymbol { x } } ^ { ( n ) } , \boldsymbol { y } ^ { ( n ) } )$ 的真实条件概率可以表示为
+
+该写法与本书“每一列为一个样本”的约定保持一致.
+
+$$
+p _ { r } ( y ^ { ( n ) } = 1 | x ^ { ( n ) } ) = y ^ { ( n ) } ,\tag{3.21}
+$$
+
+$$
+p _ { r } ( y ^ { ( n ) } = 0 | x ^ { ( n ) } ) = 1 - y ^ { ( n ) } .\tag{3.22}
+$$
+
+使用交叉熵损失函数，其风险函数为
+
+为简单起见，这里忽略了正则化项.
+
+$$
+\mathcal { R } ( \pmb { w } ) = - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \bigg ( p _ { r } ( y ^ { ( n ) } = 1 | \pmb { x } ^ { ( n ) } ) \log \hat { y } ^ { ( n ) } + p _ { r } ( y ^ { ( n ) } = 0 | \pmb { x } ^ { ( n ) } ) \log ( 1 - \hat { y } ^ { ( n ) } ) \bigg )\tag{3.23}
+$$
+
+$$
+= - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \bigg ( y ^ { ( n ) } \log \hat { y } ^ { ( n ) } + ( 1 - y ^ { ( n ) } ) \log ( 1 - \hat { y } ^ { ( n ) } ) \bigg ) .\tag{3.24}
+$$
+
+等价地，上式可以写成矩阵形式
+
+$$
+\mathcal { R } ( \pmb { w } ) = - \frac { 1 } { N } \left( \pmb { y } ^ { \top } \log \hat { \pmb { y } } + ( \pmb { 1 } _ { N } - \pmb { y } ) ^ { \top } \log ( \pmb { 1 } _ { N } - \hat { \pmb { y } } ) \right) ,\tag{3.25}
+$$
+
+其中 $\log ( \cdot )$ 逐元素作用.
+
+利用Logistic函数的导数性质 $\sigma ^ { \prime } ( z ) = \sigma ( z ) ( 1 - \sigma ( z ) )$ ，对风险函数关于 $\textbf { \em w }$ 应用链式法则，可得
+
+风险函数 $\mathcal { R } ( \boldsymbol { w } )$ 关于参数w的偏导数为
+
+$$
+\frac { \partial \mathcal { R } ( w ) } { \partial w } = - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \left( y ^ { ( n ) } \frac { \hat { y } ^ { ( n ) } ( 1 - \hat { y } ^ { ( n ) } ) } { \hat { y } ^ { ( n ) } } \pmb { x } ^ { ( n ) } - ( 1 - y ^ { ( n ) } ) \frac { \hat { y } ^ { ( n ) } ( 1 - \hat { y } ^ { ( n ) } ) } { 1 - \hat { y } ^ { ( n ) } } \pmb { x } ^ { ( n ) } \right)\tag{3.26}
+$$
+
+$$
+= - { \frac { 1 } { N } } \sum _ { n = 1 } ^ { N } \left( y ^ { ( n ) } ( 1 - { \hat { y } } ^ { ( n ) } ) x ^ { ( n ) } - ( 1 - y ^ { ( n ) } ) { \hat { y } } ^ { ( n ) } x ^ { ( n ) } \right)
+$$
+
+y 为 Logistic 函数，因此有 $\begin{array} { r } { \frac { \partial \hat { y } } { \partial w ^ { \top } x } = } \end{array}$ $\hat { y } ^ { ( n ) } ( 1 - \hat { y } ^ { ( n ) } )$ . 参见第B.4.2.1节.
+
+(3.27)
+
+$$
+= - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \pmb { x } ^ { ( n ) } \big ( \pmb { y } ^ { ( n ) } - \hat { \pmb { y } } ^ { ( n ) } \big ) .\tag{3.28}
+$$
+
+其矩阵形式为
+
+$$
+\frac { \partial \mathcal { R } ( \pmb w ) } { \partial \pmb w } = - \frac { 1 } { N } X ( \pmb y - \hat { \pmb y } ) .\tag{3.29}
+$$
+
+采用梯度下降法，Logistic回归的训练过程为：初始化 $\pmb { w } _ { 0 } \gets 0$ ，然后通过下式来迭代更新参数：
+
+$$
+{ \pmb w } _ { t + 1 }  { \pmb w } _ { t } + \alpha \frac { 1 } { N } \sum _ { n = 1 } ^ { N } { \pmb x } ^ { ( n ) } \bigg ( y ^ { ( n ) } - \hat { y } _ { { \pmb w } _ { t } } ^ { ( n ) } \bigg ) ,\tag{3.30}
+$$
+
+按照本书的样本矩阵记号，上式也可以写为
+
+$$
+\pmb { w } _ { t + 1 }  \pmb { w } _ { t } + \alpha \frac { 1 } { N } \pmb { X } ( \pmb { y } - \hat { \pmb { y } } _ { \pmb { w } _ { t } } ) ,\tag{3.31}
+$$
+
+其中 $\alpha$ 是学习率， $\hat { y } _ { w _ { t } } ^ { ( n ) }$ 是当参数为 ${ \mathbf { } } w _ { t }$ 时，Logistic 回归模型的输出.
+
+从公式(3.24)可知，风险函数 $\mathcal { R } ( \boldsymbol { w } )$ 是关于参数w的连续可微的凸函数.因此除了梯度下降法之外，Logistic回归还可以用高阶的优化方法（比如牛顿法）来进行优化.
+
+## 3.3 Softmax 回归
+
+## 数学小知识|Softmax函数
+
+Softmax函数将任意实数向量 $z _ { \mathbf { \Sigma } } \in \mathbb { R } ^ { C }$ 映射为概率分布：$\begin{array} { r } { \operatorname { s o f t m a x } ( z ) _ { c } = \frac { \exp ( z _ { c } ) } { \sum _ { c ^ { \prime } = 1 } ^ { C } \exp ( z _ { c ^ { \prime } } ) } } \end{array}$ ，其中每个输出分量都为正数，且所有分量之和为1，因此可以解释为概率.Softmax通过指数函数放大了输入向量中各分量的差异，使最大值对应的概率最大.当C=2时，Softmax退化为Logistic函数.在实际计算中，为防止指数溢出，通常先减去z的最大值： $\begin{array} { r } { \mathrm { ; s o f t m a x } ( z ) _ { c } = \frac { \exp ( z _ { c } - \operatorname* { m a x } _ { j } z _ { j } ) } { \sum _ { c ^ { \prime } } \exp ( z _ { c ^ { \prime } } - \operatorname* { m a x } _ { j } z _ { j } ) } . } \end{array}$
+
+<!-- 已忽略装饰/无关图：667204e61e5a4665e31eb9fdf59fbf2b1b8c5e6c58f268d987101f26d011f0a0.jpg -->
+
+Softmax回归（Softmax Regression），也称为多项（Multinomial)或多类(Multi-Class)的Logistic回归，是Logistic回归在多分类问题上的推广.
+
+对于多类问题，类别标签 $y \in \{ 1 , 2 , \cdots , C \}$ 可以有C个取值.给定一个样本x,令
+
+Softmax 回 归也可以看作一种条件最大熵模型，参见第14.1.5.1节.
+
+$$
+\begin{array} { r } { \hat { \pmb y } = \mathrm { s o f t m a x } ( \pmb { W } ^ { \top } \pmb x ) , } \end{array}\tag{3.32}
+$$
+
+其中 $\hat { \pmb y } \in \mathbb R ^ { C }$ 为所有类别的预测条件概率组成的向量.于是，样本x属于类别c的条件概率为
+
+$$
+\begin{array} { r l } { p ( y = c | \pmb { x } ) = [ \pmb { \hat { y } } ] _ { c } } & { } \\ { = \frac { \exp ( \pmb { w } _ { c } ^ { \top } \pmb { x } ) } { \sum _ { c ^ { \prime } = 1 } ^ { C } \exp ( \pmb { w } _ { c ^ { \prime } } ^ { \top } \pmb { x } ) } , } \end{array}\tag{3.33}
+$$
+
+(3.34)
+
+其中 ${ \pmb w } _ { c }$ 是第c类的权重向量.
+
+Softmax回归的决策函数可以表示为
+
+$$
+\hat { y } = \underset { c = 1 } { \arg \operatorname* { m a x } } p ( y = c | \pmb { x } )\tag{3.35}
+$$
+
+$$
+\mathbf { \Psi } = \underset { c = 1 } { \arg \operatorname* { m a x } } \pmb { w } _ { c } ^ { \top } \pmb { x } .\tag{3.36}
+$$
+
+图3.5表示Softmax回归在二维特征空间中的三分类示意图.每个区域 $\omega _ { c }$ 对应类别c的条件概率最大，相邻类别的决策边界由两个类别得分相等决定.
+
+与Logistic 回归的关系 当类别数C = 2时,Softmax回归的决策函数为
+
+$$
+\hat { y } = \arg \operatorname* { m a x } _ { y \in \{ 0 , 1 \} } w _ { y } ^ { \top } x\tag{3.37}
+$$
+
+$$
+{ \mathbf { \Psi } } = I \Big ( \pmb { w } _ { 1 } ^ { \top } \pmb { x } - \pmb { w } _ { 0 } ^ { \top } \pmb { x } > 0 \Big )\tag{3.38}
+$$
+
+$$
+\begin{array} { r } { { \bf \sigma } = { \cal I } \Big ( ( { \pmb w } _ { 1 } - { \pmb w } _ { 0 } ) ^ { \top } { \pmb x } > 0 \Big ) , } \end{array}\tag{3.39}
+$$
+
+其中I(·)是指示函数. 对比公式(3.5) 中的二分类决策函数，可以发现二分类中的权重向量 $\pmb { w } = \pmb { w } _ { 1 } - \pmb { w } _ { 0 }$
+
+![](images/cb466f522a8d1698b98e1367d2584f6cf8ee08c40e84acd035cfe8aeff21d28f.jpg)（描述：二维特征空间中三分类的Softmax回归示意图，展示三个类别ω₁、ω₂、ω₃的决策边界和分类区域）  
+图 3.5 Softmax回归在二维特征空间中的三分类示意图
+
+向量表示上式用向量形式可以写为
+
+$$
+\hat { \pmb { y } } = \operatorname { s o f t m a x } ( \pmb { W } ^ { \top } \pmb { x } )\tag{3.40}
+$$
+
+$$
+{ \bf \Omega } = \frac { \exp ( W ^ { \top } { \pmb x } ) } { { \bf 1 } _ { C } ^ { \top } \exp \left( W ^ { \top } { \pmb x } \right) } ,\tag{3.41}
+$$
+
+其中 $\pmb { W } = [ \pmb { w } _ { 1 } , \cdots , \pmb { w } _ { C } ]$ 是由C个类的权重向量组成的矩阵， ${ \bf 1 } _ { C }$ 为 $C$ 维的全1向量， $\hat { \pmb y } \in \mathbb R ^ { C }$ 为所有类别的预测条件概率组成的向量，第c维的值是第c类的预测条件概率.
+
+## 3.3.1 参数学习
+
+给定N个训练样本 $\{ ( \pmb { x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ,Softmax回归使用交叉熵损失函数来学习最优的参数矩阵W.
+
+为了方便起见，我们用C维的one-hot向量 ${ \pmb y } \in \{ 0 , 1 \} ^ { C }$ 来表示类别标签.对于类别c,其向量表示为
+
+$$
+\pmb { y } = [ I ( 1 = c ) , I ( 2 = c ) , \cdots , I ( C = c ) ] ^ { \top } ,\tag{3.42}
+$$
+
+其中I(·)是指示函数.
+
+如果把所有样本和标签分别写成矩阵，则本书统一记为
+
+$$
+\ b { X } = [ \ b { x } ^ { ( 1 ) } , \cdots , \ b { x } ^ { ( N ) } ] \in \mathbb { R } ^ { D \times N } , \qquad \ b { Y } = [ \ b { y } ^ { ( 1 ) } , \cdots , \ b { y } ^ { ( N ) } ] \in \{ 0 , 1 \} ^ { C \times N } ,\tag{3.43}
+$$
+
+即每一列对应一个样本及其one-hot标签.相应地，所有样本的预测概率可以写为
+
+$$
+\begin{array} { r } { \hat { Y } = \mathrm { s o f t m a x } ( { \cal W } ^ { \top } { \cal X } ) \in \mathbb { R } ^ { C \times N } , } \end{array}\tag{3.44}
+$$
+
+其中 softmax(·)按列作用.
+
+采用交叉熵损失函数，Softmax回归模型的风险函数为
+
+为简单起见，这里忽略了正则化项.
+
+$$
+\mathcal { R } ( W ) = - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \sum _ { c = 1 } ^ { C } { \pmb { y } } _ { c } ^ { ( n ) } \log \hat { { \pmb { y } } } _ { c } ^ { ( n ) }\tag{3.45}
+$$
+
+$$
+= - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } ( \pmb { y } ^ { ( n ) } ) ^ { \top } \log \hat { \pmb { y } } ^ { ( n ) } ,\tag{3.46}
+$$
+
+其中 $\hat { \pmb y } ^ { ( n ) } = \mathrm { s o f t m a x } ( \pmb { W } ^ { \top } \pmb { x } ^ { ( n ) } )$ 为样本 $\pmb { x } ^ { ( n ) }$ 属于不同类别的条件概率．等价地，风险函数也可以写成矩阵形式
+
+$$
+\mathcal { R } ( W ) = - \frac { 1 } { N } \mathrm { t r } \left( Y ^ { \intercal } \log \hat { Y } \right) ,\tag{3.47}
+$$
+
+其中 $\log ( \cdot )$ 逐元素作用.
+
+风险函数 ${ \mathcal { R } } ( W )$ 关于W的梯度为
+
+$$
+\frac { \partial \mathcal { R } ( \pmb { W } ) } { \partial \pmb { W } } = - \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \pmb { x } ^ { ( n ) } \left( \pmb { y } ^ { ( n ) } - \hat { \pmb { y } } ^ { ( n ) } \right) ^ { \top } .\tag{3.48}
+$$
+
+按照本书的样本矩阵记号，上式等价于
+
+$$
+\frac { \partial \mathcal { R } ( W ) } { \partial W } = - \frac { 1 } { N } X \left( Y - \hat { Y } \right) ^ { \intercal } .\tag{3.49}
+$$
+
+证明．计算公式(3.48)中的梯度，关键在于计算每个样本的损失函数
+
+$$
+\mathscr { L } ^ { ( n ) } ( W ) = - ( \pmb { y } ^ { ( n ) } ) ^ { \intercal } \log \hat { \pmb { y } } ^ { ( n ) }
+$$
+
+关于参数W的梯度，其中需要用到的两个导数公式为
+
+（1）若 $\pmb { y } = \mathrm { s o f t m a x } ( z )$ ,则 $\begin{array} { r } { \frac { \partial \pmb { y } } { \partial \pmb { z } } = \mathrm { d i a g } \left( \pmb { y } \right) - \pmb { y } \pmb { y } ^ { \top } . } \end{array}$
+
+（2）若 $\begin{array} { r } { \boldsymbol { z } = \boldsymbol { W } ^ { \intercal } \boldsymbol { x } = [ \boldsymbol { w } _ { 1 } ^ { \intercal } \boldsymbol { x } , \boldsymbol { w } _ { 2 } ^ { \intercal } \boldsymbol { x } , \cdots , \boldsymbol { w } _ { C } ^ { \intercal } \boldsymbol { x } ] ^ { \intercal } } \end{array}$ ,则 $\frac { \partial z } { \partial w _ { c } }$ 为第c列为 $_ { \textbf { \em x } }$ ,其余为0的矩阵.
+
+Softmax函数的导数 参见第B.4.2.2节.
+
+$$
+\frac { \partial z } { \partial w _ { c } } = [ \frac { \partial w _ { 1 } ^ { \top } \pmb { x } } { \partial w _ { c } } , \frac { \partial w _ { 2 } ^ { \top } \pmb { x } } { \partial w _ { c } } , \cdots , \frac { \partial w _ { C } ^ { \top } \pmb { x } } { \partial w _ { c } } ]\tag{3.50}
+$$
+
+$$
+\mathbf { \Phi } = [ \mathbf { 0 } , \mathbf { 0 } , \cdots , \mathbf { x } , \cdots , \mathbf { 0 } ]\tag{3.51}
+$$
+
+$$
+{ \triangleq } \mathbb { M } _ { c } ( { \pmb x } ) .\tag{3.52}
+$$
+
+https://nndl.ai/
+
+根据链式法则， $\mathscr { L } ^ { ( n ) } ( W ) = - ( \pmb { y } ^ { ( n ) } ) ^ { \intercal } \log \hat { \pmb { y } } ^ { ( n ) }$ 关于 ${ \pmb w } _ { c }$ 的偏导数为
+
+$$
+\frac { \partial \mathcal { L } ^ { ( n ) } ( W ) } { \partial { w _ { c } } } = - \frac { \partial \left( ( { \pmb y } ^ { ( n ) } ) ^ { \top } \log \hat { \pmb y } ^ { ( n ) } \right) } { \partial { w _ { c } } }\tag{3.53}
+$$
+
+$$
+= - \frac { \partial z ^ { ( n ) } } { \partial w _ { c } } \frac { \partial \hat { \pmb { y } } ^ { ( n ) } } { \partial z ^ { ( n ) } } \frac { \partial \log \hat { \pmb { y } } ^ { ( n ) } } { \partial \hat { \pmb { y } } ^ { ( n ) } } \pmb { y } ^ { ( n ) }\tag{3.54}
+$$
+
+$$
+= - \mathbb { M } _ { c } ( { \pmb x } ^ { ( n ) } ) \left( \mathrm { d i a g } \left( \hat { \pmb y } ^ { ( n ) } \right) - \hat { \pmb y } ^ { ( n ) } ( \hat { \pmb y } ^ { ( n ) } ) ^ { \top } \right) \left( \mathrm { d i a g } ( \hat { \pmb y } ^ { ( n ) } ) \right) ^ { - 1 } { \pmb y } ^ { ( n ) }\tag{3.55}
+$$
+
+$$
+\mathbf { \Sigma } = - \mathbb { M } _ { c } ( \pmb { x } ^ { ( n ) } ) \left( \pmb { I } - \hat { \pmb { y } } ^ { ( n ) } \mathbf { 1 } _ { C } ^ { \top } \right) \pmb { y } ^ { ( n ) }\tag{3.56}
+$$
+
+$$
+= - \mathbb { M } _ { c } ( { \pmb x } ^ { ( n ) } ) \left( { \pmb y } ^ { ( n ) } - \hat { \pmb y } ^ { ( n ) } { \mathbf 1 } _ { C } ^ { \top } { \pmb y } ^ { ( n ) } \right)\tag{3.57}
+$$
+
+$$
+= - \mathbb { M } _ { c } ( { \pmb x } ^ { ( n ) } ) \left( { \pmb y } ^ { ( n ) } - { \hat { \pmb y } } ^ { ( n ) } \right)
+$$
+
+y为 one-hot 向量，所以 $\mathbf { 1 } _ { C } ^ { \intercal } \mathbf { y } = 1$
+
+(3.58)
+
+$$
+= - { \pmb x } ^ { ( n ) } \left[ { \pmb y } ^ { ( n ) } - \hat { \pmb y } ^ { ( n ) } \right] _ { c } .\tag{3.59}
+$$
+
+公式(3.59)也可以表示为非向量形式，即
+
+$$
+\frac { \partial \mathcal { L } ^ { ( n ) } ( W ) } { \partial w _ { c } } = - \pmb { x } ^ { ( n ) } \left( I ( y ^ { ( n ) } = c ) - \hat { \pmb { y } } _ { c } ^ { ( n ) } \right) ,\tag{3.60}
+$$
+
+其中 $I ( \cdot )$ 是指示函数.
+
+根据公式(3.59) 可以得到
+
+$$
+\frac { \partial \mathcal { L } ^ { ( n ) } ( W ) } { \partial W } = - \pmb { x } ^ { ( n ) } \left( \pmb { y } ^ { ( n ) } - \hat { \pmb { y } } ^ { ( n ) } \right) ^ { \top } .\tag{3.61}
+$$
+
+采用梯度下降法，Softmax回归的训练过程为：初始化 $W _ { 0 }  0$ ，然后通过下式进行迭代更新：
+
+$$
+W _ { t + 1 }  W _ { t } + \alpha ( \frac { 1 } { N } \sum _ { n = 1 } ^ { N } \pmb { x } ^ { ( n ) } ( \pmb { y } ^ { ( n ) } - \hat { \pmb { y } } _ { W _ { t } } ^ { ( n ) } ) ^ { \top } ) ,\tag{3.62}
+$$
+
+按照本书的样本矩阵记号，上式也可以写为
+
+$$
+\boldsymbol { W _ { t + 1 } }  \boldsymbol { W _ { t } } + \alpha \frac { 1 } { N } \boldsymbol { X } ( \boldsymbol { Y } - \boldsymbol { \hat { Y } _ { W _ { t } } } ) ^ { \top } ,\tag{3.63}
+$$
+
+其中 $\alpha$ 是学习率， $\hat { y } _ { W _ { t } } ^ { ( n ) }$ 是当参数为 $\mathbf { } W _ { t }$ 时，Softmax回归模型的输出.
+
+![](images/0863271c58bcf0eb1ee34091b9a950924352cb016270ecf30bcecb488ba7be8d.jpg)（描述：示意图，展示Softmax回归模型中权重向量与输出概率的关系）
+
+Softmax回归中使用的C个权重向量存在参数冗余：如果对所有权重向量同时减去同一个向量v，模型输出不会改变.这说明真正决定预测类别的是不同类别之间的打分差，而不是各类别权重向量的绝对位置.因此，Softmax回归通常需要借助正则化来约束参数；这一性质也常被用来改写Softmax的计算形式，以避免数值上溢出.
+
+## 3.4 感知器
+
+感知器（Perceptron）由Frank Rosenblatt 于1957年提出，是一种广泛使用的线性分类器.感知器可谓是最简单的人工神经网络，只有一个神经元.
+
+感知器是对生物神经元的简单数学模拟，有与生物神经元相对应的部件，如权重（突触）、偏置（阈值）及激活函数（细胞体），输出为+1或－1.
+
+Frank Rosenblatt(1928\~1971)，美国心理学家，人工智能领域开拓者.
+
+感知器是一种简单的两类线性分类模型，其分类准则与公式(3.5)相同，即
+
+$$
+\hat { y } = \operatorname { s g n } ( \pmb { w } ^ { \intercal } \pmb { x } ) .\tag{3.64}
+$$
+
+最早发明的感知器是一台机器而不是一种算法，后来才被实现为IBM 704机器上可运行的程序.
+
+## 3.4.1 参数学习
+
+感知器学习算法也是一个经典的线性分类器的参数学习算法.
+
+给定N个样本的训练集： $\{ ( \pmb { x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ，其中 $y ^ { ( n ) } \in \{ + 1 , - 1 \}$ ，感知器学习算法试图找到一组参数 $\mathbf { \Delta } w ^ { * }$ ，使得对于每个样本 $( \mathbf { \boldsymbol { x } } ^ { ( n ) } , \boldsymbol { y } ^ { ( n ) } )$ 有
+
+$$
+y ^ { ( n ) } { { w ^ { * } } ^ { \top } } { { x } ^ { ( n ) } } > 0 , \qquad \forall n \in \{ 1 , \cdots , N \} .\tag{3.65}
+$$
+
+感知器的学习算法是一种典型的错误驱动在线学习算法[Rosenblatt,1958].先初始化一个权重向量 $w \gets 0$ （通常是全零向量），然后每次分错一个样本 $( { \pmb x } , y )$ ,或者样本恰好落在决策边界上时，即 $y w ^ { \top } x \leq 0$ ，就用这个样本来更新权重.
+
+$$
+\pmb { w }  \pmb { w } + y \pmb { x } .\tag{3.66}
+$$
+
+具体的感知器参数学习策略如算法3.1所示.
+
+感知器的学习策略对应于对以下损失函数进行（次）梯度下降，该损失函数称为
+
+$$
+\begin{array} { r } { \mathcal { L } ( \pmb { w } ; \pmb { x } , y ) = \operatorname* { m a x } ( 0 , - y \pmb { w } ^ { \top } \pmb { x } ) . } \end{array}\tag{3.67}
+$$
+
+采用随机梯度下降，其每次更新的梯度为
+
+$$
+\begin{array} { r } { \frac { \partial \mathcal { L } ( \pmb { w } ; \pmb { x } , \pmb { y } ) } { \partial \pmb { w } } = \left\{ \begin{array} { l l } { 0 \qquad } & { \mathrm { i f } \quad y \pmb { w } ^ { \top } \pmb { x } > 0 , } \\ { - y \pmb { x } \qquad \mathrm { i f } \quad y \pmb { w } ^ { \top } \pmb { x } < 0 . } \end{array} \right. } \end{array}\tag{3.68}
+$$
+
+![](images/3dce5e399624ca4549ef45cafaf9c51e64b23442b289c5b7b15d41b35993db84.jpg)
+
+![](images/eb8d83086c26bfb0a747bb1e3d04b41a980dff5ffec622280673c876c45261ae.jpg)
+
+![](images/c1189a6202ae380a5441e8d4a7dd23ab43cfae95c315f0c9f4d2636f006ff713.jpg)
+
+算法 3.1 两类感知器的参数学习算法  
+输入：训练集 $\mathcal { D } = \{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ,最大迭代次数T  
+1 初始化： ${ \pmb w } _ { 0 } \gets 0 , k \gets 0 , t \gets 0$ in  
+2 repeat  
+3 对训练集D中的样本随机排序;  
+4 for $n = 1 \cdots N$ do  
+5 选取一个样本 $( \mathbf { \boldsymbol { x } } ^ { ( n ) } , \boldsymbol { y } ^ { ( n ) } )$ üi  
+6 if ${ \pmb w } _ { k } ^ { \top } ( { \pmb y } ^ { ( n ) } { \pmb x } ^ { ( n ) } ) \le 0$ then  
+7 ${ \pmb w } _ { k + 1 }  { \pmb w } _ { k } + y ^ { ( n ) } { \pmb x } ^ { ( n ) } ;$   
+8 $k \gets k + 1 ;$   
+9 end  
+10 t ← t + 1;  
+11 if t = T then break; //达到最大迭代次数  
+12 end  
+13 until $t = T ;$   
+输出： ${ \pmb w } _ { k }$
+
+图3.6给出了感知器参数学习的更新过程，其中红色实心点为正例，蓝色空心点为负例.黑色箭头表示当前的权重向量，红色虚线箭头表示权重的更新方向.
+
+![](images/fe16e330d94b29dda6895ab6dfd75b323c2baeff05721ce0110cb94ca4411751.jpg)  
+图3.6 感知器参数学习的更新过程
+
+## 3.4.2 感知器的收敛性
+
+[Novikoff，1963]证明对于两类问题，如果训练集是线性可分的，那么感知器算法可以在有限次迭代后收敛.然而，如果训练集不是线性可分的，那么这个算法则不能确保会收敛
+
+参见定义3.1.
+
+当数据集是两类线性可分时，对于训练集 $\mathcal { D } = \left\{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \right\} _ { n = 1 } ^ { N }$ ,其中 $\mathbf { \boldsymbol { x } } ^ { ( n ) }$ 为样本的增广特征向量， $y ^ { ( n ) } \in \{ - 1 , 1 \}$ ，那么存在一个正的常数 $\gamma ( \gamma > 0 )$ 和权重向量 $\boldsymbol { w } ^ { * }$ ,并且 $\| \pmb { w } ^ { * } \| = 1$ ,对所有n都满足 $( { \pmb w } ^ { * } ) ^ { \top } ( y ^ { ( n ) } { \pmb x } ^ { ( n ) } ) \ge \gamma$ .我们可以证明如下定理.
+
+定理3.1－感知器收敛性：给定训练集 $\mathcal { D } = \left\{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \right\} _ { n = 1 } ^ { N }$ ,令R是训练集中最大的特征向量的模，即
+
+$$
+R = \operatorname* { m a x } _ { n } \| \pmb { x } ^ { ( n ) } \| .
+$$
+
+如果训练集D线性可分，两类感知器的参数学习算法3.1的权重更新次数不超过 $\textstyle { \frac { R ^ { 2 } } { \gamma ^ { 2 } } }$
+
+证明．感知器的权重向量的更新方式为
+
+$$
+\begin{array} { r } { \pmb { w } _ { k } = \pmb { w } _ { k - 1 } + \pmb { y } ^ { ( k ) } \pmb { x } ^ { ( k ) } , } \end{array}\tag{3.69}
+$$
+
+其中 $\boldsymbol { x } ^ { ( k ) } , \boldsymbol { y } ^ { ( k ) }$ 表示第k个错误分类的样本.
+
+因为初始权重向量为0,在第K次更新时感知器的权重向量为
+
+$$
+{ \pmb w } _ { K } = \sum _ { k = 1 } ^ { K } y ^ { ( k ) } { \pmb x } ^ { ( k ) } .\tag{3.70}
+$$
+
+分别计算 $\| \pmb { w } _ { K } \| ^ { 2 }$ 的上下界：
+
+(1)| $\lvert \boldsymbol { w } _ { K } \rvert \rvert ^ { 2 }$ 的上界为
+
+$$
+\| \pmb { w } _ { K } \| ^ { 2 } = \| \pmb { w } _ { K - 1 } + \pmb { y } ^ { ( K ) } \pmb { x } ^ { ( K ) } \| ^ { 2 }\tag{3.71}
+$$
+
+$$
+= \| \pmb { w } _ { K - 1 } \| ^ { 2 } + \| y ^ { ( K ) } \pmb { x } ^ { ( K ) } \| ^ { 2 } + 2 y ^ { ( K ) } \pmb { w } _ { K - 1 } ^ { \top } \pmb { x } ^ { ( K ) }\tag{3.72}
+$$
+
+$$
+y _ { k } { \pmb w } _ { K - 1 } ^ { \top } { \pmb x } ^ { ( K ) } \le 0 .
+$$
+
+$$
+\leq \| \pmb { w } _ { K - 1 } \| ^ { 2 } + R ^ { 2 }\tag{3.73}
+$$
+
+$$
+\leq \| \pmb { w } _ { K - 2 } \| ^ { 2 } + 2 R ^ { 2 }\tag{3.74}
+$$
+
+$$
+\leq K R ^ { 2 } .\tag{3.75}
+$$
+
+(2)| $\lvert \boldsymbol { w } _ { K } \rvert \rvert ^ { 2 }$ 的下界为
+
+$$
+\| \pmb { w } _ { K } \| ^ { 2 } = \overset { \textstyle \bigcap } \{ \pmb { w } ^ { * } \} \| ^ { 2 } \cdot \| \pmb { w } _ { K } \| ^ { 2 }
+$$
+
+$$
+\geq \| \boldsymbol { w } ^ { * ^ { \intercal } } \boldsymbol { w } _ { K } \| ^ { 2 }\tag{3.76}
+$$
+
+$$
+= \| \boldsymbol { w ^ { * } } ^ { \top } \sum _ { k = 1 } ^ { K } ( \boldsymbol { y } ^ { ( k ) } \boldsymbol { x } ^ { ( k ) } ) \| ^ { 2 }\tag{3.77}
+$$
+
+$\| \pmb { w } ^ { * } \| = 1$ .两个向量内积的平方一定小于等于这两个向量的模的乘积.
+
+(3.78)
+
+$$
+= \| \sum _ { k = 1 } ^ { K } { \pmb w } ^ { * } ^ { \mathsf { T } } ( y ^ { ( k ) } { \pmb x } ^ { ( k ) } ) \| ^ { 2 }\tag{3.79}
+$$
+
+$$
+\begin{array} { l } { { { \pmb w } ^ { * } { } ^ { \top } ( y ^ { ( n ) } { \pmb x } ^ { ( n ) } ) } } \\ { { \gamma , \forall n . } } \end{array}
+$$
+
+$$
+\geq K ^ { 2 } \gamma ^ { 2 } .\tag{3.80}
+$$
+
+由公式(3.75)和公式(3.80),得到
+
+$$
+K ^ { 2 } \gamma ^ { 2 } \leq \lvert \lvert \pmb { w } _ { K } \rvert \rvert ^ { 2 } \leq K R ^ { 2 } .\tag{3.81}
+$$
+
+取最左和最右的两项，进一步得到， $K ^ { 2 } \gamma ^ { 2 } \le K R ^ { 2 }$ 然后两边都除K，最终得到 $\begin{array} { r } { K \le \frac { R ^ { 2 } } { \gamma ^ { 2 } } } \end{array}$ .因此，在线性可分的条件下，算法3.1会在 $\textstyle { \frac { R ^ { 2 } } { \gamma ^ { 2 } } }$ 步内收敛. □
+
+虽然感知器在线性可分的数据上可以保证收敛，但其存在以下不足：
+
+（1）在数据集线性可分时，感知器虽然可以找到一个超平面把两类数据分开，但并不能保证其泛化能力.
+
+（2）感知器对样本顺序比较敏感.每次迭代的顺序不一致时，找到的分割超平面也往往不一致
+
+（3）如果训练集不是线性可分的，就不能保证在有限步内收敛
+
+## 3.4.3 参数平均感知器
+
+根据定理3.1，如果训练数据是线性可分的，那么感知器可以找到一个判别函数来分割不同类的数据．间隔γ越大，收敛越快；但感知器并不能保证找到泛化能力最好的判别函数
+
+感知器学习到的权重向量和训练样本的顺序相关.在迭代次序上排在后面的错误样本比前面的错误样本，对最终的权重向量影响更大.比如有1000个训练样本，在迭代100个样本后，感知器已经学习到一个很好的权重向量，在接下来的899个样本上都预测正确，也没有更新权重向量.但是，在最后第1000个样本时预测错误，并更新了权重.这次更新可能反而使得权重向量变差
+
+为了提高感知器的鲁棒性和泛化能力，我们可以将在感知器学习过程中的所有K个权重向量保存起来，并赋予每个权重向量 ${ \pmb w } _ { k }$ 一个置信系数 $c _ { k } \ : ( 1 \ : \leq$
+
+K为感知器在训练 中权重向量的总更新 次数.
+
+$k \leq K )$ .最终的分类结果通过这K个不同权重的感知器投票决定，这个模型也称为投票感知器(Voted Perceptron) [Freund et al., 1999].
+
+令 $\tau _ { k }$ 为第k次更新权重 ${ \pmb w } _ { k }$ 时的迭代次数（即训练过的样本数量）， $\tau _ { k + 1 }$ 为下次权重更新时的迭代次数，则权重 ${ \pmb w } _ { k }$ 的置信系数 $c _ { k }$ 设置为从 $\tau _ { k }$ 到 $\tau _ { k + 1 }$ 之间间隔的迭代次数，即 $c _ { k } = \tau _ { k + 1 } - \tau _ { k }$ .置信系数ck越大，说明权重 $c _ { k }$ ${ \pmb w } _ { k }$ 在之后的训练过程中正确分类样本的数量越多，越值得信赖.
+
+这样，投票感知器的形式为
+
+$$
+\hat { y } = \mathrm { s g n } \Big ( \sum _ { k = 1 } ^ { K } c _ { k } \mathrm { s g n } ( \pmb { w } _ { k } ^ { \top } \pmb { x } ) \Big ) ,
+$$
+
+投票感知器是一种集成模型，参见第11.1节.
+
+(3.82)
+
+其中 sgn(·)为符号函数.
+
+投票感知器虽然提高了感知器的泛化能力，但是需要保存K个权重向量在实际操作中会带来额外的开销．因此，人们经常会使用一个简化的版本，通过使用“参数平均”的策略来减少投票感知器的参数数量，也叫作平均感知器(Averaged Perceptron)[Collins, 2002]. 平均感知器的形式为
+
+$$
+\hat { y } = \mathrm { s g n } \left( \frac { 1 } { T } \sum _ { k = 1 } ^ { K } c _ { k } ( \pmb { w } _ { k } ^ { \top } \pmb { x } ) \right)\tag{3.83}
+$$
+
+$$
+= \operatorname { s g n } \Big ( \frac { 1 } { T } ( \sum _ { k = 1 } ^ { K } c _ { k } w _ { k } ) ^ { \top } \pmb { x } \Big )\tag{3.84}
+$$
+
+$$
+= \operatorname { s g n } { \Big ( } { \big ( } { \frac { 1 } { T } } \sum _ { t = 1 } ^ { T } w _ { t } ) ^ { \intercal } { \boldsymbol { x } } { \Big ) }\tag{3.85}
+$$
+
+$$
+{ \bf \Psi } = \mathrm { s g n } ( \bar { \bf w } ^ { \mathrm { \scriptscriptstyle T } } { \bf x } ) ,\tag{3.86}
+$$
+
+其中 $T$ 为训练过程中处理样本的总步数，w为这T步对应的平均权重向量.最直接的实现方式是在算法3.1中增加一个 $\bar { \mathbf { \Gamma } } _ { \bar { \mathbf { \Gamma } } } \bar { \mathbf { \Gamma } } _ { \bar { \mathbf { \Gamma } } }$ ,并在每次迭代时更新它：
+
+$$
+\bar { \mathbf { } w } \gets \bar { \mathbf { } w } + \mathbf { \epsilon w } _ { t } .\tag{3.87}
+$$
+
+但这种写法需要在处理每一个样本时都更新w.由于 $\bar { \mathbf { \Gamma } } _ { \bar { \mathbf { \Gamma } } } \bar { \mathbf { \Gamma } } _ { \bar { \mathbf { \Gamma } } }$ 和 ${ \mathbf { } } { \mathbf { } } w _ { t }$ 通常都是稠密向量，这一操作开销较大．为提高迭代效率，可以只在发生错误预测时进行等价更新.
+
+算法3.2给出了一个改进的平均感知器算法的训练过程[Daumé III,2012].
+
+参见习题3-9.
+
+算法 3.2 一种改进的平均感知器参数学习算法  
+输入：训练集 $\mathcal { D } = \{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ,最大处理步数T  
+1初始化:w ← 0, u ← 0, t← 1;  
+2 repeat  
+3 对训练集D中的样本随机排序;  
+4 for n = 1 ·. N do  
+5 选取一个样本(x(n), y(n));  
+6 计算预测类别 $\hat { y } ^ { ( n ) } = \mathrm { s g n } ( \boldsymbol { w } ^ { \top } \boldsymbol { x } ^ { ( n ) } )$   
+7 if y(n) ≠ y(n) then  
+8 w ← w + y(n)x(n);  
+9 u ← u + t y(n)x(n);  
+10 end  
+11 t ← t + 1;  
+12 if t > T then break; //达到最大处理步数  
+13 end  
+14 until t > T;  
+15 w = w − −u ;  
+输出：w
+
+## 3.4.4 扩展到多分类
+
+原始的感知器是一种二分类模型，但也可以很容易地扩展到多分类问题，甚至是更一般的结构化学习问题
+
+之前介绍的分类模型中，分类函数都是在输入x的特征空间上.为了使得感知器可以处理更复杂的输出，我们引入一个构建在输入输出联合空间上的特征函数 $\phi ( { \pmb x } , { \pmb y } )$ ,将样本对 $( { \pmb x } , { \pmb y } )$ 映射到一个特征向量空间
+
+在联合特征空间中，我们可以建立一个广义的感知器模型，
+
+$$
+\begin{array} { r } { \hat { \pmb { y } } = \underset { \pmb { y } \in \mathtt { G e n } ( \pmb { x } ) } { \arg \operatorname* { m a x } } \pmb { w } ^ { \top } \phi ( \pmb { x } , \pmb { y } ) , } \end{array}\tag{3.88}
+$$
+
+通过引入特征函数φ(x,y)，感知器不但可以用于多分类问题，也可以用于结构化学习问题，比如输出是序列形式.
+
+其中w为权重向量，Gen(x)表示输入x所有的输出目标集合
+
+广义感知器模型一般用来处理结构化学习问题.当用广义感知器模型来处理C分类问题时， ${ \pmb y } \in \{ 0 , 1 \} ^ { C }$ 为类别的one-hot向量表示.在C分类问题中，一种常用的特征函数 $\phi ( { \pmb x } , { \pmb y } )$ 是x和y的外积，即
+
+外积的定义参见公式(A.29).
+
+$$
+\begin{array} { r } { \phi ( \pmb { x } , \pmb { y } ) = \mathrm { v e c } ( \pmb { x } \pmb { y } ^ { \top } ) \in \mathbb { R } ^ { D C } , } \end{array}\tag{3.89}
+$$
+
+其中 $\mathrm { v e c } ( \cdot )$ 是向量化算子，φ(x,y)为DC维的向量.
+
+给定样本 $( { \pmb x } , { \pmb y } )$ ,若 $\pmb { x } \in \mathbb { R } ^ { D }$ ,y为第c维为1的one-hot向量，则
+
+…   
+0   
+x1 ←第(c−1)×D+1行   
+φ(x, y) = … (3.90)   
+xD ←第(c−1)×D+D行   
+0   
+…
+
+广义感知器算法的训练过程如算法3.3所示.
+
+算法 3.3 广义感知器参数学习算法  
+输入：训练集： $\{ ( \pmb { x } ^ { ( n ) } , \pmb { y } ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ，最大迭代次数T  
+1 初始化:w0 ← 0, k ← 0, t ← 0 ；  
+2 repeat  
+3 对训练集D中的样本随机排序;  
+4 for n = 1 ·. N do  
+5 选取一个样本 (x(n), y(n));  
+6 用公式(3.88) 计算预测类别 $\hat { \pmb y } ^ { ( n ) }$   
+7 if y(n) ≠ y(n) then  
+8 ${ \pmb w } _ { k + 1 }  { \pmb w } _ { k } + ( \phi ( { \pmb x } ^ { ( n ) } , { \pmb y } ^ { ( n ) } ) - \phi ( { \pmb x } ^ { ( n ) } , \hat { \pmb y } ^ { ( n ) } ) )$   
+9 k = k + 1 ;  
+10 end  
+11 t = t + 1 ;  
+12 if t = T then break; // 达到最大迭代次数  
+13 end  
+14 until t = T;  
+输出： ${ \pmb w } _ { k }$
+
+## 3.4.4.1 广义感知器的收敛性
+
+广义感知器在满足广义线性可分条件时，也能够保证在有限步骤内收敛.广义线性可分条件的定义如下：
+
+定义3.3-广义线性可分：对于训练集 $\mathcal { D } = \left\{ ( { \pmb x } ^ { ( n ) } , { \pmb y } ^ { ( n ) } ) \right\} _ { n = 1 } ^ { N }$ ,如果存在一个正的常数 $\gamma ( \gamma > 0 )$ 和权重向量 $\boldsymbol { w } ^ { * }$ ，并且 $\| \pmb { w } ^ { * } \| = 1$ ，对所有n都满足$\langle { \pmb w } ^ { * } , \phi ( { \pmb x } ^ { ( n ) } , { \pmb y } ^ { ( n ) } ) \rangle - \langle { \pmb w } ^ { * } , \phi ( { \pmb x } ^ { ( n ) } , { \pmb y } ) \rangle \geq \gamma , { \pmb y } \neq { \pmb y } ^ { ( n ) } ( \phi ( { \pmb x } ^ { ( n ) } , { \pmb y } ^ { ( n ) } )$ 为样本$\mathbf { \boldsymbol { x } } ^ { ( n ) } , \mathbf { \boldsymbol { y } } ^ { ( n ) }$ 的联合特征向量），那么训练集 $\mathcal { D }$ 在联合特征向量空间中是线性可分的.
+
+广义线性可分是多类线性可分的扩展，参见定义3.2.
+
+广义感知器的收敛性定义如下：
+
+定理3.2-广义感知器收敛性：如果训练集 $\mathcal { D } = \left\{ ( { \pmb x } ^ { ( n ) } , { \pmb y } ^ { ( n ) } ) \right\} _ { n = 1 } ^ { N }$ 是广义线性可分的，并令R是所有样本中真实标签和错误标签在特征空间 $\phi ( { \pmb x } , { \pmb y } )$ 最远的距离，即
+
+$$
+R = \operatorname* { m a x } _ { n } \operatorname* { m a x } _ { z \neq y ^ { ( n ) } } \| \phi ( \pmb { x } ^ { ( n ) } , \pmb { y } ^ { ( n ) } ) - \phi ( \pmb { x } ^ { ( n ) } , z ) \| ,\tag{3.91}
+$$
+
+那么广义感知器参数学习算法3.3的权重更新次数不超过 $\textstyle { \frac { R ^ { 2 } } { \gamma ^ { 2 } } }$
+
+原始论文给出了广义感知器在广义线性可分的收敛性证明，具体推导过程和两类感知器比较类似.
+
+参见习题3-11.
+
+## 3.5 支持向量机
+
+支持向量机（Support Vector Machine,SVM）是一个经典的二分类算法.它通过最大化分类间隔来寻找更稳健的分割超平面，因此被广泛应用于多种分类任务.
+
+给定一个二分类数据集 $\mathcal { D } = \{ ( { \pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \} _ { n = 1 } ^ { N }$ ,其中 $y ^ { ( n ) } \in \{ + 1 , - 1 \}$ ,如果两类样本是线性可分的，即存在一个超平面
+
+本节中不使用增广的特征向量和特征权重.
+
+$$
+\pmb { w } ^ { \top } \pmb { x } + b = 0\tag{3.92}
+$$
+
+将两类样本分开，那么对于每个样本都有 $y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b ) > 0$
+
+数据集D中每个样本 $\mathbf { \boldsymbol { x } } ^ { ( n ) }$ 到分割超平面的距离为：
+
+$$
+\gamma ^ { ( n ) } = \frac { | \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } + b | } { \| \pmb { w } \| } = \frac { y ^ { ( n ) } ( \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } + b ) } { \| \pmb { w } \| } .\tag{3.93}
+$$
+
+我们定义间隔（Margin）γ为整个数据集 $\mathcal { D }$ 中所有样本到分割超平面的最短距离：
+
+$$
+\gamma = \operatorname* { m i n } _ { n } \gamma ^ { ( n ) } .\tag{3.94}
+$$
+
+https://nndl.ai/
+
+如果间隔 $\gamma$ 越大，其分割超平面对两个数据集的划分越稳定，不容易受噪声等因素影响.支持向量机的目标是寻找一个超平面 $( w ^ { * } , b ^ { * } )$ 使得 $\gamma$ 最大,即
+
+$$
+\begin{array} { r l } { \underset { \pmb { w } , b } { \operatorname* { m a x } } } & { \quad \gamma } \\ { \mathrm { s . t . } } & { \quad \frac { y ^ { ( n ) } ( \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } + b ) } { \| \pmb { w } \| } \geq \gamma , \forall n \in \{ 1 , \cdots , N \} . } \end{array}\tag{3.95}
+$$
+
+由于同时缩放 w → kw 和 b → kb不会改变样本 $\pmb { x } ^ { ( n ) }$ 到分割超平面的距离，我们可以限制 $\| \pmb { w } \| \cdot \gamma = 1$ ,则公式(3.95)等价于
+
+间隔为 $\begin{array} { r } { \gamma = \frac { 1 } { \| \pmb { w } \| } } \end{array}$
+
+$$
+\begin{array} { r l } { \underset { \pmb { w } , \boldsymbol { b } } { \operatorname* { m a x } } \quad } & { \frac { 1 } { \| \pmb { w } \| ^ { 2 } } } \\ { \mathrm { s . t . } \quad } & { y ^ { ( n ) } ( \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } + b ) \geq 1 , \forall n \in \{ 1 , \cdots , N \} . } \end{array}\tag{3.96}
+$$
+
+数据集中所有满足 $y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b ) = 1$ 的样本点，都称为支持向量（Sup-$\mathrm { p o r t ~ V e c t o r ~ } )$
+
+对于一个线性可分的数据集，其分割超平面有很多个，但是间隔最大的超平面是唯一的．图3.7给定了支持向量机的最大间隔分割超平面的示例，其中轮廓线加粗的样本点为支持向量.
+
+![](images/28042a2403cc40141578e7ca25a8c3eedafd033d2e30382ba1d860e2ef092890.jpg)（描述：支持向量机的最大间隔分割超平面示意图，包含决策边界、支持向量和相关数学表达式）  
+图 3.7 支持向量机示例
+
+## 3.5.1 参数学习
+
+为了找到最大间隔分割超平面，将公式(3.96)的目标函数写为凸优化问题
+
+$$
+\operatorname* { m i n } _ { \boldsymbol { w } , b } \qquad \frac { 1 } { 2 } \| \boldsymbol { w } \| ^ { 2 }\tag{3.97}
+$$
+
+https://nndl.ai/
+
+$$
+\begin{array} { r } { \mathrm { s . t . } \qquad 1 - y ^ { ( n ) } ( \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } + b ) \leq 0 , \qquad \forall n \in \{ 1 , \cdots , N \} . } \end{array}
+$$
+
+使用拉格朗日乘数法，公式(3.97)的拉格朗日函数为
+
+$$
+\Lambda ( \pmb { w } , b , \lambda ) = \frac { 1 } { 2 } \| \pmb { w } \| ^ { 2 } + \sum _ { n = 1 } ^ { N } \lambda _ { n } \Big ( 1 - y ^ { ( n ) } ( \pmb { w } ^ { \top } \pmb { x } ^ { ( n ) } + b ) \Big ) ,
+$$
+
+拉格朗日乘数法与KKT条件参见第C.3节.
+
+(3.98)
+
+其中 $\lambda _ { 1 } \ge 0 , \cdots , \lambda _ { N } \ge 0$ 为拉格朗日乘数.计算 $\Lambda ( w , b , \lambda )$ 关于 $\textbf { \em w }$ 和b的导数，并令其等于0，得到
+
+$$
+{ \pmb w } = \sum _ { n = 1 } ^ { N } \lambda _ { n } y ^ { ( n ) } { \pmb x } ^ { ( n ) } ,\tag{3.99}
+$$
+
+$$
+0 = \sum _ { n = 1 } ^ { N } \lambda _ { n } y ^ { ( n ) } .\tag{3.100}
+$$
+
+将公式(3.99)代入公式(3.98),并利用公式(3.100),得到拉格朗日对偶函数
+
+$$
+\Gamma ( \lambda ) = - \frac { 1 } { 2 } \sum _ { n = 1 } ^ { N } \sum _ { m = 1 } ^ { N } \lambda _ { m } \lambda _ { n } y ^ { ( m ) } y ^ { ( n ) } ( { \pmb x } ^ { ( m ) } ) ^ { \top } { \pmb x } ^ { ( n ) } + \sum _ { n = 1 } ^ { N } \lambda _ { n } .\tag{3.101}
+$$
+
+支持向量机的主优化问题为凸优化问题，满足强对偶性，即主优化问题可以通过最大化对偶函数 $\mathrm { m a x } _ { \lambda \ge 0 } \Gamma ( \lambda )$ 来求解.凸优化问题在满足Slater条件（即存在严格可行点）时成立强对偶性.SVM的约束为线性不等式，天然满足此条件，因此主问题的最优值等于对偶问题的最优值.对偶函数 $\Gamma ( \lambda )$ 是一个凹函数，因此最大化对偶函数是一个凸优化问题，可以通过多种凸优化方法来进行求解，得到拉格朗日乘数的最优值λ\*.但由于其约束条件的数量为训练样本数量，一般的优化方法代价比较高，因此在实践中通常采用比较高效的优化方法，比如序列最小优化(Sequential Minimal Optimization,SMO)算法[Platt，1998]等.
+
+根据KKT条件中的互补松弛条件，最优解满足 $\lambda _ { n } ^ { * } \big ( 1 - y ^ { ( n ) } ( w ^ { * ^ { \top } } x ^ { ( n ) }$ 十$b ^ { * } ) ) = 0$ 如果样本 $\pmb { x } ^ { ( n ) }$ 不在约束边界上， ${ \lambda } _ { n } ^ { * } = 0$ ，其约束失效；如果样本 $\mathbf { \boldsymbol { x } } ^ { ( n ) }$ 在约束边界上， $\lambda _ { n } ^ { * } \geq 0 .$ 这些位于约束边界上的样本点称为支持向量（SupportVector），也就是离决策边界最近的点.
+
+参见公式(C.26).
+
+在计算出 $\lambda ^ { * }$ 后，根据公式(3.99)计算出最优权重 $\boldsymbol { w } ^ { * }$ ，最优偏置 $b ^ { * }$ 可以通过任选一个支持向量 $( \tilde { \boldsymbol { x } } , \tilde { \boldsymbol { y } } )$ 计算得到：
+
+$$
+b ^ { * } = \tilde { y } - \boldsymbol { w } ^ { * ^ { \intercal } } \tilde { x } .\tag{3.102}
+$$
+
+最优参数的支持向量机的决策函数为
+
+$$
+f ( \pmb { x } ) = \mathrm { s g n } ( \pmb { w } ^ { * ^ { \top } } \pmb { x } + b ^ { * } )\tag{3.103}
+$$
+
+https://nndl.ai/
+
+$$
+\mathbf { \Psi } = \operatorname { s g n } \left( \sum _ { n = 1 } ^ { N } \lambda _ { n } ^ { * } y ^ { ( n ) } ( { \pmb x } ^ { ( n ) } ) ^ { \top } { \pmb x } + b ^ { * } \right) .\tag{3.104}
+$$
+
+支持向量机的决策函数只依赖于 $\lambda _ { n } ^ { * } > 0$ 的样本点，即支持向量
+
+支持向量机的目标函数是凸优化问题，可以通过SMO等方法求得全局最优解；在中小规模数据或高维稀疏特征场景下，它通常具有较好的泛化性能.此外，支持向量机的决策函数只依赖于支持向量，因此在预测时往往只需要使用一部分训练样本.
+
+## 3.5.2 核函数
+
+支持向量机还有一个重要的优点是可以使用核函数（KernelFunction）隐式地将样本从原始特征空间映射到更高维的空间，并解决原始特征空间中的线性不可分问题.比如在一个变换后的特征空间 $\phi$ 中，支持向量机的决策函数为
+
+$$
+f ( \pmb { x } ) = \mathrm { s g n } ( \pmb { w } ^ { * \top } \phi ( \pmb { x } ) + b ^ { * } )\tag{3.105}
+$$
+
+$$
+= \operatorname { s g n } \left( \sum _ { n = 1 } ^ { N } \lambda _ { n } ^ { * } y ^ { ( n ) } k ( { \pmb x } ^ { ( n ) } , { \pmb x } ) + b ^ { * } \right) ,\tag{3.106}
+$$
+
+其中 $k ( { \pmb x } , z ) = \phi ( { \pmb x } ) ^ { \top } \phi ( z )$ 为核函数.核化后的支持向量机在线性意义上对应的是特征空间中的超平面，但在原始输入空间中对应的决策边界通常是非线性的一般不需要显式给出 $\phi ( { \pmb x } )$ 的具体形式，而是通过核技巧（KernelTrick）来构造.比如以 $\boldsymbol { x } , \boldsymbol { z } \in \mathbb { R } ^ { 2 }$ 为例，我们可以构造一个核函数：
+
+$$
+k ( \pmb { x } , z ) = ( 1 + \pmb { x } ^ { \top } z ) ^ { 2 } = \phi ( \pmb { x } ) ^ { \top } \phi ( z ) ,\tag{3.107}
+$$
+
+参见习题3-13.
+
+来隐式地计算 $x , z$ 在特征空间 $\phi$ 中的内积，其中
+
+$$
+\phi ( { \pmb x } ) = [ 1 , \sqrt { 2 } x _ { 1 } , \sqrt { 2 } x _ { 2 } , \sqrt { 2 } x _ { 1 } x _ { 2 } , x _ { 1 } ^ { 2 } , x _ { 2 } ^ { 2 } ] ^ { \top } .\tag{3.108}
+$$
+
+对于图3.8中的同心圆型数据，样本在原始空间中线性不可分．我们可以使用与半径平方相关的特征映射，或直接采用高斯核
+
+$$
+k ( { \pmb x } , z ) = \exp ( - \gamma | { \pmb x } - z | ^ { 2 } ) ,\tag{3.109}
+$$
+
+其中 $\gamma$ 为超参数.高斯核不需要显式写出 $\phi ( { \pmb x } )$ ，但能把这类非线性结构映射到高维空间后线性分开
+
+## 3.5.3 软间隔
+
+在支持向量机的优化问题中，约束条件比较严格.如果训练集中的样本在特征空间中不是线性可分的，就无法找到最优解.为了能够容忍部分不满足约束的
+
+![](images/7993608c4f7bdc33d206078ec9105b1cbbdd05b1a558de117ac8f8780dc0f355.jpg)（描述：示意图，展示原始空间中线性不可分的样本通过核函数映射到高维特征空间后变为线性可分的过程）  
+图3.8 核函数将样本从原始空间映射到高维特征空间示意图
+
+样本，我们可以引入松弛变量（SlackVariable)ξ,将优化问题变为
+
+$$
+\begin{array} { l } { \displaystyle \underset { w , b } { \operatorname* { m i n } } \quad } & { \frac { 1 } { 2 } \| w \| ^ { 2 } + C \displaystyle \sum _ { n = 1 } ^ { N } \xi _ { n } } \\ { \mathrm { s . t . } \quad } & { 1 - y ^ { ( n ) } ( w ^ { \top } \pmb { x } ^ { ( n ) } + b ) - \xi _ { n } \leq 0 , \qquad \forall n \in \{ 1 , \cdots , N \} } \\ { \quad } & { \xi _ { n } \geq 0 , \qquad \forall n \in \{ 1 , \cdots , N \} } \end{array}\tag{3.110}
+$$
+
+其中参数 $C > 0$ 用来控制间隔和松弛变量惩罚的平衡.引入松弛变量的间隔称为软间隔（Soft Margin）.对于固定的w和b,约束 $\xi _ { n } \geq 1 - y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b )$ 在最优解处取等号，即 $\xi _ { n } ^ { * } = \operatorname* { m a x } ( 0 , 1 - y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b ) )$ . 将其代入目标函数，即得到基于Hinge损失的无约束优化形式：公式(3.110)也可以表示为经验风险+正则化项的形式：
+
+$$
+\operatorname* { m i n } _ { w , b } \qquad \sum _ { n = 1 } ^ { N } \operatorname* { m a x } \Big ( 0 , 1 - y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b ) \Big ) + \frac { 1 } { 2 C } \| { \pmb w } \| ^ { 2 } ,\tag{3.111}
+$$
+
+其中可以把 $\operatorname* { m a x } \Big ( 0 , 1 - y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b ) \Big )$ 看作损失函数，称为Hinge损失函数(Hinge Loss Function),把 $\frac { 1 } { 2 C } \| \pmb { w } \| ^ { 2 }$ 看作正则化项， $\textstyle { \frac { 1 } { C } }$ 是正则化系数
+
+参见公式(2.18).
+
+软间隔支持向量机的参数学习和原始支持向量机类似，其最终决策函数也只和支持向量有关，即满足 $1 - y ^ { ( n ) } ( { \pmb w } ^ { \top } { \pmb x } ^ { ( n ) } + b ) - \xi _ { n } = 0$ 的样本.
+
+参见习题3-14.
+
+## 3.6 损失函数对比
+
+本章介绍了三种二分类模型:Logistic回归、感知器和支持向量机.虽然它们的决策函数相同，但由于使用了不同的损失函数以及相应的优化方法，导致它们在实际任务上的表现存在一定的差异.
+
+为了比较这些损失函数，我们统一定义类别标签 $y \in \{ + 1 , - 1 \}$ ，并定义$f ( \pmb { x } ; \pmb { w } ) = \pmb { w } ^ { \top } \pmb { x } + b$ 这样对于样本 $( { \pmb x } , y )$ ，若 $y f ( { \pmb x } ; { \pmb w } ) > 0$ ，则分类正确；若
+
+$y f ( \pmb { x } ; \pmb { w } ) < 0$ ，则分类错误.这样，为了方便比较这些模型，我们可以将它们的损失函数都表述为定义在 $y f ( \pmb { x } ; \pmb { w } )$ 上的函数.
+
+Logistic回归的损失函数可以改写为
+
+$$
+\begin{array} { r l r l } & { \mathcal { L } _ { L R } = - I ( y = 1 ) \log \sigma \big ( f ( x ; w ) \big ) - I ( y = - 1 ) \log \Big ( 1 - \sigma \big ( f ( x ; w ) \big ) \Big ) } & &  I ( \cdot ) \mathcal { H } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 } { \mathcal { H } } \frac { 1 }  \mathcal  \end{array}\tag{3.112}
+$$
+
+(3.113)
+
+(3.114)
+
+(3.115)
+
+感知器的损失函数为
+
+$$
+\begin{array} { r } { \mathcal { L } _ { p } = \operatorname* { m a x } \big ( 0 , - y f ( \pmb { x } ; \pmb { w } ) \big ) . } \end{array}\tag{3.116}
+$$
+
+软间隔支持向量机的损失函数为
+
+$$
+\mathcal { L } _ { h i n g e } = \operatorname* { m a x } { \left( 0 , 1 - y f ( \pmb { x } ; \pmb { w } ) \right) } .\tag{3.117}
+$$
+
+从建模思想上看，Logistic损失是平滑的并带有概率解释；感知器损失只关心是否错分;Hinge损失不仅要求分对，还要求分类结果留出一定间隔.
+
+平方损失可以重写为
+
+$$
+\mathcal { L } _ { s q u a r e d } = \left( y - f ( \pmb { x } ; \pmb { w } ) \right) ^ { 2 }\tag{3.118}
+$$
+
+$$
+{ \bf \xi } = 1 - 2 y f ( { \bf x } ; { \pmb w } ) + ( y f ( { \bf x } ; { \pmb w } ) ) ^ { 2 }\tag{3.119}
+$$
+
+$$
+y ^ { 2 } = 1 .
+$$
+
+$$
+{ \bf \omega } = { \left( 1 - y f ( { \bf x } ; { \bf w } ) \right) } ^ { 2 } .\tag{3.120}
+$$
+
+图3.9给出了不同损失函数的对比.对于二分类来说，当 $y f ( { \pmb x } ; { \pmb w } ) > 0$ 时,分类器预测正确，并且 $y f ( \pmb { x } ; \pmb { w } )$ 越大，模型的预测越正确；当 $y f ( \pmb { x } ; \pmb { w } ) < 0$ 时，分类器预测错误，并且 $y f ( \pmb { x } ; \pmb { w } )$ 越小，模型的预测越错误.因此，一个好的损失函数应该随着 $y f ( \pmb { x } ; \pmb { w } )$ 的增大而减少.从图3.9中看出，除了平方损失，其他损失函数都比较适合于二分类问题
+
+![](images/5cf4bc08f1f4b3a9bb30be02b2be5b3a7e98833ebed27b42ce5c5eff618baad6.jpg)  
+图 3.9 不同损失函数的对比
+
+## 3.7 总结和扩展阅读
+
+和回归问题不同，分类问题中的目标标签y是离散的类别标签，因此分类问题中的决策函数需要输出离散值或是标签的条件概率．线性分类模型一般是一个广义线性函数，即一个或多个线性判别函数加上一个非线性激活函数，所谓“线性”是指决策边界由一个或多个超平面组成.
+
+表3.1给出了几种常见的线性模型的比较.虽然这些模型都建立在线性打分之上，但它们分别对应概率建模、错误驱动学习和间隔最大化等不同思路．在Logistic 回归和Softmax回归中,y为类别的one-hot向量表示;在感知器和支持向量机中,y为{+1,−1}.
+
+表 3.1 几种常见的线性模型对比
+<table><tr><td>线性模型</td><td>激活函数</td><td>损失函数</td><td>优化方法</td></tr><tr><td>线性回归</td><td></td><td>平方损失</td><td>最小二乘、梯度下降</td></tr><tr><td>Logistic 回归</td><td> $\sigma ( \pmb { w } ^ { \top } \pmb { x } )$ </td><td>二分类交叉熵损失 梯度下降</td><td></td></tr><tr><td>Softmax 回归</td><td> $\operatorname { s o f t m a x } ( W ^ { \intercal } x )$ </td><td>多类交叉熵损失</td><td>梯度下降</td></tr><tr><td>感知器</td><td> $\mathrm { s g n } ( { \pmb w } ^ { \top } { \pmb x } )$ </td><td>感知器损失</td><td>随机梯度下降</td></tr><tr><td>支持向量机</td><td> $\mathrm { s g n } ( { \pmb w } ^ { \top } { \pmb x } )$ </td><td>Hinge损失</td><td>二次规划、SMO等</td></tr></table>
+
+Logistic 回归是一种概率模型，它通过Logistic 函数将实数映射到 [0, 1]区间．类似地，正态分布的累积分布函数也可以起到这一作用，对应的模型称为probit 回归. 相关内容可参考《Pattern Recognition and Machine Learning》[Bishop, 2007]第4章.
+
+感知器是最简单的线性分类模型之一，其学习算法直观且具有代表性[Rosenblatt, 1958]. [Freund et al., 1999]提出了使用核技巧改进感知器学习算法，并用投票感知器来提高泛化能力.[Collins,2002]将感知器算法扩展到结构化学习，给出了相应的收敛性证明，并且提出一种更加有效并且实用的参数平均化策略.
+
+要深入了解支持向量机以及核方法，可以参考文献《Learning with Ker-nels: Support Vector Machines, Regularization, Optimization, and Beyond[Scholkopf et al., 2001].
+
+本章介绍的Logistic回归的交叉熵损失函数和梯度更新公式，与后续多层神经网络(第4章)输出层的处理完全一致，为理解反向传播算法奠定了基础.

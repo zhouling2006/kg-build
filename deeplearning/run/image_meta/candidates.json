@@ -1,0 +1,1739 @@
+{
+ "stats": {
+  "files": 16,
+  "total_refs": 224,
+  "equation": 0,
+  "image": 192,
+  "unmatched": 32
+ },
+ "candidates": [
+  {
+   "file": "01_绪论.md",
+   "line": 101,
+   "ref": "images/910995299f51ec4297418de843f8e66f066e9a217b80b67c74b88d69b7632b59.jpg",
+   "name": "910995299f51ec4297418de843f8e66f066e9a217b80b67c74b88d69b7632b59.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\910995299f51ec4297418de843f8e66f066e9a217b80b67c74b88d69b7632b59.jpg",
+   "size": 26831,
+   "ctx": "\n基础模型（Founda-tion Model)更强调模型的通用性和可迁移性；大模型更强调规模，二者高度相关，但并不完全等同.\n\n![](images/910995299f51ec4297418de843f8e66f066e9a217b80b67c74b88d69b7632b59.jpg)（描述：时间轴图，展示了人工智能从1940年到2025年的发展历程，分为推理期、知识期、学习期和大模型期，并标注了关键事件和里程碑）  \n图 1.1 人工智能发展史\n\n## 1.1.2 人工智能的流派"
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 146,
+   "ref": "images/cb3e0257874aac38f9acce5b927beea31a3f9fc11a0b22676b3f05fa30edf70f.jpg",
+   "name": "cb3e0257874aac38f9acce5b927beea31a3f9fc11a0b22676b3f05fa30edf70f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\cb3e0257874aac38f9acce5b927beea31a3f9fc11a0b22676b3f05fa30edf70f.jpg",
+   "size": 12691,
+   "ctx": "\n（4）预测：机器学习的核心部分，学习一个函数并进行预测\n\n![](images/cb3e0257874aac38f9acce5b927beea31a3f9fc11a0b22676b3f05fa30edf70f.jpg)（描述：流程图，展示传统机器学习的数据处理流程，包括原始数据到结果的各个步骤，重点标注了特征处理和浅层学习环节）  \n图1.2 传统机器学习的数据处理流程\n\n上述流程中，每步特征处理以及预测一般都是分开进行的．传统的机器学习模型主要关注最后一步，即构建预测函数.但是实际操作过程中，不同预测模型的性能相差不多，而前三步中的特征处理对最终系统的准确性有着十分关键的作用，特征处理一般都需要人工于预完成，利用人类的经验来选取好的特征，并最终提高机器学习系统的性能.因此，很多的机器学习问题变成了特征工程"
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 202,
+   "ref": "images/19de298f56711058120b76f72275aee22b5755bfbb2c70446ff011530d5f63a0.jpg",
+   "name": "19de298f56711058120b76f72275aee22b5755bfbb2c70446ff011530d5f63a0.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\19de298f56711058120b76f72275aee22b5755bfbb2c70446ff011530d5f63a0.jpg",
+   "size": 12287,
+   "ctx": "\n图1.3展示了一个3维one-hot向量空间和一个2维嵌入空间的对比.图中有三个样本 $w _ { 1 } , w _ { 2 }$ 和 $w _ { 3 } .$ 在one-hot向量空间中，每个样本都位于坐标轴上，每个坐标轴上一个样本.而在低维的嵌入空间中，每个样本都不在坐标轴上，样本之间可以计算相似度.\n\n![](images/19de298f56711058120b76f72275aee22b5755bfbb2c70446ff011530d5f63a0.jpg)（描述：三维one-hot向量空间与二维嵌入空间的对比示意图，展示三个样本在不同空间中的位置关系）  \n图 1.3 one-hot 向量空间与嵌入空间\n\n## 1.3.2 深层表示的学习"
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 219,
+   "ref": "images/6c5b33d0e649c52b436c2fd3e5e943318b7cf53bd6a1d949335c76c7ef34a808.jpg",
+   "name": "6c5b33d0e649c52b436c2fd3e5e943318b7cf53bd6a1d949335c76c7ef34a808.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\6c5b33d0e649c52b436c2fd3e5e943318b7cf53bd6a1d949335c76c7ef34a808.jpg",
+   "size": 13278,
+   "ctx": "\n图1.4给出了深度学习的数据处理流程，通过多层的特征转换，把原始数据变成更高层次、更抽象的表示.这些学习到的表示可以替代人工设计的特征，从而避免“特征工程”.\n\n![](images/6c5b33d0e649c52b436c2fd3e5e943318b7cf53bd6a1d949335c76c7ef34a808.jpg)（描述：流程图，展示深度学习中从原始数据到结果的特征转换过程，包括底层、中层、高层特征及预测阶段）  \n图1.4 深度学习的数据处理流程\n\n和“浅层学习”不同，深度学习需要解决的关键问题是贡献度分配问题，即系统中不同组件（component）或其参数对最终输出结果的贡献如何分配.以围棋为例，每当下完一盘棋，最后的结果要么赢要么输.我们会思考哪几步棋导致了最后的胜利，或者哪几步棋导致了最后的败局—如何判断每一步棋的贡献，就是贡献度分配问题"
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 264,
+   "ref": "images/85939f2b3fdfc686e8fd7ef61bbb97513b34d7f18d92ecc3120c3a88e99ecefc.jpg",
+   "name": "85939f2b3fdfc686e8fd7ef61bbb97513b34d7f18d92ecc3120c3a88e99ecefc.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\85939f2b3fdfc686e8fd7ef61bbb97513b34d7f18d92ecc3120c3a88e99ecefc.jpg",
+   "size": 21082,
+   "ctx": "\n神经元可以接收其他神经元的信息，也可以发送信息给其他神经元.神经元之间没有物理连接，两个“连接”的神经元之间留有20纳米左右的缝隙，并靠突触（Synapse）进行互联来传递信息，形成一个神经网络，即神经系统.突触可以理解为神经元之间的连接“接口”，将一个神经元的兴奋状态传到另一个神经元一个神经元可被视为一种只有两种状态的细胞：兴奋和抑制.神经元的状态取决于从其他的神经细胞收到的输入信号量，以及突触的强度（抑制或加强）.当信号量总和超过了某个阈值时，细胞体就会兴奋，产生电脉冲.电脉冲沿着轴突并通过突触传递到其他神经元.图1.5给出了一种典型的神经元结构.\n\n![](images/85939f2b3fdfc686e8fd7ef61bbb97513b34d7f18d92ecc3120c3a88e99ecefc.jpg)（描述：示意图，展示典型神经元结构，包括树突、细胞体、轴突和突触连接）  \n图 1.5 典型神经元结构1\n\n从学习的角度看，人脑神经网络的关键不在于单个神经元本身，而在于神经元之间如何连接以及这些连接如何随经验而改变.不同神经元之间的突触有强有弱，其强度可以随着刺激和经验不断"
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 319,
+   "ref": "images/be70734340e9bc6bcf7f0cde693ba5737cd35da6954ddec793b97b06551f4dd5.jpg",
+   "name": "be70734340e9bc6bcf7f0cde693ba5737cd35da6954ddec793b97b06551f4dd5.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\be70734340e9bc6bcf7f0cde693ba5737cd35da6954ddec793b97b06551f4dd5.jpg",
+   "size": 1723,
+   "ctx": "\n从整体上看，神经网络的发展并不是一条线性上升的道路，而是经历了“模型提出一遭遇质疑一因学习算法复兴一在深度学习中崛起一在大模型时代走向统一与系统化”的过程，其背后的关键转折，主要来自三个因素：模型结构是否足够有表达力、学习算法是否可行以及计算与数据条件是否成熟.\n\n![](images/be70734340e9bc6bcf7f0cde693ba5737cd35da6954ddec793b97b06551f4dd5.jpg)（描述：结构图，展示前馈神经网络的层次结构，包含输入层y、隐藏层h和输出层z）  \n(a) 前馈网络\n\n![](images/eaf50f52846b357ef536b303ce9e080c65e1e73d3a7e9f474a17735726e35c7a.jpg)（描述：这是一个前馈神经网络的结构图，展示了输入层x1到x4通过隐藏层h1到h4的单向传递过程。）  "
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 322,
+   "ref": "images/eaf50f52846b357ef536b303ce9e080c65e1e73d3a7e9f474a17735726e35c7a.jpg",
+   "name": "eaf50f52846b357ef536b303ce9e080c65e1e73d3a7e9f474a17735726e35c7a.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\eaf50f52846b357ef536b303ce9e080c65e1e73d3a7e9f474a17735726e35c7a.jpg",
+   "size": 4292,
+   "ctx": "![](images/be70734340e9bc6bcf7f0cde693ba5737cd35da6954ddec793b97b06551f4dd5.jpg)（描述：结构图，展示前馈神经网络的层次结构，包含输入层y、隐藏层h和输出层z）  \n(a) 前馈网络\n\n![](images/eaf50f52846b357ef536b303ce9e080c65e1e73d3a7e9f474a17735726e35c7a.jpg)（描述：这是一个前馈神经网络的结构图，展示了输入层x1到x4通过隐藏层h1到h4的单向传递过程。）  \n(b) 记忆网络\n\n![](images/5b76790cec0d391fa78f0bbaa804deba5e00545174ca61fc32e1a6cc10ee1b1b.jpg)（描述：图网络结构示意图，中心节点与周围四个节点通过红色箭头连接）  "
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 325,
+   "ref": "images/5b76790cec0d391fa78f0bbaa804deba5e00545174ca61fc32e1a6cc10ee1b1b.jpg",
+   "name": "5b76790cec0d391fa78f0bbaa804deba5e00545174ca61fc32e1a6cc10ee1b1b.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\5b76790cec0d391fa78f0bbaa804deba5e00545174ca61fc32e1a6cc10ee1b1b.jpg",
+   "size": 3865,
+   "ctx": "![](images/eaf50f52846b357ef536b303ce9e080c65e1e73d3a7e9f474a17735726e35c7a.jpg)（描述：这是一个前馈神经网络的结构图，展示了输入层x1到x4通过隐藏层h1到h4的单向传递过程。）  \n(b) 记忆网络\n\n![](images/5b76790cec0d391fa78f0bbaa804deba5e00545174ca61fc32e1a6cc10ee1b1b.jpg)（描述：图网络结构示意图，中心节点与周围四个节点通过红色箭头连接）  \n(c) 图网络\n\n![](images/536c25987c6404d2c5b57842aeb517f9e9c6508c14255118ced81971d56a67ae.jpg)（描述：示意图，展示注意力网络中输入序列x与隐藏状态h之间的连接关系）  "
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 328,
+   "ref": "images/536c25987c6404d2c5b57842aeb517f9e9c6508c14255118ced81971d56a67ae.jpg",
+   "name": "536c25987c6404d2c5b57842aeb517f9e9c6508c14255118ced81971d56a67ae.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\536c25987c6404d2c5b57842aeb517f9e9c6508c14255118ced81971d56a67ae.jpg",
+   "size": 5731,
+   "ctx": "![](images/5b76790cec0d391fa78f0bbaa804deba5e00545174ca61fc32e1a6cc10ee1b1b.jpg)（描述：图网络结构示意图，中心节点与周围四个节点通过红色箭头连接）  \n(c) 图网络\n\n![](images/536c25987c6404d2c5b57842aeb517f9e9c6508c14255118ced81971d56a67ae.jpg)（描述：示意图，展示注意力网络中输入序列x与隐藏状态h之间的连接关系）  \n(d) 注意力网络  \n图 1.6 四种不同的网络结构示例\n"
+  },
+  {
+   "file": "01_绪论.md",
+   "line": 384,
+   "ref": "images/a592e0933a38bce73910aa9e23e92b8f338e58c4f2405b328cf5da1f67458445.jpg",
+   "name": "a592e0933a38bce73910aa9e23e92b8f338e58c4f2405b328cf5da1f67458445.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\a592e0933a38bce73910aa9e23e92b8f338e58c4f2405b328cf5da1f67458445.jpg",
+   "size": 72530,
+   "ctx": "\n机器学习机器学习为全书提供了最基本的研究视角和方法语言.一般来说，机器学习主要关注如何从数据中学习规律，并利用这些规律进行预测、生成或决策.围绕这一目标，我们通常从三个方面来理解一个机器学习问题：一是模型，即用什么形式来刻画输入与输出之间的关系；二是学习准则，即如何定义“学得好不好”；三是优化算法，即如何求解模型参数.按照任务类型，机器学习又可以分为监督学习、无（自）监督学习和强化学习等.其中，监督学习主要包括分类、回归和结构化预测；无（自）监督学习与自编码器、密度估计和深度生成模型密切相关;强化学习则关注智能体如何通过与环境交互来学习策略.从本书的安排来看，第2章和第3章主要建立这一部分的基础.特别地，神经网络可以看成一类重要的非线性模型，因此机器学习是理解后续神经网络和深度学习内容的出发点.\n\n![](images/a592e0933a38bce73910aa9e23e92b8f338e58c4f2405b328cf5da1f67458445.jpg)（描述：一张展示机器学习、神经网络与概率图模型之间关系的韦恩图，包含模型、推断、学习等要素及其子类）  \n图1.7 机器学习、神经"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 13,
+   "ref": "images/0f6db3ae811835a117526caec3a63c1afedb791e98673daea7ee3f053d328ed4.jpg",
+   "name": "0f6db3ae811835a117526caec3a63c1afedb791e98673daea7ee3f053d328ed4.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0f6db3ae811835a117526caec3a63c1afedb791e98673daea7ee3f053d328ed4.jpg",
+   "size": 57523,
+   "ctx": "\n以手写体数字识别为例，我们需要让计算机能自动识别手写的数字.比如图2.1中的例子，将5识别为数字5,将 $\\scriptstyle ( { \\boldsymbol { \\theta } } \\cdot { \\boldsymbol { \\mathbf { \\mathit { \\Omega } } } } )$ 识别为数字6.手写数字识别是一个经典的机器学习任务，对人来说很简单，但对计算机来说却十分困难.我们很难总结每个数字的手写体特征，或者区分不同数字的规则，因此设计一套识别算法是一项几乎不可能的任务.在现实生活中，很多问题都类似于手写体数字识别这类问题，比如物体识别、语音识别等.对于这类问题，我们不知道如何设计一个计算机程序来解决，即使可以通过一些启发式规则来实现，其过程也是极其复杂的.因此，人们开始尝试采用另一种思路，即让计算机“看”大量的样本，并从中学习到一些经验，然后用这些经验来识别新的样本.要识别手写体数字，首先通过人工标注大量的手写体数字图像（即每张图像都通过人工标记了它是什么数字），这些图像作为训练数据，然后通过学习算法自动生成一套模型，并依靠它来识别新的手写体数字.这个"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 66,
+   "ref": "images/60a5168bc5ca2fd823d77dccdd0ee4568a5b6c1a023a3a6b384f48b9b1d1282b.jpg",
+   "name": "60a5168bc5ca2fd823d77dccdd0ee4568a5b6c1a023a3a6b384f48b9b1d1282b.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\60a5168bc5ca2fd823d77dccdd0ee4568a5b6c1a023a3a6b384f48b9b1d1282b.jpg",
+   "size": 11973,
+   "ctx": "\n图2.2给出了机器学习的基本流程.对一个预测任务，输入特征向量为 $_ { x }$ ，输出标签为 $y$ ，我们选择一个函数集合 $\\mathcal { F }$ ，通过学习算法A和一组训练样本D，从$\\mathcal { F }$ 中学习到函数 $f ^ { * } ( x )$ .如果还需要进行模型选择或超参数调整，则通常再引入一个验证集.这样对新的输入 $_ { x }$ ,就可以用函数 $f ^ { * } ( x )$ 进行预测.\n\n![](images/60a5168bc5ca2fd823d77dccdd0ee4568a5b6c1a023a3a6b384f48b9b1d1282b.jpg)（描述：机器学习基本流程的示意图，展示了输入特征向量x通过学习到的函数f*(x)生成输出预测值，同时训练样本集D、学习算法A和函数集合F之间的关系）  \n图2.2 机器学习基本流程示意图\n\n## 2.2 机器学习的基本要素"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 215,
+   "ref": "images/d9aeacaeb2dedb59cd050f250d2d49b4241a80caa8ca65bbbb1681d59f0b445d.jpg",
+   "name": "d9aeacaeb2dedb59cd050f250d2d49b4241a80caa8ca65bbbb1681d59f0b445d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\d9aeacaeb2dedb59cd050f250d2d49b4241a80caa8ca65bbbb1681d59f0b445d.jpg",
+   "size": 1227,
+   "ctx": "KL散度.因此,最小化交叉熵等价于最小化KL散度,即让预测分布 $q$ 尽  \n可能接近真实分布 $p .$ 交叉熵与KL散度参见竺\n\n![](images/d9aeacaeb2dedb59cd050f250d2d49b4241a80caa8ca65bbbb1681d59f0b445d.jpg)（描述：该图是关于交叉熵与KL散度关系的数学公式示意图，展示了最小化交叉熵等价于最小化KL散度的推导过程）\n\n因为 $\\textbf {  { y } }$ 为one-hot向量，公式(2.16)也可以写为\n"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 263,
+   "ref": "images/d0ccc688d9c995bae4e68c6bffb188d3a73e3879cca695f1e4f6b72bd04b2597.jpg",
+   "name": "d0ccc688d9c995bae4e68c6bffb188d3a73e3879cca695f1e4f6b72bd04b2597.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\d0ccc688d9c995bae4e68c6bffb188d3a73e3879cca695f1e4f6b72bd04b2597.jpg",
+   "size": 18469,
+   "ctx": "\n和过拟合相反的一个概念是欠拟合（Underfitting），即模型不能很好地拟合训练数据，在训练集上的错误率比较高.欠拟合一般是由于模型能力不足造成的.图2.3给出了欠拟合和过拟合的示例.\n\n![](images/d0ccc688d9c995bae4e68c6bffb188d3a73e3879cca695f1e4f6b72bd04b2597.jpg)（描述：三幅对比图，分别展示欠拟合、正常拟合和过拟合的状态，通过散点数据和拟合曲线的差异说明模型复杂度对拟合效果的影响）  \n图2.3 欠拟合和过拟合示例\n\n为了在拟合训练数据和控制模型复杂度之间取得平衡，常在经验风险最小化的基础上加入一个复杂度惩罚项，从而得到结构风险最小化（StructuralRiskMinimization,SRM)准则:"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 314,
+   "ref": "images/689f7b8999e2a96cc527a1243b2b43074bdc7aed24bc6bf248d492587ba80740.jpg",
+   "name": "689f7b8999e2a96cc527a1243b2b43074bdc7aed24bc6bf248d492587ba80740.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\689f7b8999e2a96cc527a1243b2b43074bdc7aed24bc6bf248d492587ba80740.jpg",
+   "size": 14695,
+   "ctx": "\n在实际应用中，提前停止通常与验证集配合使用.如果原始数据量较小，也可以从训练集中再划分出一部分数据作为验证集.图2.4给出了提前停止的示例.\n\n![](images/689f7b8999e2a96cc527a1243b2b43074bdc7aed24bc6bf248d492587ba80740.jpg)（描述：示意图，展示了训练集和验证集的错误率随迭代次数变化的趋势，标注了提前停止和过拟合的位置）  \n图2.4 提前停止的示例\n\n## 2.2.4.3随机梯度下降法"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 409,
+   "ref": "images/a2f3d702eb1bf1e157cd461d67961c154918386a484195af4485258fb1d36215.jpg",
+   "name": "a2f3d702eb1bf1e157cd461d67961c154918386a484195af4485258fb1d36215.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\a2f3d702eb1bf1e157cd461d67961c154918386a484195af4485258fb1d36215.jpg",
+   "size": 20378,
+   "ctx": "\n这四种情况的关系可以用如图2.5所示的混淆矩阵（Confusion Matrix）来表示.\n\n![](images/a2f3d702eb1bf1e157cd461d67961c154918386a484195af4485258fb1d36215.jpg)（描述：混淆矩阵示意图，展示真实类别与预测类别之间的四种情况：真正例（TP）、假反例（FN）、假正例（FP）和真反例（TN））  \n图 2.5 类别c的预测结果的混淆矩阵\n\n根据上面的定义，我们可以进一步定义查准率、查全率和F值."
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 468,
+   "ref": "images/106ef902dd03116738b88e0ddac3d478897bf504b5a5e4b791092a99c02714f3.jpg",
+   "name": "106ef902dd03116738b88e0ddac3d478897bf504b5a5e4b791092a99c02714f3.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\106ef902dd03116738b88e0ddac3d478897bf504b5a5e4b791092a99c02714f3.jpg",
+   "size": 34510,
+   "ctx": "\n图2.6给出了机器学习的完整流程，包含模型训练和模型评价两个阶段.模型训练阶段需要用到训练集、验证集、待学习的模型、损失函数、优化算法，输出学习到的模型.模型评价阶段需要用到测试集、学习到的模型、评价指标，得到模型的性能评价.\n\n![](images/106ef902dd03116738b88e0ddac3d478897bf504b5a5e4b791092a99c02714f3.jpg)（描述：流程图，展示了机器学习的完整流程，包含模型训练和模型评价两个阶段，涉及训练集、验证集、测试集、损失函数、优化算法、评价指标等关键组件）  \n图2.6 机器学习基本流程示意图\n\n## 2.3 机器学习的简单示例线性回归"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 820,
+   "ref": "images/787ceb9d832e145b0c7c11481e902b122a3b7291e7a06e79091d9a0145cb7344.jpg",
+   "name": "787ceb9d832e145b0c7c11481e902b122a3b7291e7a06e79091d9a0145cb7344.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\787ceb9d832e145b0c7c11481e902b122a3b7291e7a06e79091d9a0145cb7344.jpg",
+   "size": 36849,
+   "ctx": "\n偏差和方差分解给机器学习模型提供了一种分析途径，但在实际操作中难以直接衡量，一般来说，当一个模型在训练集上的错误率比较高时，说明模型的拟合能力不够，偏差比较高.这种情况可以通过增加数据特征、提高模型复杂度、减小正则化系数等操作来改进.当模型在训练集上的错误率比较低，但验证集上的错误率比较高时，说明模型过拟合，方差比较高，这种情况可以通过降低模型复杂度、加大正则化系数、引入先验等方法来缓解.此外，还有一种有效降低方差的方法为集成模型，即通过多个高方差模型的平均来降低方差.\n\n![](images/787ceb9d832e145b0c7c11481e902b122a3b7291e7a06e79091d9a0145cb7344.jpg)（描述：示意图，展示机器学习模型的四种偏差和方差组合情况，通过靶心图表示低偏差高方差、高偏差低方差等四种情形）  \n图2.8 机器学习模型的四种偏差和方差组合情况\n\n![](images/b04a0150d1be4868974d5731534e87374bdb21da18dd67285090df4f100084bf.jpg)（描述：该图为机器学习中偏差、方差"
+  },
+  {
+   "file": "02_机器学习概述.md",
+   "line": 823,
+   "ref": "images/b04a0150d1be4868974d5731534e87374bdb21da18dd67285090df4f100084bf.jpg",
+   "name": "b04a0150d1be4868974d5731534e87374bdb21da18dd67285090df4f100084bf.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\b04a0150d1be4868974d5731534e87374bdb21da18dd67285090df4f100084bf.jpg",
+   "size": 16255,
+   "ctx": "![](images/787ceb9d832e145b0c7c11481e902b122a3b7291e7a06e79091d9a0145cb7344.jpg)（描述：示意图，展示机器学习模型的四种偏差和方差组合情况，通过靶心图表示低偏差高方差、高偏差低方差等四种情形）  \n图2.8 机器学习模型的四种偏差和方差组合情况\n\n![](images/b04a0150d1be4868974d5731534e87374bdb21da18dd67285090df4f100084bf.jpg)（描述：该图为机器学习中偏差、方差和期望错误随模型复杂度变化的曲线图，展示了三者之间的关系及最优模型位置）  \n图2.9 机器学习模型的期望错误、偏差和方差随复杂度的变化情况\n\n集成模型可以降低方差的原理参见第11.1节."
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 39,
+   "ref": "images/ff2f04bcc830408f1bd287abf72443877608e19f4c1175bde01477ff3290f212.jpg",
+   "name": "ff2f04bcc830408f1bd287abf72443877608e19f4c1175bde01477ff3290f212.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ff2f04bcc830408f1bd287abf72443877608e19f4c1175bde01477ff3290f212.jpg",
+   "size": 9644,
+   "ctx": "\n当 $f ( { \\pmb x } ; { \\pmb w } ) = 0$ 时，模型输出0，表示位于决策边界上，暂不做正负类判断.公式(3.5)定义了一个典型的二分类问题的决策函数，其结构如图3.1所示.\n\n![](images/ff2f04bcc830408f1bd287abf72443877608e19f4c1175bde01477ff3290f212.jpg)（描述：这是一个二分类线性模型的结构示意图，展示了输入特征通过权重加权求和后经激活函数输出正负类别的过程）  \n图 3.1 二分类的线性模型\n\n在后续训练算法中，通常把 $y f ( \\pmb { x } ; \\pmb { w } ) \\le 0$ 都视为错误或不确定的情形，需要进一步更新参数."
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 74,
+   "ref": "images/74637df34c6909f72b2974ed0e2b37ceb66f951552a77fd9d0a88d862a2b6027.jpg",
+   "name": "74637df34c6909f72b2974ed0e2b37ceb66f951552a77fd9d0a88d862a2b6027.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\74637df34c6909f72b2974ed0e2b37ceb66f951552a77fd9d0a88d862a2b6027.jpg",
+   "size": 20148,
+   "ctx": "\n图3.2给出了一个二分类问题的线性决策边界示例，其中样本特征向量 ${ \\textbf { \\em x } } =$ $[ x _ { 1 } , x _ { 2 } ]$ ,权重向量 $\\pmb { w } = [ w _ { 1 } , w _ { 2 } ]$\n\n![](images/74637df34c6909f72b2974ed0e2b37ceb66f951552a77fd9d0a88d862a2b6027.jpg)（描述：二维平面上的二分类决策边界示意图，包含两类样本点、线性分隔超平面w^Tx+b=0以及权重向量w的方向）  \n图 3.2 二分类的决策边界示例\n\n给定N个样本的训练集 $\\mathcal { D } = \\{ ( { \\pmb x } ^ { ( n ) } , y ^ { ( n ) } ) \\} _ { n = 1 } ^ { N }$ ，其中 $y ^ { ( n ) } \\in \\{ + 1 , - 1 \\}$ ，线性模型试图学习到参数 $\\ b { w } ^ { * }$ ，使得对于每个样本 $( \\mathbf { \\boldsymbol {"
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 139,
+   "ref": "images/0bcb11bce7895c7e9904d42db1bb87f6f733773570afb11e0c1992f859c5b399.jpg",
+   "name": "0bcb11bce7895c7e9904d42db1bb87f6f733773570afb11e0c1992f859c5b399.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0bcb11bce7895c7e9904d42db1bb87f6f733773570afb11e0c1992f859c5b399.jpg",
+   "size": 6096,
+   "ctx": "\n“一对其余”方式和“一对一”方式都存在一个缺陷：特征空间中可能出现一些难以确定类别的区域，而“argmax”方式可以避免这一问题.图3.3给出了用这三种方式进行多分类的示例，其中红色直线表示判别函数f(·)=0的直线，不同颜色的区域表示预测的三个类别的区域 $( \\omega _ { 1 } , \\omega _ { 2 }$ 和 $\\omega _ { 3 } ~ )$ 和难以确定类别的区域（?’).在“argmax”方式中，相邻两类i和 $j$ 的决策边界实际上是由$f _ { i } ( { \\pmb x } ; { \\pmb w } _ { i } ) - f _ { j } ( { \\pmb x } ; { \\pmb w } _ { j } ) = 0$ 决定，其法向量为 ${ \\pmb w } _ { i } - { \\pmb w } _ { j }$\n\n![](images/0bcb11bce7895c7e9904d42db1bb87f6f733773570afb11e0c1992f859c5b399.jpg)（描述：示意图，展示三种多分类方式的决策区域，包含三个类别ω"
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 142,
+   "ref": "images/446b16ea44f17b9b5a13cad56d0302818e2b03f8a9f517e6536d37e3b909339f.jpg",
+   "name": "446b16ea44f17b9b5a13cad56d0302818e2b03f8a9f517e6536d37e3b909339f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\446b16ea44f17b9b5a13cad56d0302818e2b03f8a9f517e6536d37e3b909339f.jpg",
+   "size": 6417,
+   "ctx": "![](images/0bcb11bce7895c7e9904d42db1bb87f6f733773570afb11e0c1992f859c5b399.jpg)（描述：示意图，展示三种多分类方式的决策区域，包含三个类别ω₁、ω₂、ω₃的划分以及难以确定类别的区域（？），并标注了判别函数f₁、f₂、f₃的边界线）  \n(a)“一对其余”方式\n\n![](images/446b16ea44f17b9b5a13cad56d0302818e2b03f8a9f517e6536d37e3b909339f.jpg)（描述：示意图，展示三个区域ω1、ω2、ω3和三个交点f13、f12、f23的几何关系，中心点P为三条线的交点）  \n(b)“一对一”方式\n\n![](images/6e98dcd2876315db7f66d62a3ae6ec4306f92afdb6f884a57731ebb0481fae99.jpg)（描述：示意图，展示多分类问题中三个类别ω1、ω2、ω3由三条决策边界f1、f2、f3划分的几何关系）  "
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 145,
+   "ref": "images/6e98dcd2876315db7f66d62a3ae6ec4306f92afdb6f884a57731ebb0481fae99.jpg",
+   "name": "6e98dcd2876315db7f66d62a3ae6ec4306f92afdb6f884a57731ebb0481fae99.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\6e98dcd2876315db7f66d62a3ae6ec4306f92afdb6f884a57731ebb0481fae99.jpg",
+   "size": 5460,
+   "ctx": "![](images/446b16ea44f17b9b5a13cad56d0302818e2b03f8a9f517e6536d37e3b909339f.jpg)（描述：示意图，展示三个区域ω1、ω2、ω3和三个交点f13、f12、f23的几何关系，中心点P为三条线的交点）  \n(b)“一对一”方式\n\n![](images/6e98dcd2876315db7f66d62a3ae6ec4306f92afdb6f884a57731ebb0481fae99.jpg)（描述：示意图，展示多分类问题中三个类别ω1、ω2、ω3由三条决策边界f1、f2、f3划分的几何关系）  \n(c) “argmax”方式  \n图3.3 多分类问题的三种方式\n"
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 356,
+   "ref": "images/cb466f522a8d1698b98e1367d2584f6cf8ee08c40e84acd035cfe8aeff21d28f.jpg",
+   "name": "cb466f522a8d1698b98e1367d2584f6cf8ee08c40e84acd035cfe8aeff21d28f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\cb466f522a8d1698b98e1367d2584f6cf8ee08c40e84acd035cfe8aeff21d28f.jpg",
+   "size": 18932,
+   "ctx": "\n其中I(·)是指示函数. 对比公式(3.5) 中的二分类决策函数，可以发现二分类中的权重向量 $\\pmb { w } = \\pmb { w } _ { 1 } - \\pmb { w } _ { 0 }$\n\n![](images/cb466f522a8d1698b98e1367d2584f6cf8ee08c40e84acd035cfe8aeff21d28f.jpg)（描述：二维特征空间中三分类的Softmax回归示意图，展示三个类别ω₁、ω₂、ω₃的决策边界和分类区域）  \n图 3.5 Softmax回归在二维特征空间中的三分类示意图\n\n向量表示上式用向量形式可以写为"
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 519,
+   "ref": "images/0863271c58bcf0eb1ee34091b9a950924352cb016270ecf30bcecb488ba7be8d.jpg",
+   "name": "0863271c58bcf0eb1ee34091b9a950924352cb016270ecf30bcecb488ba7be8d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0863271c58bcf0eb1ee34091b9a950924352cb016270ecf30bcecb488ba7be8d.jpg",
+   "size": 1408,
+   "ctx": "\n其中 $\\alpha$ 是学习率， $\\hat { y } _ { W _ { t } } ^ { ( n ) }$ 是当参数为 $\\mathbf { } W _ { t }$ 时，Softmax回归模型的输出.\n\n![](images/0863271c58bcf0eb1ee34091b9a950924352cb016270ecf30bcecb488ba7be8d.jpg)（描述：示意图，展示Softmax回归模型中权重向量与输出概率的关系）\n\nSoftmax回归中使用的C个权重向量存在参数冗余：如果对所有权重向量同时减去同一个向量v，模型输出不会改变.这说明真正决定预测类别的是不同类别之间的打分差，而不是各类别权重向量的绝对位置.因此，Softmax回归通常需要借助正则化来约束参数；这一性质也常被用来改写Softmax的计算形式，以避免数值上溢出.\n"
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 900,
+   "ref": "images/28042a2403cc40141578e7ca25a8c3eedafd033d2e30382ba1d860e2ef092890.jpg",
+   "name": "28042a2403cc40141578e7ca25a8c3eedafd033d2e30382ba1d860e2ef092890.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\28042a2403cc40141578e7ca25a8c3eedafd033d2e30382ba1d860e2ef092890.jpg",
+   "size": 23507,
+   "ctx": "\n对于一个线性可分的数据集，其分割超平面有很多个，但是间隔最大的超平面是唯一的．图3.7给定了支持向量机的最大间隔分割超平面的示例，其中轮廓线加粗的样本点为支持向量.\n\n![](images/28042a2403cc40141578e7ca25a8c3eedafd033d2e30382ba1d860e2ef092890.jpg)（描述：支持向量机的最大间隔分割超平面示意图，包含决策边界、支持向量和相关数学表达式）  \n图 3.7 支持向量机示例\n\n## 3.5.1 参数学习"
+  },
+  {
+   "file": "03_线性模型.md",
+   "line": 1009,
+   "ref": "images/7993608c4f7bdc33d206078ec9105b1cbbdd05b1a558de117ac8f8780dc0f355.jpg",
+   "name": "7993608c4f7bdc33d206078ec9105b1cbbdd05b1a558de117ac8f8780dc0f355.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\7993608c4f7bdc33d206078ec9105b1cbbdd05b1a558de117ac8f8780dc0f355.jpg",
+   "size": 19387,
+   "ctx": "\n在支持向量机的优化问题中，约束条件比较严格.如果训练集中的样本在特征空间中不是线性可分的，就无法找到最优解.为了能够容忍部分不满足约束的\n\n![](images/7993608c4f7bdc33d206078ec9105b1cbbdd05b1a558de117ac8f8780dc0f355.jpg)（描述：示意图，展示原始空间中线性不可分的样本通过核函数映射到高维特征空间后变为线性可分的过程）  \n图3.8 核函数将样本从原始空间映射到高维特征空间示意图\n\n样本，我们可以引入松弛变量（SlackVariable)ξ,将优化问题变为"
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 49,
+   "ref": "images/4fbcb421b336dd0ffb5e8f0135ab552e6941c8f7086a50c156e5767714b4502c.jpg",
+   "name": "4fbcb421b336dd0ffb5e8f0135ab552e6941c8f7086a50c156e5767714b4502c.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\4fbcb421b336dd0ffb5e8f0135ab552e6941c8f7086a50c156e5767714b4502c.jpg",
+   "size": 14179,
+   "ctx": "\n更多激活函数参考参见第4.5节.\n\n![](images/4fbcb421b336dd0ffb5e8f0135ab552e6941c8f7086a50c156e5767714b4502c.jpg)（描述：示意图，展示典型的神经元结构，包含输入、权重、求和节点和激活函数）  \n图 4.1 典型的神经元结构\n\n## 4.1.2 前馈网络结构"
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 58,
+   "ref": "images/acc7f9f2addf3b297a52dfa7f3029ed684ed5740d1b8852e758d9b48f3e02915.jpg",
+   "name": "acc7f9f2addf3b297a52dfa7f3029ed684ed5740d1b8852e758d9b48f3e02915.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\acc7f9f2addf3b297a52dfa7f3029ed684ed5740d1b8852e758d9b48f3e02915.jpg",
+   "size": 25483,
+   "ctx": "\n图4.2给出了前馈神经网络的示例.\n\n![](images/acc7f9f2addf3b297a52dfa7f3029ed684ed5740d1b8852e758d9b48f3e02915.jpg)（描述：多层前馈神经网络的结构示意图，包含输入层、两个隐藏层和输出层，节点间有连接线表示信息传递）  \n图4.2 多层前馈神经网络\n\n表4.1给出了描述前馈神经网络的记号."
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 238,
+   "ref": "images/e7874130949f8ff8d4e9fcfc2334aeda8fdd94596b8671fcbde8258bce978a56.jpg",
+   "name": "e7874130949f8ff8d4e9fcfc2334aeda8fdd94596b8671fcbde8258bce978a56.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e7874130949f8ff8d4e9fcfc2334aeda8fdd94596b8671fcbde8258bce978a56.jpg",
+   "size": 1270,
+   "ctx": "为M维列向量，其第m个分量为 $\\frac { \\partial f } { \\partial z _ { m } }$ 本书的反向传播推导采用分母布  \n局. 矩阵微积分参见第B.3节.\n\n![](images/e7874130949f8ff8d4e9fcfc2334aeda8fdd94596b8671fcbde8258bce978a56.jpg)（描述：该图为神经网络中某层参数梯度计算的示意图，展示了反向传播过程中权重矩阵W和偏置项b的梯度计算流程。）\n\n不失一般性，下面以第l层中的参数 $W ^ { ( l ) }$ 和 $\\mathbf { \\delta } _ { b } ( l )$ 为例来说明其梯度的计算过程.\n"
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 484,
+   "ref": "images/964ce479efd96a5d68ed1c88c23831ec858ea14b1d664264bf86c39faf5f854f.jpg",
+   "name": "964ce479efd96a5d68ed1c88c23831ec858ea14b1d664264bf86c39faf5f854f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\964ce479efd96a5d68ed1c88c23831ec858ea14b1d664264bf86c39faf5f854f.jpg",
+   "size": 15961,
+   "ctx": "\n首先，我们将复合函数 $f ( x ; w , b )$ 分解为一系列的基本操作，并构成一个计算图（Computational Graph）.计算图是数学运算的图形化表示. 计算图中的每个非叶子节点表示一个基本操作，每个叶子节点为一个输入变量或常量.图4.3给出了当 $x = 1 , w = 0 , b = 0$ 时复合函数 $f ( x ; w , b )$ 的计算图，其中连边上的红色数字表示前向计算时复合函数中每个变量的实际取值.\n\n![](images/964ce479efd96a5d68ed1c88c23831ec858ea14b1d664264bf86c39faf5f854f.jpg)（描述：计算图，展示复合函数的前向计算过程和各节点的偏导数，包含变量取值和基本操作）  \n图 4.3 复合函数 $f ( x ; w , b )$ 的计算图\n\n从计算图上可以看出，复合函数 $f ( x ; w , b )$ 由6个基本函数 $h _ { i } , 1 \\leq i \\leq 6$ 组成.如表4.2所示，每个基本函数的导数都十分简单，可以通过规则来实现."
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 568,
+   "ref": "images/87a2e934f296ac55e75af071906fb746603d90cb049429649cc731e794379910.jpg",
+   "name": "87a2e934f296ac55e75af071906fb746603d90cb049429649cc731e794379910.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\87a2e934f296ac55e75af071906fb746603d90cb049429649cc731e794379910.jpg",
+   "size": 22499,
+   "ctx": "\n图4.4给出了符号微分与自动微分的对比.\n\n![](images/87a2e934f296ac55e75af071906fb746603d90cb049429649cc731e794379910.jpg)（描述：流程图，展示了符号微分与自动微分在数学表达式和程序实现之间的对比关系）  \n图4.4 符号微分与自动微分对比\n\n## 4.4 训练中的优化问题"
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 687,
+   "ref": "images/954fbd7f481642bfe889dd4344b411eb70dc61f54735d18b9519f4de3d32b6da.jpg",
+   "name": "954fbd7f481642bfe889dd4344b411eb70dc61f54735d18b9519f4de3d32b6da.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\954fbd7f481642bfe889dd4344b411eb70dc61f54735d18b9519f4de3d32b6da.jpg",
+   "size": 13391,
+   "ctx": "\n图4.7给出了Logistic 函数和 Tanh函数的形状. Tanh函数的输出是零中心化的（Zero-Centered），而Logistic函数的输出恒大于0.非零中心化的输出会使得其后一层的神经元的输入发生偏置偏移（BiasShift），并进一步使得梯度下降的收敛速度变慢.\n\n![](images/954fbd7f481642bfe889dd4344b411eb70dc61f54735d18b9519f4de3d32b6da.jpg)（描述：该图是Logistic函数和Tanh函数的曲线示意图，展示了两者在不同输入值下的输出变化趋势，其中Logistic函数为实线，Tanh函数为虚线）  \n图 4.7 Logistic 函数和 Tanh 函数\n\n## 4.5.2 ReLU函数"
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 780,
+   "ref": "images/cd541d1309d60344aa250858bf621c9075dc9de3c56e58283659168e917dec07.jpg",
+   "name": "cd541d1309d60344aa250858bf621c9075dc9de3c56e58283659168e917dec07.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\cd541d1309d60344aa250858bf621c9075dc9de3c56e58283659168e917dec07.jpg",
+   "size": 15570,
+   "ctx": "\n图4.8给出了ReLU、Leaky ReLU、ELU以及 Softplus函数的示例.\n\n![](images/cd541d1309d60344aa250858bf621c9075dc9de3c56e58283659168e917dec07.jpg)（描述：示意图，展示了ReLU、Leaky ReLU、ELU和Softplus四种激活函数的曲线对比）  \n图 4.8 ReLU、Leaky ReLU、ELU 以及 Softplus 函数\n\n## 4.5.3 Swish 函数"
+  },
+  {
+   "file": "04_前馈神经网络.md",
+   "line": 799,
+   "ref": "images/c82e6fa6f3996b64c660157ef82681228e44ac7e36c43922bc529ee3ffe72c10.jpg",
+   "name": "c82e6fa6f3996b64c660157ef82681228e44ac7e36c43922bc529ee3ffe72c10.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\c82e6fa6f3996b64c660157ef82681228e44ac7e36c43922bc529ee3ffe72c10.jpg",
+   "size": 16075,
+   "ctx": "\nSiLU是后续介绍的SwiGLU的基本构件，参见第4.5.5节.\n\n![](images/c82e6fa6f3996b64c660157ef82681228e44ac7e36c43922bc529ee3ffe72c10.jpg)（描述：函数图像图，展示了不同β值下Swish函数的曲线变化）  \n图 4.9 Swish 函数\n\n## 4.5.4 GELU函数"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 23,
+   "ref": "images/99595004e0db5925590c0382605fec7bab8ef9ac6e5d5a1d99aa5117917b0646.jpg",
+   "name": "99595004e0db5925590c0382605fec7bab8ef9ac6e5d5a1d99aa5117917b0646.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\99595004e0db5925590c0382605fec7bab8ef9ac6e5d5a1d99aa5117917b0646.jpg",
+   "size": 1273,
+   "ctx": "\n对于函数f和变换T,若 $f ( T ( \\pmb { x } ) ) = T ( f ( \\pmb { x } ) )$ ，即变换作用在输入上的效果会“传递”到输出上，则称f对T具有等变性（Equivariance).例如，图像平移后做卷积等价于先做卷积再平移输出.若 $f ( T ( \\pmb { x } ) ) = f ( \\pmb { x } )$ 即变换不改变输出，则称f对T具有不变性（Invariance).例如，无论目标出现在图像哪个位置，分类结果不变.卷积运算本身具有平移等变性而分类任务所需的平移不变性通常来自汇聚操作、数据增强、全局汇聚等多种机制的共同作用.\n\n![](images/99595004e0db5925590c0382605fec7bab8ef9ac6e5d5a1d99aa5117917b0646.jpg)（描述：示意图，展示卷积运算在图像平移下的等变性，包含输入图像、平移操作、卷积处理和输出结果的对比流程）\n\n## 5.1 卷积\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 77,
+   "ref": "images/b29eb8eb1967b34af5cb46b3cdbeadc4211cbaa4dd8cb6c4e78ec9d798d6b273.jpg",
+   "name": "b29eb8eb1967b34af5cb46b3cdbeadc4211cbaa4dd8cb6c4e78ec9d798d6b273.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\b29eb8eb1967b34af5cb46b3cdbeadc4211cbaa4dd8cb6c4e78ec9d798d6b273.jpg",
+   "size": 14289,
+   "ctx": "\n图5.1给出了两个滤波器的一维卷积示例．可以看出，两个滤波器分别提取了输入序列的不同特征.滤波器 $\\pmb { w } = [ 1 / 3 , 1 / 3 , 1 / 3 ]$ 可以检测信号序列中的低频信息，而滤波器 $\\pmb { w } = [ 1 , - 2 , 1 ]$ 可以检测信号序列中的高频信息.在传统信号处理或图像处理中，这些滤波器往往由人工设计；而在卷积神经网络中，卷积核通常作为可学习参数从数据中自动学习得到.\n\n![](images/b29eb8eb1967b34af5cb46b3cdbeadc4211cbaa4dd8cb6c4e78ec9d798d6b273.jpg)（描述：一维卷积示意图，展示滤波器[1/3,1/3,1/3]与输入序列的卷积过程，包含权重和信号值的对应关系）  \n(a) 滤波器[1/3,1/3,1/3]\n\n![](images/53993451b75471818ddde69e68c8fe72e40aa3a343d5ea8a683f6a3233827d60.jpg)（描述：一维卷积示例图，展示输入序列与两个不同滤波器的卷积过程）  "
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 80,
+   "ref": "images/53993451b75471818ddde69e68c8fe72e40aa3a343d5ea8a683f6a3233827d60.jpg",
+   "name": "53993451b75471818ddde69e68c8fe72e40aa3a343d5ea8a683f6a3233827d60.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\53993451b75471818ddde69e68c8fe72e40aa3a343d5ea8a683f6a3233827d60.jpg",
+   "size": 12853,
+   "ctx": "![](images/b29eb8eb1967b34af5cb46b3cdbeadc4211cbaa4dd8cb6c4e78ec9d798d6b273.jpg)（描述：一维卷积示意图，展示滤波器[1/3,1/3,1/3]与输入序列的卷积过程，包含权重和信号值的对应关系）  \n(a) 滤波器[1/3,1/3,1/3]\n\n![](images/53993451b75471818ddde69e68c8fe72e40aa3a343d5ea8a683f6a3233827d60.jpg)（描述：一维卷积示例图，展示输入序列与两个不同滤波器的卷积过程）  \n图 5.1 一维卷积示例  \n(b) 滤波器 [1,-2,1]\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 108,
+   "ref": "images/a6a1450fd261f4b6352c252c78bc308d2e558b0706e8b7dd67c2c9aad2ecb2aa.jpg",
+   "name": "a6a1450fd261f4b6352c252c78bc308d2e558b0706e8b7dd67c2c9aad2ecb2aa.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\a6a1450fd261f4b6352c252c78bc308d2e558b0706e8b7dd67c2c9aad2ecb2aa.jpg",
+   "size": 23285,
+   "ctx": "\n其中\\*表示二维卷积运算.图5.2给出了二维卷积示例.\n\n![](images/a6a1450fd261f4b6352c252c78bc308d2e558b0706e8b7dd67c2c9aad2ecb2aa.jpg)（描述：二维卷积运算的示意图，展示了输入矩阵、卷积核和输出结果的计算过程）  \n图 5.2 二维卷积示例\n\n根据卷积定义，左图的计算需要进行卷积核翻转."
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 117,
+   "ref": "images/2e024b81d1dc36a044517bcc8437c64be7b81f50cf306974ab644b96fc3a7105.jpg",
+   "name": "2e024b81d1dc36a044517bcc8437c64be7b81f50cf306974ab644b96fc3a7105.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2e024b81d1dc36a044517bcc8437c64be7b81f50cf306974ab644b96fc3a7105.jpg",
+   "size": 46075,
+   "ctx": "\n在图像处理中，卷积经常作为特征提取的有效方法.一幅图像在经过卷积操作后得到结果称为特征图（FeatureMap）.在卷积神经网络中，卷积的目标不再是预先设计滤波器，而是通过任务驱动的训练自动学习适合当前任务的卷积核.图5.3给出在图像处理中几种常用的滤波器，以及其对应的特征图.图中最上面的滤波器是常用的高斯滤波器，可以用来对图像进行平滑去噪：中间和最下面的滤波器可以用来提取边缘特征\n\n![](images/2e024b81d1dc36a044517bcc8437c64be7b81f50cf306974ab644b96fc3a7105.jpg)（描述：示意图，展示三种不同滤波器对原始图像进行卷积操作后生成的特征图，包括高斯平滑和边缘检测效果）  \n图 5.3 图像处理中几种常用的滤波器示例\n\n## 5.1.2 互相关"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 156,
+   "ref": "images/f49c99e527cf10be769c7b89bdcf39a9f39123b0268dc46dd462c7dc874cc6cf.jpg",
+   "name": "f49c99e527cf10be769c7b89bdcf39a9f39123b0268dc46dd462c7dc874cc6cf.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f49c99e527cf10be769c7b89bdcf39a9f39123b0268dc46dd462c7dc874cc6cf.jpg",
+   "size": 7737,
+   "ctx": "\n零填充（Zero Padding)是在输入向量两端进行补零.图5.4b给出了输入的两端各补一个零后的卷积示例.\n\n![](images/f49c99e527cf10be769c7b89bdcf39a9f39123b0268dc46dd462c7dc874cc6cf.jpg)（描述：示意图，展示卷积操作中输入向量两端补零后的计算过程，包含权重与输入元素的对应关系）\n\n在本书之后描述中，除非特别声明，卷积一般指“互相关”.卷积符号用⊗来表示，即不翻转卷积.真正的卷积用\\*来表示.\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 163,
+   "ref": "images/2355c93b8a84ad8dca07ed773fad2bfc2304da8a43cef6bc862c99de6d972499.jpg",
+   "name": "2355c93b8a84ad8dca07ed773fad2bfc2304da8a43cef6bc862c99de6d972499.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2355c93b8a84ad8dca07ed773fad2bfc2304da8a43cef6bc862c99de6d972499.jpg",
+   "size": 12863,
+   "ctx": "从尺寸变化的角度看，转置卷积可以对应于普通卷积步长大于1时的逆向尺寸变化，参见第5.5.1节.\n\n(a) 步长 S = 2  \n![](images/2355c93b8a84ad8dca07ed773fad2bfc2304da8a43cef6bc862c99de6d972499.jpg)（描述：示意图，展示卷积操作中滤波器[-1,0,1]对输入序列的计算过程，包含输入值、滤波器权重及对应输出位置的连接关系）  \n(b) 零填充 P = 1  \n图 5.4 卷积的步长和零填充（滤波器为[-1,0,1])\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 289,
+   "ref": "images/079510a539afb7c17abdc1f2969cd4a55e89152dd701b1d0ae7494448e8516eb.jpg",
+   "name": "079510a539afb7c17abdc1f2969cd4a55e89152dd701b1d0ae7494448e8516eb.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\079510a539afb7c17abdc1f2969cd4a55e89152dd701b1d0ae7494448e8516eb.jpg",
+   "size": 16152,
+   "ctx": "\n权重共享 从公式(5.24)可以看出，作为参数的卷积核 $\\mathbf { \\nabla } w ^ { ( l ) }$ 对于第l层的所有神经元都是相同的.如图5.5b中，所有同颜色连接上的权重是相同的．权重共享可以理解为一个卷积核在整个输入空间上寻找同一种局部模式，因此如果要提取多种特征，就需要使用多个不同的卷积核.\n\n![](images/079510a539afb7c17abdc1f2969cd4a55e89152dd701b1d0ae7494448e8516eb.jpg)（描述：示意图，展示全连接层中输入节点与输出节点之间的完全连接结构）  \n(a) 全连接层\n\n![](images/3b6320a78021cf50b0ebba5828e1cb6d38f5adf2723dcfbdfff35d335dc86058.jpg)（描述：示意图，展示全连接层的神经网络结构，包含两层节点及其之间的连接关系）  "
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 292,
+   "ref": "images/3b6320a78021cf50b0ebba5828e1cb6d38f5adf2723dcfbdfff35d335dc86058.jpg",
+   "name": "3b6320a78021cf50b0ebba5828e1cb6d38f5adf2723dcfbdfff35d335dc86058.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\3b6320a78021cf50b0ebba5828e1cb6d38f5adf2723dcfbdfff35d335dc86058.jpg",
+   "size": 11661,
+   "ctx": "![](images/079510a539afb7c17abdc1f2969cd4a55e89152dd701b1d0ae7494448e8516eb.jpg)（描述：示意图，展示全连接层中输入节点与输出节点之间的完全连接结构）  \n(a) 全连接层\n\n![](images/3b6320a78021cf50b0ebba5828e1cb6d38f5adf2723dcfbdfff35d335dc86058.jpg)（描述：示意图，展示全连接层的神经网络结构，包含两层节点及其之间的连接关系）  \n(b) 卷积层  \n图 5.5 全连接层和卷积层对比\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 304,
+   "ref": "images/096b97c8d3f542700710ccb3c75541c571c580b804256c62893ff221d84cb20d.jpg",
+   "name": "096b97c8d3f542700710ccb3c75541c571c580b804256c62893ff221d84cb20d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\096b97c8d3f542700710ccb3c75541c571c580b804256c62893ff221d84cb20d.jpg",
+   "size": 25670,
+   "ctx": "\n卷积层的作用是提取一个局部区域的特征，不同的卷积核相当于不同的特征提取器.上一节中描述的卷积层神经元和全连接网络一样都是一维结构.由于卷积网络主要应用在图像处理上，而图像为二维结构，因此为了更充分地利用图像的局部信息，通常将神经元组织为三维结构的神经层，其大小为高度×宽度×深度，由多个二维特征图构成.\n\n![](images/096b97c8d3f542700710ccb3c75541c571c580b804256c62893ff221d84cb20d.jpg)（描述：示意图，展示卷积层的三维结构，包含输入和输出特征映射组的立方体表示及其维度标注）  \n图5.6 卷积层的三维结构表示\n\n特征图（FeatureMap）为一幅图像（或其他特征图）在经过卷积提取后得到的特征，每个特征图可以看作一类被抽取出来的图像特征.为了提高卷积网络的表示能力，可以在每一层使用多个不同的特征图，以更好地表示图像的特征."
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 337,
+   "ref": "images/35668bcd639f81aa97c8d8a82a2091f3471580bb49c7e1e1af19ebeeb39909f2.jpg",
+   "name": "35668bcd639f81aa97c8d8a82a2091f3471580bb49c7e1e1af19ebeeb39909f2.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\35668bcd639f81aa97c8d8a82a2091f3471580bb49c7e1e1af19ebeeb39909f2.jpg",
+   "size": 19246,
+   "ctx": "\n整个计算过程如图5.7所示.如果希望卷积层输出P个特征图，可以将上述计算过程重复P次，得到P个输出特征图 ${ \\pmb Y } ^ { ( 1 ) } , { \\pmb Y } ^ { ( 2 ) } , \\cdots , { \\pmb Y } ^ { ( P ) }$\n\n![](images/35668bcd639f81aa97c8d8a82a2091f3471580bb49c7e1e1af19ebeeb39909f2.jpg)（描述：卷积层计算过程的示意图，展示输入特征图通过多个卷积核与偏置计算得到输出特征图的流程）  \n图5.7 卷积层中从输入特征图组X到输出特征图 $Y ^ { \\left( p \\right) }$ 的计算示例\n\n在输入为 $\\mathcal { X } \\in \\mathbb { R } ^ { M \\times N \\times D }$ 、输出为 $\\mathcal { Y } \\in \\mathbb { R } ^ { M ^ { \\prime } \\times N ^ { \\prime } \\times P }$ 的卷积层中，每一个输出特征图都需"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 382,
+   "ref": "images/75b93dab04b5e581be9fd45bae237c534d39e3af1d76c1b1ef6a7f13679a7449.jpg",
+   "name": "75b93dab04b5e581be9fd45bae237c534d39e3af1d76c1b1ef6a7f13679a7449.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\75b93dab04b5e581be9fd45bae237c534d39e3af1d76c1b1ef6a7f13679a7449.jpg",
+   "size": 22035,
+   "ctx": "\n图5.8给出了采用最大汇聚进行子采样操作的示例．可以看出，汇聚层不但可以有效地减少神经元数量，还可以使网络对一些小的局部形态变化具有更强的鲁棒性，并拥有更大的感受野\n\n![](images/75b93dab04b5e581be9fd45bae237c534d39e3af1d76c1b1ef6a7f13679a7449.jpg)（描述：示意图，展示最大汇聚操作中输入特征映射组经过最大汇聚后生成输出特征映射组的过程）  \n图5.8 汇聚层中最大汇聚过程示例\n\n常见现代卷积网络中的汇聚层通常仅包含下采样操作.但在早期的一些卷积网络（比如LeNet-5）中，有时也会在汇聚层使用非线性激活函数，比如"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 407,
+   "ref": "images/cc9bac6832f419bd735277249f7ba03a0b1ccfab5434f3a71b0e1ffbd827aec9.jpg",
+   "name": "cc9bac6832f419bd735277249f7ba03a0b1ccfab5434f3a71b0e1ffbd827aec9.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\cc9bac6832f419bd735277249f7ba03a0b1ccfab5434f3a71b0e1ffbd827aec9.jpg",
+   "size": 17665,
+   "ctx": "\n一个卷积网络中可以堆叠多个连续的卷积块，然后在后面接一个较小的分类模块.\n\n![](images/cc9bac6832f419bd735277249f7ba03a0b1ccfab5434f3a71b0e1ffbd827aec9.jpg)（描述：卷积网络整体结构示意图，展示输入经过多个卷积块（含卷积、ReLU、汇聚层）后接全连接层和softmax的流程）  \n图 5.9 常用的卷积网络整体结构\n\n现代卷积网络的结构设计大致呈现以下趋势："
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 538,
+   "ref": "images/27696110b61efe8715803533e858eddda340a6141adde8e72ab1054e64198da5.jpg",
+   "name": "27696110b61efe8715803533e858eddda340a6141adde8e72ab1054e64198da5.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\27696110b61efe8715803533e858eddda340a6141adde8e72ab1054e64198da5.jpg",
+   "size": 26014,
+   "ctx": "\nLeNet-5[LeCun et al., 1998]虽然提出时间较早,但它是一个非常成功的卷积神经网络模型.基于LeNet-5的手写数字识别系统在20世纪90年代被美国很多银行使用，用来识别支票上的手写数字.LeNet-5的网络结构如图5.10所示，它代表了早期卷积网络“卷积-下采样-分类器”的经典范式\n\n![](images/27696110b61efe8715803533e858eddda340a6141adde8e72ab1054e64198da5.jpg)（描述：LeNet-5网络结构示意图，展示了从32×32输入图像经过多个卷积层、汇聚层到全连接输出层的层次结构）  \n图 5.10 LeNet-5 网络结构（图片根据 [LeCun et al., 1998]绘制）\n\nLeNet-5共有7层，接受输入图像大小为 $3 2 \\times 3 2 = 1 0 2 4$ ,输出对应10个类别的得分.LeNet-5中的每一层结构如下："
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 591,
+   "ref": "images/22c90acadfdab748490c51724ce7d648d3f6a325d31b7cec23ce1a478ddf58c5.jpg",
+   "name": "22c90acadfdab748490c51724ce7d648d3f6a325d31b7cec23ce1a478ddf58c5.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\22c90acadfdab748490c51724ce7d648d3f6a325d31b7cec23ce1a478ddf58c5.jpg",
+   "size": 47215,
+   "ctx": "\nAlexNet的结构如图5.12所示，包括5个卷积层、3个汇聚层和3个全连接层(其中最后一层是使用Softmax函数的输出层). 由于网络规模超出了当时单个GPU的内存限制，AlexNet将网络拆为两半，分别放在两个GPU上，GPU间只在某些层（比如第3层）进行通信\n\n![](images/22c90acadfdab748490c51724ce7d648d3f6a325d31b7cec23ce1a478ddf58c5.jpg)（描述：AlexNet网络结构示意图，展示5个卷积层、3个汇聚层和3个全连接层的层次结构及数据流）  \n图 5.12 AlexNet 网络结构1\n\nAlexNet 的输入为 $2 2 4 \\times 2 2 4 \\times 3$ 的图像，输出为1000个类别的条件概率，具体结构如下："
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 638,
+   "ref": "images/ef836b34481a849c5b25cead86e118d2a3dfa6cfada5218fa2404b15d0d1f38b.jpg",
+   "name": "ef836b34481a849c5b25cead86e118d2a3dfa6cfada5218fa2404b15d0d1f38b.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ef836b34481a849c5b25cead86e118d2a3dfa6cfada5218fa2404b15d0d1f38b.jpg",
+   "size": 15596,
+   "ctx": "\n图5.13给出了v1版本的Inception模块结构，采用了4组平行的特征抽取方式，分别为 $1 \\times 1 . 3 \\times 3 . 5 \\times 5$ 的卷积和3×3的最大汇聚.同时，为了提高计算效率、减少参数量，Inception模块在进行 $3 \\times 3 . 5 \\times 5$ 卷积之前以及3×3最大汇聚之后，都会先进行一次1×1卷积来减少特征图的深度.因此，1×1卷积不仅可以进行跨通道的信息融合，也经常承担降维的作用.\n\n![](images/ef836b34481a849c5b25cead86e118d2a3dfa6cfada5218fa2404b15d0d1f38b.jpg)（描述：Inception v1模块的结构示意图，展示了1×1、3×3、5×5卷积和3×3最大汇聚并行处理的网络结构）  \n图 5.13 Inception v1 的模块结构  \nGoogLeNet 不写为GoogleNet，是为了向LeNet 致敬.\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 646,
+   "ref": "images/f25c33cf6b5cdad9c40a98e71e52e66c60ef2743cc778fb7c872e0b6a2a6985c.jpg",
+   "name": "f25c33cf6b5cdad9c40a98e71e52e66c60ef2743cc778fb7c872e0b6a2a6985c.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f25c33cf6b5cdad9c40a98e71e52e66c60ef2743cc778fb7c872e0b6a2a6985c.jpg",
+   "size": 26918,
+   "ctx": "\nGoogLeNet 由9个Inception v1模块、5个汇聚层以及其他一些卷积层构成，总共为22层网络，如图5.14所示.为了缓解深层网络训练中的梯度消失问题，GoogLeNet在中间层引入了两个辅助分类器来加强监督信息.\n\n![](images/f25c33cf6b5cdad9c40a98e71e52e66c60ef2743cc778fb7c872e0b6a2a6985c.jpg)（描述：GoogLeNet网络结构示意图，展示从输入到输出的各层模块连接关系，包含Inception模块、卷积层、汇聚层和辅助分类器）  \n图 5.14 GoogLeNet 网络结构示意（根据 [Szegedy et al., 2015]绘制）\n\nInception 网络有多个改进版本，其中比较有代表性的有Inception v3 网络[Szegedy et al., 2016]. Inception v3用多层小卷积核来替换大卷积核，以减少计算量和参数量，并保持感受野不变.具体包括：1）使用两层3×3卷积替换v1中的 $5 \\times 5$ 卷积；2）使用连续的K×1和1×K卷积替换 $K \\ti"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 671,
+   "ref": "images/d335aa72394223eda5a1da9dca47d9e6554a273c5f1f24afd7b64f76e8f4caca.jpg",
+   "name": "d335aa72394223eda5a1da9dca47d9e6554a273c5f1f24afd7b64f76e8f4caca.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\d335aa72394223eda5a1da9dca47d9e6554a273c5f1f24afd7b64f76e8f4caca.jpg",
+   "size": 9966,
+   "ctx": "\n图5.15给出了一个典型的残差单元示例.残差单元由多个级联的（等宽）卷积层和一个跨层的直连边组成，再经过ReLU激活后得到输出.\n\n![](images/d335aa72394223eda5a1da9dca47d9e6554a273c5f1f24afd7b64f76e8f4caca.jpg)（描述：这是一个残差单元的结构示意图，展示了输入x经过两个等宽卷积层和ReLU激活后与直连边相加，再通过ReLU输出的流程）  \n图 5.15 一个简单的残差单元结构\n\n当输入和输出的维度一致时，直连边可以直接使用恒等映射；当维度不一致时，通常需要使用1×1卷积或带步长的投影分支来匹配维度.更深的ResNet还常使用 $1 \\times 1 { - } 3 \\times 3 { - } 1 \\times 1$ 的瓶颈（bottleneck）结构，以在控制计算量的同时继续加深网络."
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 748,
+   "ref": "images/511d50dbf41a031cdb65442614bfbc6125da947b95215b9daf418cdf220969f1.jpg",
+   "name": "511d50dbf41a031cdb65442614bfbc6125da947b95215b9daf418cdf220969f1.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\511d50dbf41a031cdb65442614bfbc6125da947b95215b9daf418cdf220969f1.jpg",
+   "size": 14217,
+   "ctx": "\n微步卷积从尺寸变化的角度看，如果普通卷积使用步长 $S > 1$ 实现下采样，那么其对应的转置卷积可以看作一种“分数步长”的上采样操作，因此也常被称为微步卷积(Fractionally-Strided Convolution) [Long et al., 2015]. 需要强调的是，在具体实现中通常并不会真的把步长设为 $S < 1$ ，而是通过在输入特征之间插入0,再进行步长为1的普通卷积来等效实现.\n\n![](images/511d50dbf41a031cdb65442614bfbc6125da947b95215b9daf418cdf220969f1.jpg)（描述：示意图，展示卷积操作中输入特征图与输出特征图之间的对应关系，通过网格和连接线表示卷积核的滑动过程）  \n(a) 卷积, S = 1, P = 0\n\n![](images/864961f7e2d1ada7e8f7265d30436ed5f88d07cbbf7f68892046afd30302074b.jpg)（描述：示意图，展示二维卷积操作中输入特征图与卷积核的对应关系）  "
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 751,
+   "ref": "images/864961f7e2d1ada7e8f7265d30436ed5f88d07cbbf7f68892046afd30302074b.jpg",
+   "name": "864961f7e2d1ada7e8f7265d30436ed5f88d07cbbf7f68892046afd30302074b.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\864961f7e2d1ada7e8f7265d30436ed5f88d07cbbf7f68892046afd30302074b.jpg",
+   "size": 15431,
+   "ctx": "![](images/511d50dbf41a031cdb65442614bfbc6125da947b95215b9daf418cdf220969f1.jpg)（描述：示意图，展示卷积操作中输入特征图与输出特征图之间的对应关系，通过网格和连接线表示卷积核的滑动过程）  \n(a) 卷积, S = 1, P = 0\n\n![](images/864961f7e2d1ada7e8f7265d30436ed5f88d07cbbf7f68892046afd30302074b.jpg)（描述：示意图，展示二维卷积操作中输入特征图与卷积核的对应关系）  \n(b) 转置卷积, S = 1, P = 2  \n图 5.16 步长S = 1,无零填充P = 0的二维卷积和其对应的转置卷积\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 761,
+   "ref": "images/78a0bf2d8173a5b55362522d9910a08ebe41c55b536cb21d3bc034cfa438e7fe.jpg",
+   "name": "78a0bf2d8173a5b55362522d9910a08ebe41c55b536cb21d3bc034cfa438e7fe.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\78a0bf2d8173a5b55362522d9910a08ebe41c55b536cb21d3bc034cfa438e7fe.jpg",
+   "size": 12491,
+   "ctx": "\n图5.17给出了一个步长 $S = 2$ 、无零填充 $P = 0$ 的二维卷积和其对应的转置卷积.\n\n![](images/78a0bf2d8173a5b55362522d9910a08ebe41c55b536cb21d3bc034cfa438e7fe.jpg)（描述：二维卷积操作示意图，展示步长为2、无零填充时的卷积核与输入特征图的对应关系）  \n(a) 卷积, S = 2, P = 0\n\n![](images/1f64ad5106a9d32b1cdf378bfb1a3a42c6261ea02c4b6a7273fe64b72d2f10f7.jpg)（描述：示意图，展示步长S=2、无零填充P=0的二维卷积操作，包含输入特征图、卷积核滑动过程和输出特征图的对应关系）  "
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 764,
+   "ref": "images/1f64ad5106a9d32b1cdf378bfb1a3a42c6261ea02c4b6a7273fe64b72d2f10f7.jpg",
+   "name": "1f64ad5106a9d32b1cdf378bfb1a3a42c6261ea02c4b6a7273fe64b72d2f10f7.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\1f64ad5106a9d32b1cdf378bfb1a3a42c6261ea02c4b6a7273fe64b72d2f10f7.jpg",
+   "size": 17594,
+   "ctx": "![](images/78a0bf2d8173a5b55362522d9910a08ebe41c55b536cb21d3bc034cfa438e7fe.jpg)（描述：二维卷积操作示意图，展示步长为2、无零填充时的卷积核与输入特征图的对应关系）  \n(a) 卷积, S = 2, P = 0\n\n![](images/1f64ad5106a9d32b1cdf378bfb1a3a42c6261ea02c4b6a7273fe64b72d2f10f7.jpg)（描述：示意图，展示步长S=2、无零填充P=0的二维卷积操作，包含输入特征图、卷积核滑动过程和输出特征图的对应关系）  \n(b) 转置卷积, S = 1, P = 2, D = 1  \n图 5.17 步长S =2,无零填充P = 0的二维卷积和其对应的转置卷积\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 788,
+   "ref": "images/e54bd0eb619a0a9cc934f8096d5c66c484ee812e9dbfd8420b33aa5aeaf86d10.jpg",
+   "name": "e54bd0eb619a0a9cc934f8096d5c66c484ee812e9dbfd8420b33aa5aeaf86d10.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e54bd0eb619a0a9cc934f8096d5c66c484ee812e9dbfd8420b33aa5aeaf86d10.jpg",
+   "size": 15468,
+   "ctx": "\n图5.18给出了空洞卷积的示例.\n\n![](images/e54bd0eb619a0a9cc934f8096d5c66c484ee812e9dbfd8420b33aa5aeaf86d10.jpg)（描述：示意图，展示空洞卷积中膨胀率D=2时的卷积核在输入特征图上的采样方式）  \n(a) 膨胀率 D = 2\n\n![](images/6e908bb17b8463de5c06ee93fc5e671faa460fb343e158b9ddc9c79431db4253.jpg)（描述：示意图，展示空洞卷积中不同膨胀率（D=2和D=3）的卷积核在输入特征图上的采样方式）  "
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 791,
+   "ref": "images/6e908bb17b8463de5c06ee93fc5e671faa460fb343e158b9ddc9c79431db4253.jpg",
+   "name": "6e908bb17b8463de5c06ee93fc5e671faa460fb343e158b9ddc9c79431db4253.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\6e908bb17b8463de5c06ee93fc5e671faa460fb343e158b9ddc9c79431db4253.jpg",
+   "size": 16420,
+   "ctx": "![](images/e54bd0eb619a0a9cc934f8096d5c66c484ee812e9dbfd8420b33aa5aeaf86d10.jpg)（描述：示意图，展示空洞卷积中膨胀率D=2时的卷积核在输入特征图上的采样方式）  \n(a) 膨胀率 D = 2\n\n![](images/6e908bb17b8463de5c06ee93fc5e671faa460fb343e158b9ddc9c79431db4253.jpg)（描述：示意图，展示空洞卷积中不同膨胀率（D=2和D=3）的卷积核在输入特征图上的采样方式）  \n(b) 膨胀率 D = 3  \n图 5.18 空洞卷积\n"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 803,
+   "ref": "images/3d8450866d870b3f49dc1e94baea8ea0f7621fee6255819d05423376bfac97f7.jpg",
+   "name": "3d8450866d870b3f49dc1e94baea8ea0f7621fee6255819d05423376bfac97f7.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\3d8450866d870b3f49dc1e94baea8ea0f7621fee6255819d05423376bfac97f7.jpg",
+   "size": 28197,
+   "ctx": "\n图5.19从结构上展示了标准卷积与分组卷积之间的区别.\n\n![](images/3d8450866d870b3f49dc1e94baea8ea0f7621fee6255819d05423376bfac97f7.jpg)（描述：结构图，展示了标准卷积与分组卷积在通道处理方式上的区别）  \n图 5.19 标准卷积与分组卷积\n\n## 5.5.4 深度可分离卷积"
+  },
+  {
+   "file": "05_卷积神经网络.md",
+   "line": 820,
+   "ref": "images/e78bcd343b94412133e3c52cfe979d40936cdc35930323797eaef5b115882e10.jpg",
+   "name": "e78bcd343b94412133e3c52cfe979d40936cdc35930323797eaef5b115882e10.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e78bcd343b94412133e3c52cfe979d40936cdc35930323797eaef5b115882e10.jpg",
+   "size": 38489,
+   "ctx": "\n逐通道卷积可以看作分组卷积的特例，即分组数等于输入通道数D.\n\n![](images/e78bcd343b94412133e3c52cfe979d40936cdc35930323797eaef5b115882e10.jpg)（描述：深度可分离卷积的结构示意图，展示输入特征图经过逐通道卷积和逐点卷积生成输出特征图的过程）  \n图 5.20 深度可分离卷积\n\n因此，深度可分离卷积并不是简单地“减少卷积核个数”，而是把标准卷积中原本同时完成的两项工作拆开：第一步负责空间特征提取，第二步负责跨通道特征组合.从这个角度看，它是一种结构化的参数分解方法."
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 68,
+   "ref": "images/1ec0f8dcc65a1a4e0662b4eb5be7eda706c1f53baa1837a350fdc81b358b8257.jpg",
+   "name": "1ec0f8dcc65a1a4e0662b4eb5be7eda706c1f53baa1837a350fdc81b358b8257.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\1ec0f8dcc65a1a4e0662b4eb5be7eda706c1f53baa1837a350fdc81b358b8257.jpg",
+   "size": 10835,
+   "ctx": "\n图6.1给出了循环神经网络的示例，其中“延时器”为一个虚拟单元，记录神经元的最近一次(或几次)活性值.\n\n![](images/1ec0f8dcc65a1a4e0662b4eb5be7eda706c1f53baa1837a350fdc81b358b8257.jpg)（描述：循环神经网络结构示意图，展示输入层、隐藏层、延迟器和输出层之间的连接关系及状态传递过程）  \n图6.1 循环神经网络\n\n从数学上讲，公式(6.4)可以看成一个动力系统.因此，隐藏层的活性值 $\\boldsymbol { h } _ { t }$ 在很多文献中也称为状态（State）或隐状态（Hidden State）."
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 99,
+   "ref": "images/2a133ed51afd9a9c9751ce74a19104e54e8b1891069062a88cb88abb01216fb7.jpg",
+   "name": "2a133ed51afd9a9c9751ce74a19104e54e8b1891069062a88cb88abb01216fb7.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2a133ed51afd9a9c9751ce74a19104e54e8b1891069062a88cb88abb01216fb7.jpg",
+   "size": 15158,
+   "ctx": "\n如果我们把每个时刻的状态都看作前馈神经网络的一层，循环神经网络可以看作在时间维度上权值共享的神经网络.图6.2给出了按时间展开的循环神经网络.\n\n![](images/2a133ed51afd9a9c9751ce74a19104e54e8b1891069062a88cb88abb01216fb7.jpg)（描述：循环神经网络按时间展开的结构图，展示输入序列、隐藏状态和输出序列在时间步上的传递关系）  \n图6.2 按时间展开的循环神经网络\n\n## 6.2.1 循环神经网络的表达能力"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 233,
+   "ref": "images/0ce40c84ab7f3f66ba4e61600b52ffbe171ada7191111fb8be534010b3cf86e2.jpg",
+   "name": "0ce40c84ab7f3f66ba4e61600b52ffbe171ada7191111fb8be534010b3cf86e2.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0ce40c84ab7f3f66ba4e61600b52ffbe171ada7191111fb8be534010b3cf86e2.jpg",
+   "size": 7357,
+   "ctx": "\n其中 $g ( \\cdot )$ 可以是简单的线性分类器（比如Logistic回归）或复杂的分类器（比如多层前馈神经网络).\n\n![](images/0ce40c84ab7f3f66ba4e61600b52ffbe171ada7191111fb8be534010b3cf86e2.jpg)（描述：状态图，展示序列模型中输入x1到xT依次通过隐藏状态h1到hT，最终输出预测值ŷ的流程）  \n(a) 末时刻状态模式\n\n![](images/4527cfc61784b6d0127e2ee39aa94eb45373709615ee65746c7625961442f1ce.jpg)（描述：序列分类模式的结构图，展示输入序列x1到xT经过隐藏状态h1到hT传递，最终输出预测结果ŷ）  "
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 236,
+   "ref": "images/4527cfc61784b6d0127e2ee39aa94eb45373709615ee65746c7625961442f1ce.jpg",
+   "name": "4527cfc61784b6d0127e2ee39aa94eb45373709615ee65746c7625961442f1ce.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\4527cfc61784b6d0127e2ee39aa94eb45373709615ee65746c7625961442f1ce.jpg",
+   "size": 9170,
+   "ctx": "![](images/0ce40c84ab7f3f66ba4e61600b52ffbe171ada7191111fb8be534010b3cf86e2.jpg)（描述：状态图，展示序列模型中输入x1到xT依次通过隐藏状态h1到hT，最终输出预测值ŷ的流程）  \n(a) 末时刻状态模式\n\n![](images/4527cfc61784b6d0127e2ee39aa94eb45373709615ee65746c7625961442f1ce.jpg)（描述：序列分类模式的结构图，展示输入序列x1到xT经过隐藏状态h1到hT传递，最终输出预测结果ŷ）  \n(b) 按时间平均模式  \n图 6.3 序列分类模式\n"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 256,
+   "ref": "images/ef8ea09f60ac8a8755caf011ceae50037a87785f41a650ca7fdd089fb6370cfd.jpg",
+   "name": "ef8ea09f60ac8a8755caf011ceae50037a87785f41a650ca7fdd089fb6370cfd.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ef8ea09f60ac8a8755caf011ceae50037a87785f41a650ca7fdd089fb6370cfd.jpg",
+   "size": 10010,
+   "ctx": "\\hat { y } _ { t } = g ( h _ { t } ) , \\qquad \\forall t \\in [ 1 , T ] .\\tag{6.24}\n$$\n\n![](images/ef8ea09f60ac8a8755caf011ceae50037a87785f41a650ca7fdd089fb6370cfd.jpg)（描述：序列标注模式的结构图，展示输入序列x、隐藏状态h和输出预测y之间的关系）  \n图 6.4 序列标注模式\n\n## 6.3.3 自回归序列建模"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 275,
+   "ref": "images/58791b5f5688e8c09110dc307768216c1c363ab74ac2f2e4cd6dea34edb5e963.jpg",
+   "name": "58791b5f5688e8c09110dc307768216c1c363ab74ac2f2e4cd6dea34edb5e963.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\58791b5f5688e8c09110dc307768216c1c363ab74ac2f2e4cd6dea34edb5e963.jpg",
+   "size": 13046,
+   "ctx": "\n图6.5给出了自回归序列建模示例，其中(BOS)表示开始符号，虚线表示将上一个时刻生成的符号作为下一个时刻的输入.\n\n![](images/58791b5f5688e8c09110dc307768216c1c363ab74ac2f2e4cd6dea34edb5e963.jpg)（描述：自回归序列建模的流程图，展示从开始符号(BOS)逐步生成序列的过程，包含隐藏状态h和预测输出ŷ的时序关系）  \n图 6.5 自回归序列建模\n\n在语言建模任务中，下一个词元预测（Next Token Prediction,NTP）也常常以这种形式出现.训练时，模型通常使用真实历史作为输入；生成时，则使用上一时刻的预测结果作为下一时刻的输入."
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 320,
+   "ref": "images/bfadd237fc0dc7e1c52cbe322c0b3b2b696a474d55f153c68cc9505b048705b1.jpg",
+   "name": "bfadd237fc0dc7e1c52cbe322c0b3b2b696a474d55f153c68cc9505b048705b1.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\bfadd237fc0dc7e1c52cbe322c0b3b2b696a474d55f153c68cc9505b048705b1.jpg",
+   "size": 18270,
+   "ctx": "\n图6.6给出了条件序列生成模式示例，其中(EOS)表示输入序列的结束，虚线表示将上一个时刻的输出作为下一个时刻的输入.\n\n![](images/bfadd237fc0dc7e1c52cbe322c0b3b2b696a474d55f153c68cc9505b048705b1.jpg)（描述：这是一张条件序列生成的示意图，展示了编码器将输入序列编码为隐藏状态序列，解码器利用这些状态和前一时刻输出逐步生成输出序列的过程，图中包含输入、隐藏状态、输出以及EOS标记。）  \n图 6.6 条件序列生成\n\n需要注意的是，这类模型通常要把整个输入序列压缩为一个或少数几个状态向量，因此当输入很长时容易形成信息瓶颈. 这一局限进一步促使人们引入注意力机制，使解码器能够在生成过程中动态访问编码器不同位置的信息.参见第8.2节."
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 413,
+   "ref": "images/2e0c54a407be37686b186403b377ef3dcd4eec785e7830aa3337339f5984a409.jpg",
+   "name": "2e0c54a407be37686b186403b377ef3dcd4eec785e7830aa3337339f5984a409.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2e0c54a407be37686b186403b377ef3dcd4eec785e7830aa3337339f5984a409.jpg",
+   "size": 18965,
+   "ctx": "\n图6.7给出了误差项随时间进行反向传播算法的示例\n\n![](images/2e0c54a407be37686b186403b377ef3dcd4eec785e7830aa3337339f5984a409.jpg)（描述：示意图，展示误差项在时间序列中反向传播的过程，包含隐藏状态、输入和损失函数的连接关系）  \n图6.7 误差项随时间反向传播算法示例\n\n参数梯度 将公式(6.40)代入到公式(6.32),得到整个序列的损失函数L关于参数U的梯度"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 500,
+   "ref": "images/e0637729f6501f6844fc9113f5a1994cdad5da485f5efbe4603ff450f35553c6.jpg",
+   "name": "e0637729f6501f6844fc9113f5a1994cdad5da485f5efbe4603ff450f35553c6.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e0637729f6501f6844fc9113f5a1994cdad5da485f5efbe4603ff450f35553c6.jpg",
+   "size": 1406,
+   "ctx": "\n相反，若 $\\gamma < 1$ ，当 $t - k \\to \\infty$ 时， $\\gamma ^ { t - k }  0 .$ 当间隔t—k比较大时，梯度也变得非常小，会出现和深层前馈神经网络类似的梯度消失问题（VanishingGradient Problem）.更精确的分析可通过权重矩阵U的谱半径来刻画:若其最大特征值的模大于1,则梯度倾向于爆炸;若小于1,则倾向于消失.\n\n![](images/e0637729f6501f6844fc9113f5a1994cdad5da485f5efbe4603ff450f35553c6.jpg)（描述：该图是循环神经网络中梯度传播的示意图，展示了随时间步间隔增大，梯度逐渐变小的现象，用于说明梯度消失问题）\n\n要注意的是，在循环神经网络中的梯度消失不是说 $\\frac { \\partial \\mathcal { L } _ { t } } { \\partial U }$ 的梯度消失了，而是 $\\frac { \\partial \\mathcal { L } _ { t } } { \\partial h _ { k } }$ 的梯度消失了"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 616,
+   "ref": "images/77fc788921da244ca214081b092662e1e09554e3cc03975185c03d66bac3bcb5.jpg",
+   "name": "77fc788921da244ca214081b092662e1e09554e3cc03975185c03d66bac3bcb5.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\77fc788921da244ca214081b092662e1e09554e3cc03975185c03d66bac3bcb5.jpg",
+   "size": 32902,
+   "ctx": "\n一般在深度网络参数学习时，权重参数初始化得比较小. 训练LSTM网络时，遗忘门偏置 $b _ { f }$ 常初始化为正值 $( \\ - \\not \\mathtt { k } \\mathtt { m } \\ ]$ 或2).使训练\n\n![](images/77fc788921da244ca214081b092662e1e09554e3cc03975185c03d66bac3bcb5.jpg)（描述：LSTM网络循环单元的结构图，展示了细胞状态c_t、隐藏状态h_t以及遗忘门f_t、输入门i_t、输出门o_t等组件的计算流程）  \n图 6.8 LSTM 网络的循环单元结构\n\n通过LSTM循环单元，整个网络可以建立较长距离的时序依赖关系.公式(6.53)\\~公式(6.58)可以简洁地描述为"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 691,
+   "ref": "images/48160c6681353584f6e699029eede78cff83bc01ff8fa62a156858c9c818bc2a.jpg",
+   "name": "48160c6681353584f6e699029eede78cff83bc01ff8fa62a156858c9c818bc2a.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\48160c6681353584f6e699029eede78cff83bc01ff8fa62a156858c9c818bc2a.jpg",
+   "size": 34582,
+   "ctx": "\n从教材学习的角度看，可以将SRN、LSTM和GRU作一个并列比较，如表6.2所示.SRN结构最紧凑，但难以稳定建模长程依赖；LSTM通过额外的记忆单元和三个门来显式控制信息流；GRU则在保留门控思想的同时，进一步简化了结构.\n\n![](images/48160c6681353584f6e699029eede78cff83bc01ff8fa62a156858c9c818bc2a.jpg)（描述：GRU网络的循环单元结构示意图，展示了隐藏状态、更新门、重置门和候选隐藏状态的计算流程）  \n图 6.9 GRU网络的循环单元结构\n\n表 6.2 SRN、LSTM与GRU的比较"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 717,
+   "ref": "images/1ecef988a0581847c35b8727c25f87cff002be9af92d3d0f1666079f0f183c6e.jpg",
+   "name": "1ecef988a0581847c35b8727c25f87cff002be9af92d3d0f1666079f0f183c6e.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\1ecef988a0581847c35b8727c25f87cff002be9af92d3d0f1666079f0f183c6e.jpg",
+   "size": 24515,
+   "ctx": "\n其中 $U ^ { ( l ) }$ $W ^ { ( l ) }$ 和 $\\mathbf { \\delta } _ { b } ( l )$ 为权重矩阵和偏置向量 ${ \\pmb h } _ { t } ^ { ( 0 ) } = { \\pmb x } _ { t }$\n\n![](images/1ecef988a0581847c35b8727c25f87cff002be9af92d3d0f1666079f0f183c6e.jpg)（描述：堆叠循环神经网络按时间展开的结构图，展示多层隐藏状态在时间步上的传播）  \n图6.10 按时间展开的堆叠循环神经网络\n\n## 6.7.2 双向循环神经网络"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 744,
+   "ref": "images/73f6de3658dd30a52932b378246aadc050c4f6a04d20e89e292fb6b6a2f04505.jpg",
+   "name": "73f6de3658dd30a52932b378246aadc050c4f6a04d20e89e292fb6b6a2f04505.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\73f6de3658dd30a52932b378246aadc050c4f6a04d20e89e292fb6b6a2f04505.jpg",
+   "size": 23225,
+   "ctx": "\n图6.11给出了按时间展开的双向循环神经网络.\n\n![](images/73f6de3658dd30a52932b378246aadc050c4f6a04d20e89e292fb6b6a2f04505.jpg)（描述：双向循环神经网络的按时间展开示意图，包含前向和后向隐藏状态的传播过程）  \n图6.11 按时间展开的双向循环神经网络\n\n## 6.8 从序列到更一般的结构"
+  },
+  {
+   "file": "06_循环神经网络.md",
+   "line": 757,
+   "ref": "images/65cbd79ae4b991bf364fe3bc650809f87f4c4e77d90835293f8ad605b04cd852.jpg",
+   "name": "65cbd79ae4b991bf364fe3bc650809f87f4c4e77d90835293f8ad605b04cd852.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\65cbd79ae4b991bf364fe3bc650809f87f4c4e77d90835293f8ad605b04cd852.jpg",
+   "size": 17686,
+   "ctx": "\n递归神经网络（Recursive Neural Network,RvNN）是循环神经网络在有向无循环图上的扩展[Pollack,1990]. 递归神经网络的一般结构为树状的层次结构，如图6.12所示.\n\n![](images/65cbd79ae4b991bf364fe3bc650809f87f4c4e77d90835293f8ad605b04cd852.jpg)（描述：递归神经网络的结构示意图，包含一般结构和退化结构两种树状层次结构）  \n图 6.12 递归神经网络\n\n以图6.12a中的结构为例，有三个隐藏层 $h _ { 1 } , h _ { 2 }$ 和 $h _ { 3 }$ ，其中 $\\pmb { h } _ { 1 }$ 由两个输入层 $\\mathbf { \\boldsymbol { x } } _ { 1 }$ 和 $\\scriptstyle { \\pmb { x } } _ { 2 }$ 计算得到， $h _ { 2 }$ 由另外两个输入层 $\\mathbf { { x } _ { 3 } }$ 和 $\\mathbf { \\boldsymbol { x } } _ {"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 37,
+   "ref": "images/93c616142c5f591acef02e3a746d804092d7820eaec4ef3fde3d4a0c40843446.jpg",
+   "name": "93c616142c5f591acef02e3a746d804092d7820eaec4ef3fde3d4a0c40843446.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\93c616142c5f591acef02e3a746d804092d7820eaec4ef3fde3d4a0c40843446.jpg",
+   "size": 19586,
+   "ctx": "\n鞍点在高维空间中，非凸优化的难点并不在于如何逃离局部最优点，而是如何逃离鞍点（Saddle Point)[Dauphin et al., 2014]. 鞍点的梯度是0,但是在一些维度上是最高点，在另一些维度上是最低点，如图7.1所示.\n\n![](images/93c616142c5f591acef02e3a746d804092d7820eaec4ef3fde3d4a0c40843446.jpg)（描述：三维曲面示意图，展示鞍点的形态特征，中心红点表示梯度为零但非极值的鞍点位置）  \n图 7.1 鞍点示例\n\n鞍点的叫法是因为其鞍然參弗驚鞍点的特征是一阶梯度为0，但是二阶梯度的 Hessian矩阵不是半正定矩阵，参见定理C.2."
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 50,
+   "ref": "images/1e26352700d02dad01a3d8d2a0502561117c7114bb2c00d2752f08d06b99a4f0.jpg",
+   "name": "1e26352700d02dad01a3d8d2a0502561117c7114bb2c00d2752f08d06b99a4f0.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\1e26352700d02dad01a3d8d2a0502561117c7114bb2c00d2752f08d06b99a4f0.jpg",
+   "size": 12957,
+   "ctx": "\n平坦最小值深度神经网络的参数非常多，并且有一定的冗余性，这使得每单个参数对最终损失的影响都比较小，因此会导致损失函数在局部最小解附近通常是一个平坦的区域，称为平坦最小值（Flat Minima）[Hochreiter et al.，1997;Li et al.,2018]. 图7.2给出了平坦最小值和尖锐最小值（Sharp Minima）的示例.\n\n![](images/1e26352700d02dad01a3d8d2a0502561117c7114bb2c00d2752f08d06b99a4f0.jpg)（描述：三维曲面示意图，展示损失函数在参数空间中的平坦最小值区域）  \n(a) 平坦最小值\n\n![](images/3c9d01e8288150d9290bcc0a41f335a9b0222077941dabd7b78aa035061cdfce.jpg)（描述：三维曲面图，展示了一个平坦的最小值区域，用于说明优化问题中的损失函数形态）  "
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 53,
+   "ref": "images/3c9d01e8288150d9290bcc0a41f335a9b0222077941dabd7b78aa035061cdfce.jpg",
+   "name": "3c9d01e8288150d9290bcc0a41f335a9b0222077941dabd7b78aa035061cdfce.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\3c9d01e8288150d9290bcc0a41f335a9b0222077941dabd7b78aa035061cdfce.jpg",
+   "size": 12969,
+   "ctx": "![](images/1e26352700d02dad01a3d8d2a0502561117c7114bb2c00d2752f08d06b99a4f0.jpg)（描述：三维曲面示意图，展示损失函数在参数空间中的平坦最小值区域）  \n(a) 平坦最小值\n\n![](images/3c9d01e8288150d9290bcc0a41f335a9b0222077941dabd7b78aa035061cdfce.jpg)（描述：三维曲面图，展示了一个平坦的最小值区域，用于说明优化问题中的损失函数形态）  \n(b) 尖锐最小值  \n图 7.2 平坦最小值和尖锐最小值的示例（图片来源: [Hochreiter et al., 1997]）\n"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 384,
+   "ref": "images/ba2f045e3d60a550ca96dfcb48a241d28104edb8c41bb494ea42dc9f0731c75d.jpg",
+   "name": "ba2f045e3d60a550ca96dfcb48a241d28104edb8c41bb494ea42dc9f0731c75d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ba2f045e3d60a550ca96dfcb48a241d28104edb8c41bb494ea42dc9f0731c75d.jpg",
+   "size": 9153,
+   "ctx": "\n偏导数 ${ \\mathfrak { g } } _ { t }$ 的定义参见公式(7.1).\n\n![](images/ba2f045e3d60a550ca96dfcb48a241d28104edb8c41bb494ea42dc9f0731c75d.jpg)（描述：示意图，展示动量法中参数更新的向量关系，包含连续参数点和梯度方向）  \n(a) 动量法\n\n![](images/a177ff1931abd94b7126677ac2f97fcc2466b2e1958beab050cf75237f534718.jpg)（描述：示意图，展示动量法和Nesterov加速梯度在参数更新过程中的路径差异，包含θ序列、Δθ变化和梯度方向）  "
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 387,
+   "ref": "images/a177ff1931abd94b7126677ac2f97fcc2466b2e1958beab050cf75237f534718.jpg",
+   "name": "a177ff1931abd94b7126677ac2f97fcc2466b2e1958beab050cf75237f534718.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\a177ff1931abd94b7126677ac2f97fcc2466b2e1958beab050cf75237f534718.jpg",
+   "size": 8119,
+   "ctx": "![](images/ba2f045e3d60a550ca96dfcb48a241d28104edb8c41bb494ea42dc9f0731c75d.jpg)（描述：示意图，展示动量法中参数更新的向量关系，包含连续参数点和梯度方向）  \n(a) 动量法\n\n![](images/a177ff1931abd94b7126677ac2f97fcc2466b2e1958beab050cf75237f534718.jpg)（描述：示意图，展示动量法和Nesterov加速梯度在参数更新过程中的路径差异，包含θ序列、Δθ变化和梯度方向）  \n(b) Nesterov 加速梯度  \n图 7.6 动量法和Nesterov加速梯度的比较\n"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 715,
+   "ref": "images/8c850cd6b29d4a40f55962c1a6e0cf0636e176402f58ad3163bb41087ae83aa2.jpg",
+   "name": "8c850cd6b29d4a40f55962c1a6e0cf0636e176402f58ad3163bb41087ae83aa2.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\8c850cd6b29d4a40f55962c1a6e0cf0636e176402f58ad3163bb41087ae83aa2.jpg",
+   "size": 11022,
+   "ctx": "\n规范化（Normalization）方法泛指把数据特征转换为相同尺度的方法，比如把数据特征映射到[0,1]或[-1,1]区间内，或者映射为服从均值为0、方差为1的标准正态分布.规范化的方法有很多种，比如之前我们介绍的Sigmoid型函数等都可以将不同尺度的特征挤压到一个比较受限的区间.这里，我们介绍几种在\n\n![](images/8c850cd6b29d4a40f55962c1a6e0cf0636e176402f58ad3163bb41087ae83aa2.jpg)（描述：等高线图，展示未规范化数据在权重空间中的梯度下降路径，椭圆等高线表示损失函数，箭头表示梯度方向）  \n(a) 未规范化数据的梯度\n\n![](images/34af8a831f3f8179800a5f7490e0071cfbd0ff7ae4b953f8ec6a8a6321523998.jpg)（描述：二维坐标系中的等高线图，展示权重w1和w2的梯度变化，用于说明数据规范化对梯度的影响）  "
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 718,
+   "ref": "images/34af8a831f3f8179800a5f7490e0071cfbd0ff7ae4b953f8ec6a8a6321523998.jpg",
+   "name": "34af8a831f3f8179800a5f7490e0071cfbd0ff7ae4b953f8ec6a8a6321523998.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\34af8a831f3f8179800a5f7490e0071cfbd0ff7ae4b953f8ec6a8a6321523998.jpg",
+   "size": 8704,
+   "ctx": "![](images/8c850cd6b29d4a40f55962c1a6e0cf0636e176402f58ad3163bb41087ae83aa2.jpg)（描述：等高线图，展示未规范化数据在权重空间中的梯度下降路径，椭圆等高线表示损失函数，箭头表示梯度方向）  \n(a) 未规范化数据的梯度\n\n![](images/34af8a831f3f8179800a5f7490e0071cfbd0ff7ae4b953f8ec6a8a6321523998.jpg)（描述：二维坐标系中的等高线图，展示权重w1和w2的梯度变化，用于说明数据规范化对梯度的影响）  \n(b) 规范化数据的梯度  \n图 7.9 数据规范化对梯度的影响\n"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 756,
+   "ref": "images/b3898336fb7a6bc587ccb7344d1eee92555bd93553cdb7b742fa8a3784856ec0.jpg",
+   "name": "b3898336fb7a6bc587ccb7344d1eee92555bd93553cdb7b742fa8a3784856ec0.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\b3898336fb7a6bc587ccb7344d1eee92555bd93553cdb7b742fa8a3784856ec0.jpg",
+   "size": 19486,
+   "ctx": "\n图7.10给出了标准化和PCA白化的比较.\n\n![](images/b3898336fb7a6bc587ccb7344d1eee92555bd93553cdb7b742fa8a3784856ec0.jpg)（描述：三幅散点图对比原始数据、标准归一化和PCA白化后的数据分布）  \n图 7.10 标准化和 PCA 白化\n\n## 7.5 逐层规范化"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1081,
+   "ref": "images/cf6109df5b3977dcbf9378a7d76f85f95cc590d8ecbfb7b110d73b2c6c7d98e3.jpg",
+   "name": "cf6109df5b3977dcbf9378a7d76f85f95cc590d8ecbfb7b110d73b2c6c7d98e3.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\cf6109df5b3977dcbf9378a7d76f85f95cc590d8ecbfb7b110d73b2c6c7d98e3.jpg",
+   "size": 6140,
+   "ctx": "\n图7.11给出了不同范数约束条件下的最优化问题示例，红线表示函数 $\\ell _ { p } =$ 1, $\\mathcal { F }$ 为函数 $f ( \\theta )$ 的等高线（为简单起见，这里用直线表示）.可以看出， $\\ell _ { 1 }$ 范数的约束通常会使得最优解位于坐标轴上，从而使得最终的参数为稀疏性向量.\n\n![](images/cf6109df5b3977dcbf9378a7d76f85f95cc590d8ecbfb7b110d73b2c6c7d98e3.jpg)（描述：示意图，展示l1范数约束下的最优化问题，其中红线表示等高线，虚线菱形表示l1范数约束区域，最优解位于坐标轴上）\n\n![](images/688aa212e0c7980407cbc72378936cfef39f62b887eef8add6954166a22db468.jpg)（描述：示意图，展示在p=2范数约束下最优化问题的几何解释，包含目标函数等高线、约束圆和最优解点θ*）\n"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1083,
+   "ref": "images/688aa212e0c7980407cbc72378936cfef39f62b887eef8add6954166a22db468.jpg",
+   "name": "688aa212e0c7980407cbc72378936cfef39f62b887eef8add6954166a22db468.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\688aa212e0c7980407cbc72378936cfef39f62b887eef8add6954166a22db468.jpg",
+   "size": 6102,
+   "ctx": "\n![](images/cf6109df5b3977dcbf9378a7d76f85f95cc590d8ecbfb7b110d73b2c6c7d98e3.jpg)（描述：示意图，展示l1范数约束下的最优化问题，其中红线表示等高线，虚线菱形表示l1范数约束区域，最优解位于坐标轴上）\n\n![](images/688aa212e0c7980407cbc72378936cfef39f62b887eef8add6954166a22db468.jpg)（描述：示意图，展示在p=2范数约束下最优化问题的几何解释，包含目标函数等高线、约束圆和最优解点θ*）\n\n![](images/e356098522c5ac00d93f2bae92a463a0f3cb2e36ef2a95eea3d2c98492251f97.jpg)（描述：二维坐标系中的优化问题示意图，展示l1正则化约束下的可行域（菱形）与目标函数等高线的交点）  \n图7.11 不同范数约束条件下的最优化问题示例"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1085,
+   "ref": "images/e356098522c5ac00d93f2bae92a463a0f3cb2e36ef2a95eea3d2c98492251f97.jpg",
+   "name": "e356098522c5ac00d93f2bae92a463a0f3cb2e36ef2a95eea3d2c98492251f97.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e356098522c5ac00d93f2bae92a463a0f3cb2e36ef2a95eea3d2c98492251f97.jpg",
+   "size": 5353,
+   "ctx": "\n![](images/688aa212e0c7980407cbc72378936cfef39f62b887eef8add6954166a22db468.jpg)（描述：示意图，展示在p=2范数约束下最优化问题的几何解释，包含目标函数等高线、约束圆和最优解点θ*）\n\n![](images/e356098522c5ac00d93f2bae92a463a0f3cb2e36ef2a95eea3d2c98492251f97.jpg)（描述：二维坐标系中的优化问题示意图，展示l1正则化约束下的可行域（菱形）与目标函数等高线的交点）  \n图7.11 不同范数约束条件下的最优化问题示例\n\n一种折中的正则化方法是同时加入 $\\ell _ { 1 }$ 和 $\\ell _ { 2 }$ 正则化，称为弹性网络正则化(Elastic Net Regularization) [Zou et al., 2005]."
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1202,
+   "ref": "images/92f50e37d5a866ecd8fbd94ef564fed9047f8f8547b74ba61ec92b37626679bd.jpg",
+   "name": "92f50e37d5a866ecd8fbd94ef564fed9047f8f8547b74ba61ec92b37626679bd.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\92f50e37d5a866ecd8fbd94ef564fed9047f8f8547b74ba61ec92b37626679bd.jpg",
+   "size": 17934,
+   "ctx": "\n暂退法一般是针对神经元输出进行随机屏蔽，但也可以扩展到对神经元之间的连接进行随机屏蔽[Wan et al.，2013]，或对整块特征进行随机屏蔽.图7.12给出了一个网络应用暂退法后的示例.\n\n![](images/92f50e37d5a866ecd8fbd94ef564fed9047f8f8547b74ba61ec92b37626679bd.jpg)（描述：神经网络结构图，展示多层全连接神经网络的拓扑结构）  \n(a) 标准网络\n\n![](images/ae582272ad56eb1721a31eb4f37eaadc48e29e46f642dbd0d74676934e6bf307.jpg)（描述：神经网络结构图，展示标准网络与应用暂退法后的网络对比）  "
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1205,
+   "ref": "images/ae582272ad56eb1721a31eb4f37eaadc48e29e46f642dbd0d74676934e6bf307.jpg",
+   "name": "ae582272ad56eb1721a31eb4f37eaadc48e29e46f642dbd0d74676934e6bf307.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ae582272ad56eb1721a31eb4f37eaadc48e29e46f642dbd0d74676934e6bf307.jpg",
+   "size": 10891,
+   "ctx": "![](images/92f50e37d5a866ecd8fbd94ef564fed9047f8f8547b74ba61ec92b37626679bd.jpg)（描述：神经网络结构图，展示多层全连接神经网络的拓扑结构）  \n(a) 标准网络\n\n![](images/ae582272ad56eb1721a31eb4f37eaadc48e29e46f642dbd0d74676934e6bf307.jpg)（描述：神经网络结构图，展示标准网络与应用暂退法后的网络对比）  \n(b) 应用暂退法后的网络  \n图 7.12 暂退法示例\n"
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1227,
+   "ref": "images/42fbf017b4ed916fef7f4edc0e834457f901e9ba9594b0863cfb3beab5f3ae95.jpg",
+   "name": "42fbf017b4ed916fef7f4edc0e834457f901e9ba9594b0863cfb3beab5f3ae95.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\42fbf017b4ed916fef7f4edc0e834457f901e9ba9594b0863cfb3beab5f3ae95.jpg",
+   "size": 10200,
+   "ctx": "\n当在循环神经网络上应用暂退法时，不能直接对每个时刻的隐状态进行独立的随机屏蔽，这样会损害循环网络在时间维度上的记忆能力.一种简单的方法是只对非时间维度的连接（即非循环连接）进行随机屏蔽[Zaremba et al..2014]. 如图7.13所示，虚线边表示进行随机屏蔽，不同的颜色表示不同的暂退掩码.\n\n![](images/42fbf017b4ed916fef7f4edc0e834457f901e9ba9594b0863cfb3beab5f3ae95.jpg)（描述：循环神经网络中变分暂退法的示意图，展示在不同时间步共享相同暂退掩码的机制）  \n图7.13 针对非循环连接的暂退法\n\n然而根据贝叶斯学习的解释，暂退法可以看作一种对参数θ的采样.每次采样得到的参数在时间维度上应保持一致.因此，在循环神经网络中使用暂退法时，可以对参数矩阵的元素进行随机屏蔽，并在所有时刻共享同一个暂退掩码.这种方法称为变分暂退法(Variational Dropout)[Gal et al., 2016b]. 图7.14给出了变分暂退法的示例，相同颜色表示使用相同的暂退掩码."
+  },
+  {
+   "file": "07_网络优化与正则化.md",
+   "line": 1232,
+   "ref": "images/e786724cb38cb18bc424f082a03208aaf6fc56876980fa2e5f7651ad1c7654ce.jpg",
+   "name": "e786724cb38cb18bc424f082a03208aaf6fc56876980fa2e5f7651ad1c7654ce.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e786724cb38cb18bc424f082a03208aaf6fc56876980fa2e5f7651ad1c7654ce.jpg",
+   "size": 10358,
+   "ctx": "\n然而根据贝叶斯学习的解释，暂退法可以看作一种对参数θ的采样.每次采样得到的参数在时间维度上应保持一致.因此，在循环神经网络中使用暂退法时，可以对参数矩阵的元素进行随机屏蔽，并在所有时刻共享同一个暂退掩码.这种方法称为变分暂退法(Variational Dropout)[Gal et al., 2016b]. 图7.14给出了变分暂退法的示例，相同颜色表示使用相同的暂退掩码.\n\n![](images/e786724cb38cb18bc424f082a03208aaf6fc56876980fa2e5f7651ad1c7654ce.jpg)（描述：示意图，展示变分暂退法在循环神经网络中的应用，相同颜色表示共享的暂退掩码）  \n图 7.14 变分暂退法\n\n## 7.7.5 数据增强"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 95,
+   "ref": "images/edb00df9c88d0c515a93fa59046ba94956006280dd992a9596ef7a0efbf35871.jpg",
+   "name": "edb00df9c88d0c515a93fa59046ba94956006280dd992a9596ef7a0efbf35871.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\edb00df9c88d0c515a93fa59046ba94956006280dd992a9596ef7a0efbf35871.jpg",
+   "size": 16282,
+   "ctx": "\n公式(8.7)称为软性注意力机制（Soft Attention Mechanism）.图8.1给出注意力机制的示例，其中图8.1a为软性注意力的普通模式.\n\n![](images/edb00df9c88d0c515a93fa59046ba94956006280dd992a9596ef7a0efbf35871.jpg)（描述：软性注意力机制的结构图，展示查询q与输入序列x1到xT通过softmax计算注意力权重α1到αT，并加权求和得到输出a）  \n(a) 普通模式\n\n![](images/54dea11883f6d68f1c358c267ad8a30924d3c91b40ce609a93fc49b8e6e48d74.jpg)（描述：注意力机制的结构示意图，展示了查询q与多个键k和值v之间的计算流程，包含softmax操作和加权求和过程）  "
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 98,
+   "ref": "images/54dea11883f6d68f1c358c267ad8a30924d3c91b40ce609a93fc49b8e6e48d74.jpg",
+   "name": "54dea11883f6d68f1c358c267ad8a30924d3c91b40ce609a93fc49b8e6e48d74.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\54dea11883f6d68f1c358c267ad8a30924d3c91b40ce609a93fc49b8e6e48d74.jpg",
+   "size": 15698,
+   "ctx": "![](images/edb00df9c88d0c515a93fa59046ba94956006280dd992a9596ef7a0efbf35871.jpg)（描述：软性注意力机制的结构图，展示查询q与输入序列x1到xT通过softmax计算注意力权重α1到αT，并加权求和得到输出a）  \n(a) 普通模式\n\n![](images/54dea11883f6d68f1c358c267ad8a30924d3c91b40ce609a93fc49b8e6e48d74.jpg)（描述：注意力机制的结构示意图，展示了查询q与多个键k和值v之间的计算流程，包含softmax操作和加权求和过程）  \n(b) 键值对模式  \n图 8.1 注意力机制\n"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 186,
+   "ref": "images/6d60d9a2a481228e27247bb1421095841d3a40590debe8f9a430e7a785d80249.jpg",
+   "name": "6d60d9a2a481228e27247bb1421095841d3a40590debe8f9a430e7a785d80249.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\6d60d9a2a481228e27247bb1421095841d3a40590debe8f9a430e7a785d80249.jpg",
+   "size": 23060,
+   "ctx": "\n图8.2给出了指针网络的示例，其中 $h _ { 1 } , h _ { 2 } , h _ { 3 }$ 为输入数字20,5,10经过循环神经网络后的隐状态， $h _ { 0 }$ 对应一个特殊字符 $^ 6 < 2$ 当输入 $\\mathbf { \\bar { \\Psi } } > \\mathbf { \\bar { \\Psi } }$ 时，网络一步一步输出三个输入数字按从大到小排序后的下标.\n\n![](images/6d60d9a2a481228e27247bb1421095841d3a40590debe8f9a430e7a785d80249.jpg)（描述：指针网络的结构示意图，展示了编码器和解码器之间的连接关系以及输入数字经过循环神经网络后的隐状态）  \n图 8.2 指针网络\n\n## 8.3 自注意力"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 193,
+   "ref": "images/0472f2ca275f35df722c9c1f4e024d805290abaed942fa9d7d2c6d5379412886.jpg",
+   "name": "0472f2ca275f35df722c9c1f4e024d805290abaed942fa9d7d2c6d5379412886.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0472f2ca275f35df722c9c1f4e024d805290abaed942fa9d7d2c6d5379412886.jpg",
+   "size": 21797,
+   "ctx": "\n当使用神经网络来处理一个变长的向量序列时，我们通常可以使用卷积网络或循环网络进行编码，从而得到一个相同长度的输出向量序列，如图8.3所示.\n\n![](images/0472f2ca275f35df722c9c1f4e024d805290abaed942fa9d7d2c6d5379412886.jpg)（描述：示意图，展示卷积网络和双向循环网络对变长序列的编码方式，包含输入向量x和隐藏状态h的结构关系）  \n图8.3 基于卷积网络和循环网络的变长序列编码\n\n基于卷积或循环网络的序列编码本质上都是局部的信息交互方式.卷积网络擅长利用局部邻域建模，而循环网络通过逐步递推来传播上下文.虽然循环网络在理论上可以建立长距离依赖关系，但由于信息传递路径较长以及梯度消失等问题，实际中往往更擅长建模局部或中等距离依赖."
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 204,
+   "ref": "images/5dfe7764a2b0c5f15faa8b70d810769b3c5757a8f8bef9900e019cc2c9634da3.jpg",
+   "name": "5dfe7764a2b0c5f15faa8b70d810769b3c5757a8f8bef9900e019cc2c9634da3.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\5dfe7764a2b0c5f15faa8b70d810769b3c5757a8f8bef9900e019cc2c9634da3.jpg",
+   "size": 33500,
+   "ctx": "\n自注意力常采用查询-键-值（Query-Key-Value，QKV）模式，以引入可学习投影并提升模型能力．其计算过程如图8.4所示，其中红色字母表示矩阵的维度.\n\n![](images/5dfe7764a2b0c5f15faa8b70d810769b3c5757a8f8bef9900e019cc2c9634da3.jpg)（描述：自注意力机制的计算流程图，展示了输入序列通过查询、键、值矩阵变换后计算注意力权重并生成输出的过程）  \n图 8.4 自注意力模型的计算过程\n\n设 $\\pmb { X } = [ \\pmb { x } _ { 1 } , \\cdots , \\pmb { x } _ { T } ] \\in \\mathbb { R } ^ { D _ { x } \\times T }$ 为输入序列， $\\pmb { H } = [ \\pmb { h } _ { 1 } , \\cdots , \\pmb { h } _ { T } ] \\in \\mathbb { R } ^ { D _ { v } \\times T }$ 为输出序列.自注意力模型的具体计算过程如下："
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 251,
+   "ref": "images/e88afc4a489bd3b9489ce06719eae49a4ff604635bfb0fa2f0c9d2e450db9d0b.jpg",
+   "name": "e88afc4a489bd3b9489ce06719eae49a4ff604635bfb0fa2f0c9d2e450db9d0b.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e88afc4a489bd3b9489ce06719eae49a4ff604635bfb0fa2f0c9d2e450db9d0b.jpg",
+   "size": 11700,
+   "ctx": "\n图8.5给出全连接层和自注意力层的对比，其中实线表示可学习的权重，虚线表示动态生成的权重.由于自注意力层的连接权重由输入内容动态决定，因此能够自然地处理变长信息序列.\n\n![](images/e88afc4a489bd3b9489ce06719eae49a4ff604635bfb0fa2f0c9d2e450db9d0b.jpg)（描述：自注意力层的结构图，展示输入序列x1到x5与隐藏状态h1到h5之间的动态连接关系）  \n(a) 全连接层\n\n![](images/6262699e69cb90cc248ce7aa1cd865df6b442e64820b1f89359e54ac76397f51.jpg)（描述：示意图，展示自注意力层中输入序列x1到x5与隐藏状态h1到h5之间的注意力权重连接关系）  "
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 254,
+   "ref": "images/6262699e69cb90cc248ce7aa1cd865df6b442e64820b1f89359e54ac76397f51.jpg",
+   "name": "6262699e69cb90cc248ce7aa1cd865df6b442e64820b1f89359e54ac76397f51.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\6262699e69cb90cc248ce7aa1cd865df6b442e64820b1f89359e54ac76397f51.jpg",
+   "size": 11507,
+   "ctx": "![](images/e88afc4a489bd3b9489ce06719eae49a4ff604635bfb0fa2f0c9d2e450db9d0b.jpg)（描述：自注意力层的结构图，展示输入序列x1到x5与隐藏状态h1到h5之间的动态连接关系）  \n(a) 全连接层\n\n![](images/6262699e69cb90cc248ce7aa1cd865df6b442e64820b1f89359e54ac76397f51.jpg)（描述：示意图，展示自注意力层中输入序列x1到x5与隐藏状态h1到h5之间的注意力权重连接关系）  \n(b) 自注意力层  \n图8.5 全连接层和自注意力层\n"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 301,
+   "ref": "images/258bdfa5a703e8eb69129bc2460994be04d9de3c8d1574cba3806f3f2437b042.jpg",
+   "name": "258bdfa5a703e8eb69129bc2460994be04d9de3c8d1574cba3806f3f2437b042.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\258bdfa5a703e8eb69129bc2460994be04d9de3c8d1574cba3806f3f2437b042.jpg",
+   "size": 60352,
+   "ctx": "\n原始Transformer模型整体上遵循编码器-解码器范式，但用自注意力替代了传统的循环结构，如图8.6所示.\n\n![](images/258bdfa5a703e8eb69129bc2460994be04d9de3c8d1574cba3806f3f2437b042.jpg)（描述：Transformer网络结构示意图，展示了编码器和解码器的组成模块，包括自注意力、前馈网络、加与规范化等组件）  \n图 8.6 Transformer 网络结构\n\n## 8.4.1 位置编码"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 367,
+   "ref": "images/0e9db573e69839c35c6048f948f3c3e5bd4d2ceb2953876aa8c4fa6aa06075dd.jpg",
+   "name": "0e9db573e69839c35c6048f948f3c3e5bd4d2ceb2953876aa8c4fa6aa06075dd.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0e9db573e69839c35c6048f948f3c3e5bd4d2ceb2953876aa8c4fa6aa06075dd.jpg",
+   "size": 1314,
+   "ctx": "\n在很多现代大语言模型中，常采用旋转位置编码（Rotary Position Em-bedding，RoPE）[Su et al.,2024]来替代“位置向量直接相加”的做法. 其基本思想不是把位置编码加到输入表示上，而是在计算查询向量和键向量时，对每一对相邻维度施加一个与位置相关的二维旋转.\n\n![](images/0e9db573e69839c35c6048f948f3c3e5bd4d2ceb2953876aa8c4fa6aa06075dd.jpg)（描述：示意图，展示旋转位置编码（RoPE）中通过二维旋转矩阵对查询和键向量进行位置编码的机制）\n\n## 数学小知识|旋转矩阵\n"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 409,
+   "ref": "images/0526aaea29d31ae935533e8a1ca760bcec03e666c32c12df41e55f5a7623fc69.jpg",
+   "name": "0526aaea29d31ae935533e8a1ca760bcec03e666c32c12df41e55f5a7623fc69.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0526aaea29d31ae935533e8a1ca760bcec03e666c32c12df41e55f5a7623fc69.jpg",
+   "size": 24397,
+   "ctx": "\n图8.8概括了绝对位置编码、ALiBi和RoPE三类代表性思路的差异:绝对位置编码将位置向量直接加到输入表示上，相对位置偏置在打分中加入与距离相关的修正项，而RoPE则通过对q,k做位置相关旋转，将相对位置信息写入点积\n\n![](images/0526aaea29d31ae935533e8a1ca760bcec03e666c32c12df41e55f5a7623fc69.jpg)（描述：示意图，展示了绝对位置编码、相对位置编码和RoPE三种位置编码方法的结构差异）  \n图 8.8 三种不同的位置编码\n\n## 8.4.2 编码器"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 560,
+   "ref": "images/4cc0faf3bc267b96d51f8bcad460bf624e82baf13f947a7c13fb9f30ed0743fc.jpg",
+   "name": "4cc0faf3bc267b96d51f8bcad460bf624e82baf13f947a7c13fb9f30ed0743fc.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\4cc0faf3bc267b96d51f8bcad460bf624e82baf13f947a7c13fb9f30ed0743fc.jpg",
+   "size": 33581,
+   "ctx": "\n图8.10给出了三种典型Transformer架构的信息流示意.\n\n![](images/4cc0faf3bc267b96d51f8bcad460bf624e82baf13f947a7c13fb9f30ed0743fc.jpg)（描述：流程图，展示了三种典型Transformer架构的信息流：仅编码器、仅解码器和编码器-解码器结构）  \n图 8.10 Transformer 的三种典型架构\n\n## 8.6 现代 Transformer的常见优化"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 581,
+   "ref": "images/20c03935e8707e44c35170f1b981f23bfd827d9e8e582442ce29c7cfdd69404c.jpg",
+   "name": "20c03935e8707e44c35170f1b981f23bfd827d9e8e582442ce29c7cfdd69404c.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\20c03935e8707e44c35170f1b981f23bfd827d9e8e582442ce29c7cfdd69404c.jpg",
+   "size": 42334,
+   "ctx": "\n从这个角度看，现代Transformer虽然仍保留了“注意力+前馈网络+残差连接”的基本骨架，但其中几乎每一个组成部分都经历了重新设计.图8.11给出了这一节涉及的主要优化方向及其关注重点\n\n![](images/20c03935e8707e44c35170f1b981f23bfd827d9e8e582442ce29c7cfdd69404c.jpg)（描述：结构图，展示了现代Transformer优化的四个主要方向及其关键技术）  \n图 8.11 现代 Transformer 常见优化的整体框架\n\n## 8.6.1 训练稳定性与基本块演化"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 658,
+   "ref": "images/219fafec823286304da32bc23bc808e2655da9d4291937c13ece597869ac1f5a.jpg",
+   "name": "219fafec823286304da32bc23bc808e2655da9d4291937c13ece597869ac1f5a.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\219fafec823286304da32bc23bc808e2655da9d4291937c13ece597869ac1f5a.jpg",
+   "size": 25774,
+   "ctx": "\nhttps://nndl.ai/\n\n![](images/219fafec823286304da32bc23bc808e2655da9d4291937c13ece597869ac1f5a.jpg)（描述：Transformer块的结构示意图，展示自注意力、残差相加、LayerNorm和FFN等组件的层级关系）  \n(a) 原始 Transformer块\n\n![](images/5a3dbccc31873e51653bdea85027532a1b1f0df929d8a69506cbe1b02f4a0a6c.jpg)（描述：流程图，展示现代Transformer块的典型结构，包含RMSNorm、注意力机制、残差相加和SwiGLU FFN等组件）  "
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 661,
+   "ref": "images/5a3dbccc31873e51653bdea85027532a1b1f0df929d8a69506cbe1b02f4a0a6c.jpg",
+   "name": "5a3dbccc31873e51653bdea85027532a1b1f0df929d8a69506cbe1b02f4a0a6c.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\5a3dbccc31873e51653bdea85027532a1b1f0df929d8a69506cbe1b02f4a0a6c.jpg",
+   "size": 31862,
+   "ctx": "![](images/219fafec823286304da32bc23bc808e2655da9d4291937c13ece597869ac1f5a.jpg)（描述：Transformer块的结构示意图，展示自注意力、残差相加、LayerNorm和FFN等组件的层级关系）  \n(a) 原始 Transformer块\n\n![](images/5a3dbccc31873e51653bdea85027532a1b1f0df929d8a69506cbe1b02f4a0a6c.jpg)（描述：流程图，展示现代Transformer块的典型结构，包含RMSNorm、注意力机制、残差相加和SwiGLU FFN等组件）  \n(b) 现代 Transformer块  \n图 8.12 原始Transformer块与现代 Transformer块的典型结构对比\n"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 733,
+   "ref": "images/1f1739ddc41bdea46d81ca627dfb76142652cda607bef3e0aa594724e7c82be6.jpg",
+   "name": "1f1739ddc41bdea46d81ca627dfb76142652cda607bef3e0aa594724e7c82be6.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\1f1739ddc41bdea46d81ca627dfb76142652cda607bef3e0aa594724e7c82be6.jpg",
+   "size": 28744,
+   "ctx": "\n图8.13给出前缀填充、解码与KV缓存之间的关系.与前面较抽象的流程图相比，这里更强调两个阶段在计算形态上的差别：前缀填充阶段对整段前缀做并行计算，并一次性写入缓存；解码阶段则围绕历史KV缓存反复执行“读取缓存-计算当前词元-追加新缓存”的小步迭代\n\n![](images/1f1739ddc41bdea46d81ca627dfb76142652cda607bef3e0aa594724e7c82be6.jpg)（描述：流程图，展示前缀填充和解码阶段中KV缓存的使用过程，包含迭代计算与缓存读写关系）  \n图8.13 前缀填充、解码与KV缓存的关系示意\n\n## 8.6.4.1 KV缓存与增量解码"
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 776,
+   "ref": "images/8e1fdfad74227fe4a1152891a2f7c9f4ce68072c4f4fdb0cb64c5ecad452df8d.jpg",
+   "name": "8e1fdfad74227fe4a1152891a2f7c9f4ce68072c4f4fdb0cb64c5ecad452df8d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\8e1fdfad74227fe4a1152891a2f7c9f4ce68072c4f4fdb0cb64c5ecad452df8d.jpg",
+   "size": 14766,
+   "ctx": "\n图8.14对比了两种键值头组织方式\n\n![](images/8e1fdfad74227fe4a1152891a2f7c9f4ce68072c4f4fdb0cb64c5ecad452df8d.jpg)（描述：结构图，展示了标准多头注意力机制中查询Q与键K、值V的对应关系）  \n(a) 标准多头注意力\n\n![](images/80b6e7b7ba797f2bab3bf2e2aa495cca78d1415a8d1613771020f8b7621f444d.jpg)（描述：示意图，展示分组查询注意力机制中四个查询Q1至Q4分别对应两个键值对K1,V1和K2,V2的映射关系）  "
+  },
+  {
+   "file": "08_注意力机制与Transformer.md",
+   "line": 779,
+   "ref": "images/80b6e7b7ba797f2bab3bf2e2aa495cca78d1415a8d1613771020f8b7621f444d.jpg",
+   "name": "80b6e7b7ba797f2bab3bf2e2aa495cca78d1415a8d1613771020f8b7621f444d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\80b6e7b7ba797f2bab3bf2e2aa495cca78d1415a8d1613771020f8b7621f444d.jpg",
+   "size": 11443,
+   "ctx": "![](images/8e1fdfad74227fe4a1152891a2f7c9f4ce68072c4f4fdb0cb64c5ecad452df8d.jpg)（描述：结构图，展示了标准多头注意力机制中查询Q与键K、值V的对应关系）  \n(a) 标准多头注意力\n\n![](images/80b6e7b7ba797f2bab3bf2e2aa495cca78d1415a8d1613771020f8b7621f444d.jpg)（描述：示意图，展示分组查询注意力机制中四个查询Q1至Q4分别对应两个键值对K1,V1和K2,V2的映射关系）  \n(b) 分组查询注意力  \n图8.14 标准多头注意力与分组查询注意力\n"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 15,
+   "ref": "images/c73acd38d52923f56436a39df15b35f51d2909b49c1d820947fb1dc25abcf73a.jpg",
+   "name": "c73acd38d52923f56436a39df15b35f51d2909b49c1d820947fb1dc25abcf73a.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\c73acd38d52923f56436a39df15b35f51d2909b49c1d820947fb1dc25abcf73a.jpg",
+   "size": 10311,
+   "ctx": "\n图9.1展示了无向图与有向图的区别.无向图中的边表示对称关系，有向图中的边表示带方向的关系.\n\n![](images/c73acd38d52923f56436a39df15b35f51d2909b49c1d820947fb1dc25abcf73a.jpg)（描述：无向图的结构示意图，包含5个顶点v1至v5和若干无向边）  \n(a) 无向图\n\n![](images/2850adb80539fc2858c0eeb2a5c551935f4483f300855ec41f796de58f6596ec.jpg)（描述：有向图示意图，包含5个顶点v1至v5和多个带方向的边）  "
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 18,
+   "ref": "images/2850adb80539fc2858c0eeb2a5c551935f4483f300855ec41f796de58f6596ec.jpg",
+   "name": "2850adb80539fc2858c0eeb2a5c551935f4483f300855ec41f796de58f6596ec.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2850adb80539fc2858c0eeb2a5c551935f4483f300855ec41f796de58f6596ec.jpg",
+   "size": 10015,
+   "ctx": "![](images/c73acd38d52923f56436a39df15b35f51d2909b49c1d820947fb1dc25abcf73a.jpg)（描述：无向图的结构示意图，包含5个顶点v1至v5和若干无向边）  \n(a) 无向图\n\n![](images/2850adb80539fc2858c0eeb2a5c551935f4483f300855ec41f796de58f6596ec.jpg)（描述：有向图示意图，包含5个顶点v1至v5和多个带方向的边）  \n(b) 有向图  \n图 9.1 无向图与有向图\n"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 36,
+   "ref": "images/36f28f14eb54910a92855f9b3f5dc9c511e8500c084d6fe2714e3ffcb9215be4.jpg",
+   "name": "36f28f14eb54910a92855f9b3f5dc9c511e8500c084d6fe2714e3ffcb9215be4.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\36f28f14eb54910a92855f9b3f5dc9c511e8500c084d6fe2714e3ffcb9215be4.jpg",
+   "size": 30225,
+   "ctx": "\n图9.2展示了同质图与异质图的区别.同质图中的节点和边类型单一，而异质图可以同时包含多类节点与多类关系.\n\n![](images/36f28f14eb54910a92855f9b3f5dc9c511e8500c084d6fe2714e3ffcb9215be4.jpg)（描述：示意图，展示同质图与异质图的结构对比，左侧为单一节点类型的文章引用关系，右侧包含文章、作者、会议等多类节点及多种关系）  \n图 9.2 同质图与异质图\n\n## 9.1.3 图的表示方法"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 243,
+   "ref": "images/570f775357a1629759364440ab467be766948edd315954dc9724d74a47593be3.jpg",
+   "name": "570f775357a1629759364440ab467be766948edd315954dc9724d74a47593be3.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\570f775357a1629759364440ab467be766948edd315954dc9724d74a47593be3.jpg",
+   "size": 35731,
+   "ctx": "\n图9.3展示了图神经网络的消息传递机制．左图表示节点v从邻居接收消息并完成聚合；右图表示节点υ将聚合消息与自身状态结合后得到新的表示.\n\n![](images/570f775357a1629759364440ab467be766948edd315954dc9724d74a47593be3.jpg)（描述：图神经网络消息传递机制的示意图，包含信息传递与聚合、节点状态更新两个部分，展示消息计算和状态更新的流程）  \n图9.3 图神经网络的消息传递机制\n\n## 9.3.2 全局汇聚与读出"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 294,
+   "ref": "images/c23041ca693a4054017fa9dc9353f24cf0d37ce0aa7b27abfa7f546a99e04429.jpg",
+   "name": "c23041ca693a4054017fa9dc9353f24cf0d37ce0aa7b27abfa7f546a99e04429.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\c23041ca693a4054017fa9dc9353f24cf0d37ce0aa7b27abfa7f546a99e04429.jpg",
+   "size": 26414,
+   "ctx": "\n图9.4给出了普通一维卷积与图卷积的对比.一维卷积在固定窗口内进行信息聚合；图卷积则在节点的局部邻域内进行信息聚合.尽管两者的数据组织形式不同，但都体现了局部建模与参数共享这两个核心思想.\n\n![](images/c23041ca693a4054017fa9dc9353f24cf0d37ce0aa7b27abfa7f546a99e04429.jpg)（描述：对比图，左侧展示一维卷积的固定窗口聚合过程，右侧展示图卷积在节点邻域内的信息聚合）  \n图9.4 从一维卷积到图卷积\n\n我们了解了图卷积的基本思想，但其实现方法还需要借助谱图方法.在后续小节中，我们按照“卷积定理→傅里叶变换→图傅里叶变换→谱图卷积→局部近似”来介绍图卷积的具体实现方法."
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 437,
+   "ref": "images/e3473beb94bc8a92df67a21950a1523cc6a7e020cdb6044901124e40b4a17833.jpg",
+   "name": "e3473beb94bc8a92df67a21950a1523cc6a7e020cdb6044901124e40b4a17833.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e3473beb94bc8a92df67a21950a1523cc6a7e020cdb6044901124e40b4a17833.jpg",
+   "size": 1253,
+   "ctx": "\nChebyshev多项式由递推关系定义： $T _ { 0 } ( x ) \\ = \\ 1 , T _ { 1 } ( x ) \\ = \\ x$ $T _ { k } ( x ) = 2 x T _ { k - 1 } ( x ) - T _ { k - 2 } ( x )$ . Chebyshev多项式在 $[ - 1 , 1 ]$ 上具有正交性和最优逼近性质，可以用较少的项数高效逼近连续函数.在谱图卷积中，使用Chebyshev多项式近似滤波器函数，可以避免显式的特征分解，将计算复杂度从 $O ( N ^ { 3 } )$ 降到O(KE)(E为边数，K为多项式阶数).\n\n![](images/e3473beb94bc8a92df67a21950a1523cc6a7e020cdb6044901124e40b4a17833.jpg)（描述：该图是关于Chebyshev多项式在谱图卷积中应用的示意图，展示了使用多项式近似滤波器函数的过程，与正文中的数学定义和计算复杂度分析相关）\n\n使用谱定义更便于实现\n"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 537,
+   "ref": "images/33bc48f5a65a7fb90a90cd36dfd1330852c69acd44de7c484c03ff1c8ceea70d.jpg",
+   "name": "33bc48f5a65a7fb90a90cd36dfd1330852c69acd44de7c484c03ff1c8ceea70d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\33bc48f5a65a7fb90a90cd36dfd1330852c69acd44de7c484c03ff1c8ceea70d.jpg",
+   "size": 23972,
+   "ctx": "\n图9.5给出了GraphSAGE的邻居采样示意.每层只对部分邻居进行采样与聚合，从而降低大图训练的计算与存储开销.\n\n![](images/33bc48f5a65a7fb90a90cd36dfd1330852c69acd44de7c484c03ff1c8ceea70d.jpg)（描述：示意图，展示GraphSAGE中邻居采样的过程，包含中心节点、被采样和未采样的邻居节点，以及一阶和二阶邻域的划分）  \n图 9.5 GraphSAGE 的邻居采样示意\n\n## 9.4.2.2 聚合函数"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 664,
+   "ref": "images/c744cd9880ae343ad68ba6041d5f1995f7a5543319299f8c9b9335e4f7144d3e.jpg",
+   "name": "c744cd9880ae343ad68ba6041d5f1995f7a5543319299f8c9b9335e4f7144d3e.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\c744cd9880ae343ad68ba6041d5f1995f7a5543319299f8c9b9335e4f7144d3e.jpg",
+   "size": 6319,
+   "ctx": "\n再看一个更直接的比较：如果把图9.6左侧的图与一个五边形环 $C _ { 5 }$ 相比，那么在初始时两者都可以看成“所有节点同色”；但在第一轮细化后， $C _ { 5 }$ 中的五个节点仍然完全等价，而图9.6中的节点会分成“两个度为3的节点”和“三个度为2的节点”两类，因此两者在t=1时的标签分布已经不同，WL-Test便可立即判定它们不同构.\n\n![](images/c744cd9880ae343ad68ba6041d5f1995f7a5543319299f8c9b9335e4f7144d3e.jpg)（描述：一个五边形环图C5的结构示意图，由五个节点构成一个闭合环，用于与图9.6进行图同构性比较）  \nt = 0\n\n![](images/e2ca0f812082aa3247ce055b117ce980bb0938a85934a8e11ef6cf12d5c9da62.jpg)（描述：一个五边形结构的图，包含五个节点，其中三个节点为浅蓝色，两个为橙色，节点间通过线段连接，下方标注t=1）"
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 667,
+   "ref": "images/e2ca0f812082aa3247ce055b117ce980bb0938a85934a8e11ef6cf12d5c9da62.jpg",
+   "name": "e2ca0f812082aa3247ce055b117ce980bb0938a85934a8e11ef6cf12d5c9da62.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e2ca0f812082aa3247ce055b117ce980bb0938a85934a8e11ef6cf12d5c9da62.jpg",
+   "size": 6751,
+   "ctx": "![](images/c744cd9880ae343ad68ba6041d5f1995f7a5543319299f8c9b9335e4f7144d3e.jpg)（描述：一个五边形环图C5的结构示意图，由五个节点构成一个闭合环，用于与图9.6进行图同构性比较）  \nt = 0\n\n![](images/e2ca0f812082aa3247ce055b117ce980bb0938a85934a8e11ef6cf12d5c9da62.jpg)（描述：一个五边形结构的图，包含五个节点，其中三个节点为浅蓝色，两个为橙色，节点间通过线段连接，下方标注t=1）\n\n![](images/f28b3cd78faf238043f579a0c69fc3c75b296c20154b2fe667d19fb2fe321c54.jpg)（描述：图示为一个五边形结构的节点连接图，用于表示WL-Test颜色细化过程中的图结构）  \nt = 2  "
+  },
+  {
+   "file": "09_图神经网络.md",
+   "line": 669,
+   "ref": "images/f28b3cd78faf238043f579a0c69fc3c75b296c20154b2fe667d19fb2fe321c54.jpg",
+   "name": "f28b3cd78faf238043f579a0c69fc3c75b296c20154b2fe667d19fb2fe321c54.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f28b3cd78faf238043f579a0c69fc3c75b296c20154b2fe667d19fb2fe321c54.jpg",
+   "size": 5902,
+   "ctx": "\n![](images/e2ca0f812082aa3247ce055b117ce980bb0938a85934a8e11ef6cf12d5c9da62.jpg)（描述：一个五边形结构的图，包含五个节点，其中三个节点为浅蓝色，两个为橙色，节点间通过线段连接，下方标注t=1）\n\n![](images/f28b3cd78faf238043f579a0c69fc3c75b296c20154b2fe667d19fb2fe321c54.jpg)（描述：图示为一个五边形结构的节点连接图，用于表示WL-Test颜色细化过程中的图结构）  \nt = 2  \n图 9.6 WL-Test 的颜色细化过程示意\n"
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 47,
+   "ref": "images/4f5db9039c954c842160c0893dd24629b9652d6b7ec7ab3fb752a120007ad187.jpg",
+   "name": "4f5db9039c954c842160c0893dd24629b9652d6b7ec7ab3fb752a120007ad187.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\4f5db9039c954c842160c0893dd24629b9652d6b7ec7ab3fb752a120007ad187.jpg",
+   "size": 17283,
+   "ctx": "\\sigma ( X ; \\pmb { w } ) = \\frac { 1 } { N } \\sum _ { n = 1 } ^ { N } ( \\pmb { w } ^ { \\top } \\pmb { x } ^ { ( n ) } - \\pmb { w } ^ { \\top } \\bar { \\pmb { x } } ) ^ { 2 }\\tag{10.2}\n$$\n\n![](images/4f5db9039c954c842160c0893dd24629b9652d6b7ec7ab3fb752a120007ad187.jpg)（描述：主成分分析的示意图，展示二维数据点分布及主成分方向）  \n图 10.1 主成分分析\n\n$$"
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 120,
+   "ref": "images/e1181d1a675a52772ac65d3b81ca97b6b6c6444bfdf09961b7d231fe15f2df22.jpg",
+   "name": "e1181d1a675a52772ac65d3b81ca97b6b6c6444bfdf09961b7d231fe15f2df22.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e1181d1a675a52772ac65d3b81ca97b6b6c6444bfdf09961b7d231fe15f2df22.jpg",
+   "size": 1214,
+   "ctx": "\n如果基向量的个数等于空间维度，即 $M = D$ ，并且它们能够张成 $\\mathbb { R } ^ { D }$ ,则这组基向量构成一组完备基.如果基向量的个数满足 $M > D$ ,但 仍然张成 $\\mathbb { R } ^ { D }$ ,则称这组基向量是过完备的（overcomplete)或冗余的.\n\n![](images/e1181d1a675a52772ac65d3b81ca97b6b6c6444bfdf09961b7d231fe15f2df22.jpg)（描述：示意图，展示过完备基向量在空间中的表示，包含多个向量指向不同方向，用于说明基向量个数多于空间维度的情况）\n\n“过完备”意味着基向量个数多于支撑空间的维度，因此这些基向量一般不具备独立、正交等性质\n"
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 224,
+   "ref": "images/03badb65bbcbb12c85ad96b8a6ab7b081f6e9c95be734d5a9f17574ff8e99eca.jpg",
+   "name": "03badb65bbcbb12c85ad96b8a6ab7b081f6e9c95be734d5a9f17574ff8e99eca.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\03badb65bbcbb12c85ad96b8a6ab7b081f6e9c95be734d5a9f17574ff8e99eca.jpg",
+   "size": 14190,
+   "ctx": "\n最简单的自编码器是如图10.2所示的两层神经网络．输入层到隐藏层用来编码，隐藏层到输出层用来解码，层与层之间互相全连接.\n\n![](images/03badb65bbcbb12c85ad96b8a6ab7b081f6e9c95be734d5a9f17574ff8e99eca.jpg)（描述：结构图，展示两层自编码器的网络结构，包含输入层、隐藏层和输出层，标注了编码器和解码器部分）  \n图10.2 两层网络结构的自编码器\n\n对于样本 $_ { \\textbf { \\em x } }$ ，自编码器中间隐藏层的活性值为x的编码，即"
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 303,
+   "ref": "images/e125bbea6ce64aedb8c6299ed3266acf4eabf166e9d978ec277b1ebf7cf9b453.jpg",
+   "name": "e125bbea6ce64aedb8c6299ed3266acf4eabf166e9d978ec277b1ebf7cf9b453.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e125bbea6ce64aedb8c6299ed3266acf4eabf166e9d978ec277b1ebf7cf9b453.jpg",
+   "size": 7792,
+   "ctx": "\n降噪自编码器的思想十分简单：通过引入噪声来学习更鲁棒的数据编码，并提高模型的泛化能力.它也可以看作现代自监督学习中“去噪重构”类目标的一个早期代表.图10.3给出了自编码器和降噪自编码器的对比，其中 $f _ { \\theta }$ 为编码器，$g _ { \\theta ^ { \\prime } }$ 为解码器， $\\boldsymbol { \\mathcal { L } } ( \\boldsymbol { x } , \\boldsymbol { x } ^ { \\prime } )$ 为重构误差.\n\n![](images/e125bbea6ce64aedb8c6299ed3266acf4eabf166e9d978ec277b1ebf7cf9b453.jpg)（描述：示意图，展示降噪自编码器的结构，包含输入x、编码器f_θ、隐变量z、解码器g_θ′、重构输出x′以及重构误差L(x,x′)）  \n(a) 自编码器\n\n![](images/2dca8b1930d9c8b1c3fc8c80a7e5d52f4b58f3f361143fe6cb5082c2a8a464a2.jpg)（描述：自编"
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 306,
+   "ref": "images/2dca8b1930d9c8b1c3fc8c80a7e5d52f4b58f3f361143fe6cb5082c2a8a464a2.jpg",
+   "name": "2dca8b1930d9c8b1c3fc8c80a7e5d52f4b58f3f361143fe6cb5082c2a8a464a2.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2dca8b1930d9c8b1c3fc8c80a7e5d52f4b58f3f361143fe6cb5082c2a8a464a2.jpg",
+   "size": 8896,
+   "ctx": "![](images/e125bbea6ce64aedb8c6299ed3266acf4eabf166e9d978ec277b1ebf7cf9b453.jpg)（描述：示意图，展示降噪自编码器的结构，包含输入x、编码器f_θ、隐变量z、解码器g_θ′、重构输出x′以及重构误差L(x,x′)）  \n(a) 自编码器\n\n![](images/2dca8b1930d9c8b1c3fc8c80a7e5d52f4b58f3f361143fe6cb5082c2a8a464a2.jpg)（描述：自编码器结构示意图，展示输入x经过编码器fθ生成隐变量z，再通过解码器gθ'重构为x'，并计算损失函数L(x,x')）  \n(b) 降噪自编码器  \n图 10.3 自编码器和降噪自编码器\n"
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 448,
+   "ref": "images/6972c9d46f2f13f25f266f9b48c0ef8bd9b6cddb8ee56ce0d4722f1e6ce91d7f.jpg",
+   "name": "6972c9d46f2f13f25f266f9b48c0ef8bd9b6cddb8ee56ce0d4722f1e6ce91d7f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\6972c9d46f2f13f25f266f9b48c0ef8bd9b6cddb8ee56ce0d4722f1e6ce91d7f.jpg",
+   "size": 7552,
+   "ctx": "\n其中区间宽度 $\\Delta _ { m }$ 通常设为相同的值 $\\Delta .$ 直方图方法的关键问题是如何选取一个合适的区间宽度 $\\Delta .$ 如果 $\\Delta$ 太小，那么落入每个区间的样本数量会比较少，其估计的区间密度也具有很大的随机性.如果 $\\Delta$ 太大，其估计的密度函数变得十分平滑，很难反映出真实的数据分布．图10.4给出了直方图密度估计的例子，其中蓝线表示真实的密度函数，红色的柱状图为直方图方法估计的密度\n\n![](images/6972c9d46f2f13f25f266f9b48c0ef8bd9b6cddb8ee56ce0d4722f1e6ce91d7f.jpg)（描述：直方图密度估计示意图，展示蓝色真实密度曲线与红色柱状图估计结果的对比）  \n(a) 10个区间（bin)\n\n![](images/931e1e1fb388006d69750a0c6cc59e4bb64e83618029cc4eaf9fbf44cbb50bdb.jpg)（描述：直方图密度估计示意图，展示不同区间数（bin）下的数据分布情况）  "
+  },
+  {
+   "file": "10_无监督学习.md",
+   "line": 451,
+   "ref": "images/931e1e1fb388006d69750a0c6cc59e4bb64e83618029cc4eaf9fbf44cbb50bdb.jpg",
+   "name": "931e1e1fb388006d69750a0c6cc59e4bb64e83618029cc4eaf9fbf44cbb50bdb.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\931e1e1fb388006d69750a0c6cc59e4bb64e83618029cc4eaf9fbf44cbb50bdb.jpg",
+   "size": 8670,
+   "ctx": "![](images/6972c9d46f2f13f25f266f9b48c0ef8bd9b6cddb8ee56ce0d4722f1e6ce91d7f.jpg)（描述：直方图密度估计示意图，展示蓝色真实密度曲线与红色柱状图估计结果的对比）  \n(a) 10个区间（bin)\n\n![](images/931e1e1fb388006d69750a0c6cc59e4bb64e83618029cc4eaf9fbf44cbb50bdb.jpg)（描述：直方图密度估计示意图，展示不同区间数（bin）下的数据分布情况）  \n(b) 30个区间（bin)  \n图 10.4 直方图密度估计\n"
+  },
+  {
+   "file": "11_模型独立的学习方式.md",
+   "line": 280,
+   "ref": "images/9502b5a9ed31ee64c78eb60055821e7fe573f28794fd9dc6fbc9cd2e2692c3e4.jpg",
+   "name": "9502b5a9ed31ee64c78eb60055821e7fe573f28794fd9dc6fbc9cd2e2692c3e4.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\9502b5a9ed31ee64c78eb60055821e7fe573f28794fd9dc6fbc9cd2e2692c3e4.jpg",
+   "size": 6736,
+   "ctx": "\n共享机制 多任务学习的主要挑战在于如何设计多任务之间的共享机制.在传统的机器学习算法中，引入共享信息往往需要额外设计特征、先验或正则项．神经网络通过共享层、共享表示或共享子模块，提供了较为直接的多任务建模方式. 多任务学习的共享机制比较灵活，有很多种共享模式.图11.1给出了多任务学习中四种常见的共享模式，其中A、B和C表示三个不同的任务，红色框表示共享模块，蓝色框表示任务特定模块\n\n![](images/9502b5a9ed31ee64c78eb60055821e7fe573f28794fd9dc6fbc9cd2e2692c3e4.jpg)（描述：示意图，展示多任务学习中的硬共享模式，红色框表示共享模块，蓝色框表示任务特定模块）  \n(a) 硬共享模式\n\n![](images/046a689456ea9dfe0b79c2c3eb47bb6497e2ffc4d261b78f54ebb9692e0a1ccc.jpg)（描述：结构图，展示多个层级节点之间的连接关系，包含A、B、C三个顶层节点和多层中间节点，箭头表示数据或控制流方向）  "
+  },
+  {
+   "file": "11_模型独立的学习方式.md",
+   "line": 283,
+   "ref": "images/046a689456ea9dfe0b79c2c3eb47bb6497e2ffc4d261b78f54ebb9692e0a1ccc.jpg",
+   "name": "046a689456ea9dfe0b79c2c3eb47bb6497e2ffc4d261b78f54ebb9692e0a1ccc.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\046a689456ea9dfe0b79c2c3eb47bb6497e2ffc4d261b78f54ebb9692e0a1ccc.jpg",
+   "size": 14829,
+   "ctx": "![](images/9502b5a9ed31ee64c78eb60055821e7fe573f28794fd9dc6fbc9cd2e2692c3e4.jpg)（描述：示意图，展示多任务学习中的硬共享模式，红色框表示共享模块，蓝色框表示任务特定模块）  \n(a) 硬共享模式\n\n![](images/046a689456ea9dfe0b79c2c3eb47bb6497e2ffc4d261b78f54ebb9692e0a1ccc.jpg)（描述：结构图，展示多个层级节点之间的连接关系，包含A、B、C三个顶层节点和多层中间节点，箭头表示数据或控制流方向）  \n(b) 软共享模式\n\n![](images/e6f0a1c3dc0fc3f2161b62399c40e8f81b6278f8b317003defdd2b939fe4420e.jpg)（描述：流程图，展示A、B、C三个节点之间的层级关系和数据流向）  "
+  },
+  {
+   "file": "11_模型独立的学习方式.md",
+   "line": 286,
+   "ref": "images/e6f0a1c3dc0fc3f2161b62399c40e8f81b6278f8b317003defdd2b939fe4420e.jpg",
+   "name": "e6f0a1c3dc0fc3f2161b62399c40e8f81b6278f8b317003defdd2b939fe4420e.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e6f0a1c3dc0fc3f2161b62399c40e8f81b6278f8b317003defdd2b939fe4420e.jpg",
+   "size": 6574,
+   "ctx": "![](images/046a689456ea9dfe0b79c2c3eb47bb6497e2ffc4d261b78f54ebb9692e0a1ccc.jpg)（描述：结构图，展示多个层级节点之间的连接关系，包含A、B、C三个顶层节点和多层中间节点，箭头表示数据或控制流方向）  \n(b) 软共享模式\n\n![](images/e6f0a1c3dc0fc3f2161b62399c40e8f81b6278f8b317003defdd2b939fe4420e.jpg)（描述：流程图，展示A、B、C三个节点之间的层级关系和数据流向）  \n(c) 层次共享模式\n\n![](images/daec1c41571491d70b5c4bf7d5b35ddbdec1b28abc9c5e6cf26ba0cb798ff71c.jpg)（描述：示意图，展示多任务学习中层次共享模式的结构，包含多个层级的模块A和C通过共享中间层连接）  "
+  },
+  {
+   "file": "11_模型独立的学习方式.md",
+   "line": 289,
+   "ref": "images/daec1c41571491d70b5c4bf7d5b35ddbdec1b28abc9c5e6cf26ba0cb798ff71c.jpg",
+   "name": "daec1c41571491d70b5c4bf7d5b35ddbdec1b28abc9c5e6cf26ba0cb798ff71c.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\daec1c41571491d70b5c4bf7d5b35ddbdec1b28abc9c5e6cf26ba0cb798ff71c.jpg",
+   "size": 10713,
+   "ctx": "![](images/e6f0a1c3dc0fc3f2161b62399c40e8f81b6278f8b317003defdd2b939fe4420e.jpg)（描述：流程图，展示A、B、C三个节点之间的层级关系和数据流向）  \n(c) 层次共享模式\n\n![](images/daec1c41571491d70b5c4bf7d5b35ddbdec1b28abc9c5e6cf26ba0cb798ff71c.jpg)（描述：示意图，展示多任务学习中层次共享模式的结构，包含多个层级的模块A和C通过共享中间层连接）  \n(d) 共享-私有模式  \n图11.1 多任务学习中四种常见的共享模式\n"
+  },
+  {
+   "file": "11_模型独立的学习方式.md",
+   "line": 640,
+   "ref": "images/2b1047168c1841552ba3fe1730a54f2406851e9dd867e450c49c9ece334551db.jpg",
+   "name": "2b1047168c1841552ba3fe1730a54f2406851e9dd867e450c49c9ece334551db.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2b1047168c1841552ba3fe1730a54f2406851e9dd867e450c49c9ece334551db.jpg",
+   "size": 17949,
+   "ctx": "\n不同的优化算法的区别在于更新参数的规则不同，因此一种很自然的元学习就是自动学习一种更新参数的规则，即通过另一个神经网络（比如循环神经网络)来建模梯度下降的过程[Andrychowicz et al., 2016; Schmidhuber, 1992;Younger et al., 2001]. 图11.2给出了基于优化器的元学习的示例.\n\n![](images/2b1047168c1841552ba3fe1730a54f2406851e9dd867e450c49c9ece334551db.jpg)（描述：流程图，展示基于优化器的元学习框架，包含任务集合输入、元学习算法、学习算法和模型输出的结构关系）  \n图11.2 基于优化器的元学习\n\n我们用函数 $g _ { t } ( \\cdot )$ 来预测第t步时参数更新的差值 $\\Delta \\theta _ { t } = \\theta _ { t } - \\theta _ { t - 1 }$ . 函数$g _ { t } ( \\cdot )$ 称为优化器，输入是当前时刻的梯度值，输出是参数的更新差值 $\\Delta \\theta _"
+  },
+  {
+   "file": "12_深度强化学习.md",
+   "line": 90,
+   "ref": "images/5d1964aabff59258505f6c678ba72e0b7eb851595953bd59e36c58ff0c6c813c.jpg",
+   "name": "5d1964aabff59258505f6c678ba72e0b7eb851595953bd59e36c58ff0c6c813c.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\5d1964aabff59258505f6c678ba72e0b7eb851595953bd59e36c58ff0c6c813c.jpg",
+   "size": 9701,
+   "ctx": "\n其中 $r _ { t } = r ( s _ { t - 1 } , a _ { t - 1 } , s _ { t } )$ 是第t时刻的即时奖励.图12.2给出了智能体与环境的交互.\n\n![](images/5d1964aabff59258505f6c678ba72e0b7eb851595953bd59e36c58ff0c6c813c.jpg)（描述：示意图，展示智能体与环境之间的交互过程，包含状态、动作和奖励的循环关系）  \n图 12.2 智能体与环境的交互\n\n智能体与环境的交互过程可以看作一个马尔可夫决策过程（MarkovDeci-sion Process，MDP）.更形式化地说，MDP通常由五元组 $( \\mathcal S , \\mathcal A , p , r , \\gamma )$ 给出，其中γ控制未来奖励的折扣程度."
+  },
+  {
+   "file": "12_深度强化学习.md",
+   "line": 129,
+   "ref": "images/e12443a5d24770726d1ad5c7d7d68a661ec57ea7b87fa199e96fbce6bf453e89.jpg",
+   "name": "e12443a5d24770726d1ad5c7d7d68a661ec57ea7b87fa199e96fbce6bf453e89.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e12443a5d24770726d1ad5c7d7d68a661ec57ea7b87fa199e96fbce6bf453e89.jpg",
+   "size": 12778,
+   "ctx": "\nhttps://nndl.ai/\n\n![](images/e12443a5d24770726d1ad5c7d7d68a661ec57ea7b87fa199e96fbce6bf453e89.jpg)（描述：马尔可夫决策过程的状态-动作序列示意图，展示状态s和动作a在时间步上的转移关系）  \n图 12.3 马尔可夫决策过程\n\n$$"
+  },
+  {
+   "file": "12_深度强化学习.md",
+   "line": 985,
+   "ref": "images/af7710199723e537a33f8a1c3ae878fd17431ec0b8f3bf333692118e766a4456.jpg",
+   "name": "af7710199723e537a33f8a1c3ae878fd17431ec0b8f3bf333692118e766a4456.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\af7710199723e537a33f8a1c3ae878fd17431ec0b8f3bf333692118e766a4456.jpg",
+   "size": 1301,
+   "ctx": "r _ { t } ( \\theta ) = \\frac { \\pi _ { \\theta } ( a _ { t } | s _ { t } ) } { \\pi _ { \\theta _ { \\mathrm { o l d } } } ( a _ { t } | s _ { t } ) } .\\tag{12.89}\n$$\n\n![](images/af7710199723e537a33f8a1c3ae878fd17431ec0b8f3bf333692118e766a4456.jpg)（描述：该图为TRPO算法中策略更新的示意图，展示了旧策略与新策略之间的比率关系，用于说明优化过程中的重要性采样机制。）\n\n于是，TRPO的优化问题可以写成\n"
+  },
+  {
+   "file": "12_深度强化学习.md",
+   "line": 1114,
+   "ref": "images/9b6d394ad37bf0e8da59866817b8c9c74db04768848083526068741bf9424453.jpg",
+   "name": "9b6d394ad37bf0e8da59866817b8c9c74db04768848083526068741bf9424453.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\9b6d394ad37bf0e8da59866817b8c9c74db04768848083526068741bf9424453.jpg",
+   "size": 39951,
+   "ctx": "\n从本书整体脉络看，本章将前面以静态样本为中心的学习问题进一步扩展到交互式、序列化、目标驱动的学习问题.这一视角不仅有助于理解机器人控制、自动驾驶、游戏智能体等典型任务，也为后续理解大模型对齐、智能体规划以及更复杂的人机交互学习机制提供了一个统一的决策框架.换言之，本章的重点并不只是掌握若于具体算法，更重要的是建立这样一种认识：当学习对象不再是“给定数据上的预测器”，而是“能够持续行动并影响环境的决策体”时，建模方式、优化目标和学习信号都会发生系统性变化\n\n![](images/9b6d394ad37bf0e8da59866817b8c9c74db04768848083526068741bf9424453.jpg)（描述：强化学习算法分类的层次结构图，展示策略搜索与值函数估计两大分支及其子方法）  \n图12.4 不同强化学习算法之间的关系\n\n如果希望夯实基础，最重要的参考仍然是Sutton和Barto的《Reinforce-ment Learning: An Introduction》[Sutton et al., 2018]. 这本书的价值不只是覆盖了动态规划、蒙特卡罗方法、时序差分"
+  },
+  {
+   "file": "13_大语言模型与智能体.md",
+   "line": 306,
+   "ref": "images/f307066e74a976e24aa0b3a187728fd571505b49988ed642421fea25f570d19f.jpg",
+   "name": "f307066e74a976e24aa0b3a187728fd571505b49988ed642421fea25f570d19f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f307066e74a976e24aa0b3a187728fd571505b49988ed642421fea25f570d19f.jpg",
+   "size": 11187,
+   "ctx": "\n其中A初始化为随机高斯分布，B初始化为零矩阵，使得训练开始时增量$\\Delta W = B A = 0$ 预训练权重W保持冻结，只训练A和B，可训练参数量仅为全量微调的百分之一左右，但在很多任务上能取得相当的效果.LoRA还可以方便地为同一预训练模型维护多组适配器参数，在推理时切换即可.参数高效微调同样适用于后续的偏好对齐阶段\n\n![](images/f307066e74a976e24aa0b3a187728fd571505b49988ed642421fea25f570d19f.jpg)（描述：LoRA示意图，展示预训练权重W与低秩适配器矩阵A和B的结构，其中A初始化为随机高斯分布，B初始化为零矩阵，用于表示增量ΔW=BA）  \n图 13.1 LoRA示意图\n\nLoRA的成功表明，微调过程中权重变化△W具有低秩结构，即微调只需在参数空间的一个低维子空间中调整."
+  },
+  {
+   "file": "13_大语言模型与智能体.md",
+   "line": 335,
+   "ref": "images/59968f9eb4af45a50f813e2eedf174a91c59a1efb7802a31d93a1870002ed214.jpg",
+   "name": "59968f9eb4af45a50f813e2eedf174a91c59a1efb7802a31d93a1870002ed214.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\59968f9eb4af45a50f813e2eedf174a91c59a1efb7802a31d93a1870002ed214.jpg",
+   "size": 12191,
+   "ctx": "\n完整流程分为三个主要阶段（如图13.2所示）：（1）预训练，在大规模无标注语料上学习语言建模能力；（2）监督微调，在指令-回答数据上获得指令跟随能力；(3)偏好对齐，利用人类反馈进一步提升回答质量.\n\n![](images/59968f9eb4af45a50f813e2eedf174a91c59a1efb7802a31d93a1870002ed214.jpg)（描述：流程图，展示从预训练模型到SFT模型再到对齐模型的三阶段流程，包含指令数据和偏好数据的输入）  \n图13.2 从预训练到对齐的三阶段流程\n\n## 13.5.1 偏好数据与 Bradley-Terry模型"
+  },
+  {
+   "file": "13_大语言模型与智能体.md",
+   "line": 616,
+   "ref": "images/418f5ab2ec9d03ce90eb39513a08e45a504875c15c41bec2b21b840e188e8b19.jpg",
+   "name": "418f5ab2ec9d03ce90eb39513a08e45a504875c15c41bec2b21b840e188e8b19.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\418f5ab2ec9d03ce90eb39513a08e45a504875c15c41bec2b21b840e188e8b19.jpg",
+   "size": 23978,
+   "ctx": "\n一个典型的大语言模型智能体通常包含以下四个核心组件[Xi et al., 2025]，整体框架如图13.3所示.\n\n![](images/418f5ab2ec9d03ce90eb39513a08e45a504875c15c41bec2b21b840e188e8b19.jpg)（描述：结构图，展示基于大语言模型的智能体框架，包含感知、LLM（大脑）、行动、记忆和环境五个模块及其相互关系）  \n图 13.3 基于大语言模型的智能体框架\n\n感知（Perception）:智能体从外部环境获取信息，包括用户指令、工具返回值、检索结果、网页内容甚至多模态信号.感知模块还需对原始输入进行信息筛选与压缩，以便在有限的上下文窗口内高效利用信息."
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 55,
+   "ref": "images/7220b0cc70c9e10e2e9dc48648b0269230a4e6757cde63c2f4732c81aff45a74.jpg",
+   "name": "7220b0cc70c9e10e2e9dc48648b0269230a4e6757cde63c2f4732c81aff45a74.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\7220b0cc70c9e10e2e9dc48648b0269230a4e6757cde63c2f4732c81aff45a74.jpg",
+   "size": 6287,
+   "ctx": "\n当概率模型中的变量数量比较多时，其条件依赖关系也比较复杂．我们可以使用图结构的方式将概率模型可视化，以一种直观、简单的方式描述随机变量之间的条件独立性，并可以将一个复杂的联合概率模型分解为一些简单条件概率模型的组合.图14.1给出了上述例子中4个变量之间的条件独立性的图形化描述.图中每个节点表示一个变量，每条连边表示变量之间的依赖关系.\n\n![](images/7220b0cc70c9e10e2e9dc48648b0269230a4e6757cde63c2f4732c81aff45a74.jpg)（描述：这是一个表示四个变量X1、X2、X3、X4之间条件独立性的有向图模型，节点代表变量，箭头表示依赖关系）  \n图 14.1 变量 $X _ { 1 }$ 2 $X _ { 2 }$ $X _ { 3 }$ $X _ { 4 }$ 之间条件独立性的图形化表示\n\n图模型的基本问题 图模型有三个基本问题："
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 82,
+   "ref": "images/685ba1819dbe2c4c3c3ceb34be8bee582d4ade89b06479b547216be1eb9a982e.jpg",
+   "name": "685ba1819dbe2c4c3c3ceb34be8bee582d4ade89b06479b547216be1eb9a982e.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\685ba1819dbe2c4c3c3ceb34be8bee582d4ade89b06479b547216be1eb9a982e.jpg",
+   "size": 6160,
+   "ctx": "\n在本章后文中，节点、随机变量、变量的概念会经常混用.每个节点对应一个随机变量.\n\n![](images/685ba1819dbe2c4c3c3ceb34be8bee582d4ade89b06479b547216be1eb9a982e.jpg)（描述：有向图示意图，展示四个随机变量X1、X2、X3、X4之间的依赖关系，用于说明贝叶斯网络结构）  \n(a) 有向图：贝叶斯网络\n\n![](images/a319ba5e89c48577b55e5897353a81926c621c6a55fc8aa3a9498f983807df53.jpg)（描述：无向图示例，展示四个节点X1、X2、X3、X4之间的连接关系）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 85,
+   "ref": "images/a319ba5e89c48577b55e5897353a81926c621c6a55fc8aa3a9498f983807df53.jpg",
+   "name": "a319ba5e89c48577b55e5897353a81926c621c6a55fc8aa3a9498f983807df53.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\a319ba5e89c48577b55e5897353a81926c621c6a55fc8aa3a9498f983807df53.jpg",
+   "size": 5913,
+   "ctx": "![](images/685ba1819dbe2c4c3c3ceb34be8bee582d4ade89b06479b547216be1eb9a982e.jpg)（描述：有向图示意图，展示四个随机变量X1、X2、X3、X4之间的依赖关系，用于说明贝叶斯网络结构）  \n(a) 有向图：贝叶斯网络\n\n![](images/a319ba5e89c48577b55e5897353a81926c621c6a55fc8aa3a9498f983807df53.jpg)（描述：无向图示例，展示四个节点X1、X2、X3、X4之间的连接关系）  \n(b) 无向图:马尔可夫随机场  \n图14.2 有向图和无向图示例\n"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 105,
+   "ref": "images/77652e3ac8ebcd04ac7be7ab990e355e5ff4a68e0a6f969b2dae10549e356c0f.jpg",
+   "name": "77652e3ac8ebcd04ac7be7ab990e355e5ff4a68e0a6f969b2dae10549e356c0f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\77652e3ac8ebcd04ac7be7ab990e355e5ff4a68e0a6f969b2dae10549e356c0f.jpg",
+   "size": 3635,
+   "ctx": "\n如果两个节点不是直接连接的，但可以由一条经过其他节点的路径来连接，那么这两个节点之间是否条件独立，就取决于路径上的局部结构以及哪些变量已被观测.以三个节点的贝叶斯网络为例，给定三个节点 $X _ { 1 } , X _ { 2 } , X _ { 3 }$ ,其中 $X _ { 1 }$ 和$X _ { 3 }$ 不直接连接，而是通过节点 $X _ { 2 }$ 连接.这三个节点之间可以有四种基本结构，如图14.3所示.在图14.3a和图14.3b中， $X _ { 1 }$ $X _ { 3 } | \\emptyset$ ,但 $X _ { 1 } \\bot \\bot X _ { 3 } | X _ { 2 }$ ;在图14.3c中，$X _ { 1 }$ $X _ { 3 } | \\emptyset$ ,但 $X _ { 1 }$ $X _ { 3 } | X _ { 2 }$ ;在图14.3d中， $X _ { 1 }$ $X _ { 3 } | \\emptyset$ ,但 $X _ { 1 } \\downarrow \\downarrow X _ { 3 } | X _ { 2"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 108,
+   "ref": "images/18686273c576c7bf7be2d4afed652db44bdc5e4cd47966712cab874e65499ec6.jpg",
+   "name": "18686273c576c7bf7be2d4afed652db44bdc5e4cd47966712cab874e65499ec6.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\18686273c576c7bf7be2d4afed652db44bdc5e4cd47966712cab874e65499ec6.jpg",
+   "size": 3577,
+   "ctx": "![](images/77652e3ac8ebcd04ac7be7ab990e355e5ff4a68e0a6f969b2dae10549e356c0f.jpg)（描述：这是一个贝叶斯网络的结构图，展示三个节点X1、X2、X3之间的有向连接关系，其中X2是中间节点，连接X1和X3，用于说明条件独立性。）  \n(a)\n\n![](images/18686273c576c7bf7be2d4afed652db44bdc5e4cd47966712cab874e65499ec6.jpg)（描述：这是一个表示变量序列的流程图，包含三个节点X1、X2和X3，通过箭头连接表示顺序关系）  \n(b)\n\n![](images/93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg)（描述：这是一个有向图，表示变量X2指向X1和X3的因果关系或依赖关系）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 111,
+   "ref": "images/93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg",
+   "name": "93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg",
+   "size": 3997,
+   "ctx": "![](images/18686273c576c7bf7be2d4afed652db44bdc5e4cd47966712cab874e65499ec6.jpg)（描述：这是一个表示变量序列的流程图，包含三个节点X1、X2和X3，通过箭头连接表示顺序关系）  \n(b)\n\n![](images/93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg)（描述：这是一个有向图，表示变量X2指向X1和X3的因果关系或依赖关系）  \n(c)\n\n![](images/ec1ceaa4470b659084826259daabee8c8f69acc550a18094fb97363a6ffb661f.jpg)（描述：这是一个表示三个变量依赖关系的有向图，其中X1和X3指向X2，展示变量间的因果或依赖关系。）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 114,
+   "ref": "images/ec1ceaa4470b659084826259daabee8c8f69acc550a18094fb97363a6ffb661f.jpg",
+   "name": "ec1ceaa4470b659084826259daabee8c8f69acc550a18094fb97363a6ffb661f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ec1ceaa4470b659084826259daabee8c8f69acc550a18094fb97363a6ffb661f.jpg",
+   "size": 4031,
+   "ctx": "![](images/93a038878fe623f02548c7dea4a3d711e393f537b48d04277b903d14981d38ca.jpg)（描述：这是一个有向图，表示变量X2指向X1和X3的因果关系或依赖关系）  \n(c)\n\n![](images/ec1ceaa4470b659084826259daabee8c8f69acc550a18094fb97363a6ffb661f.jpg)（描述：这是一个表示三个变量依赖关系的有向图，其中X1和X3指向X2，展示变量间的因果或依赖关系。）  \n(d)  \n图14.3 三个变量的依赖关系示例\n"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 166,
+   "ref": "images/278d6052d63551c9deac78cf8892fc6d7b6aa442a115afffa7cfec303d0bcde8.jpg",
+   "name": "278d6052d63551c9deac78cf8892fc6d7b6aa442a115afffa7cfec303d0bcde8.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\278d6052d63551c9deac78cf8892fc6d7b6aa442a115afffa7cfec303d0bcde8.jpg",
+   "size": 6209,
+   "ctx": "\nLogistic 回归模型也经 常被看作一种条件无 向图模型.\n\n![](images/278d6052d63551c9deac78cf8892fc6d7b6aa442a115afffa7cfec303d0bcde8.jpg)（描述：这是一个结构图，展示了多个输入变量X1到XM共同指向一个输出变量Y的有向图模型，用于表示Sigmoid信念网络的结构）  \n(a) 只有一层的简单Sigmoid信念网络\n\n![](images/a8447a3a22ac40b74a10d22ed4c4734629c1b23cd64046b670cf5d8d1641e3f0.jpg)（描述：结构图，展示多个输入变量X1至XM指向一个输出变量Y的Sigmoid信念网络结构）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 169,
+   "ref": "images/a8447a3a22ac40b74a10d22ed4c4734629c1b23cd64046b670cf5d8d1641e3f0.jpg",
+   "name": "a8447a3a22ac40b74a10d22ed4c4734629c1b23cd64046b670cf5d8d1641e3f0.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\a8447a3a22ac40b74a10d22ed4c4734629c1b23cd64046b670cf5d8d1641e3f0.jpg",
+   "size": 4546,
+   "ctx": "![](images/278d6052d63551c9deac78cf8892fc6d7b6aa442a115afffa7cfec303d0bcde8.jpg)（描述：这是一个结构图，展示了多个输入变量X1到XM共同指向一个输出变量Y的有向图模型，用于表示Sigmoid信念网络的结构）  \n(a) 只有一层的简单Sigmoid信念网络\n\n![](images/a8447a3a22ac40b74a10d22ed4c4734629c1b23cd64046b670cf5d8d1641e3f0.jpg)（描述：结构图，展示多个输入变量X1至XM指向一个输出变量Y的Sigmoid信念网络结构）  \n(b) Logistic 回归模型  \n图 14.4 Sigmoid信念网络和Logistic回归模型的比较\n"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 189,
+   "ref": "images/e13cc11bbf125129d50ec357c738f9fa1f26d6c8629b45200b50f85356d1c292.jpg",
+   "name": "e13cc11bbf125129d50ec357c738f9fa1f26d6c8629b45200b50f85356d1c292.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\e13cc11bbf125129d50ec357c738f9fa1f26d6c8629b45200b50f85356d1c292.jpg",
+   "size": 6108,
+   "ctx": "\n在朴素贝叶斯分类器中，假设在给定Y的情况下， $X _ { m }$ 之间是条件独立的，即 $X _ { m }$ $X _ { k } | Y , \\forall m \\neq k .$ 图14.5给出了朴素贝叶斯分类器的图模型表示.\n\n![](images/e13cc11bbf125129d50ec357c738f9fa1f26d6c8629b45200b50f85356d1c292.jpg)（描述：图14.5是朴素贝叶斯模型的图模型表示，展示了一个有向无环图，其中变量y指向多个特征变量x1到xM，表示在给定y的情况下特征之间的条件独立性。）  \n图 14.5 朴素贝叶斯模型\n\n条件概率分布 $p ( y | \\mathbf { \\boldsymbol { x } } )$ 可以分解为"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 208,
+   "ref": "images/f5894c10ee638c380589a9ac5a7b0c8364d89955ff143c209e37ff797641e40a.jpg",
+   "name": "f5894c10ee638c380589a9ac5a7b0c8364d89955ff143c209e37ff797641e40a.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f5894c10ee638c380589a9ac5a7b0c8364d89955ff143c209e37ff797641e40a.jpg",
+   "size": 10464,
+   "ctx": "\n图14.6给出隐马尔可夫模型的图模型表示，其中 $X _ { 1 : T }$ 为可观测变量， $Y _ { 1 : T }$ 为隐变量．所有的隐变量构成一个马尔可夫链，每个可观测标量 $X _ { t }$ 依赖当前时刻的隐变量 $Y _ { t }$\n\n![](images/f5894c10ee638c380589a9ac5a7b0c8364d89955ff143c209e37ff797641e40a.jpg)（描述：隐马尔可夫模型的图模型表示，展示隐变量Y序列构成马尔可夫链，每个可观测变量X依赖于对应时刻的隐变量Y）  \n图 14.6 隐马尔可夫模型\n\n隐马尔可夫模型的联合概率可以分解为"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 249,
+   "ref": "images/51c38027e1b2dcfbc7b58d9ea697de9043398f74425fcb8509335883ecaca3cd.jpg",
+   "name": "51c38027e1b2dcfbc7b58d9ea697de9043398f74425fcb8509335883ecaca3cd.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\51c38027e1b2dcfbc7b58d9ea697de9043398f74425fcb8509335883ecaca3cd.jpg",
+   "size": 13542,
+   "ctx": "\n在所有团中，如果一个团不能被其他的团包含，这个团就是一个最大团(Maximal Clique).\n\n![](images/51c38027e1b2dcfbc7b58d9ea697de9043398f74425fcb8509335883ecaca3cd.jpg)（描述：无向图模型中的团和最大团示意图，用实线椭圆和虚线椭圆分别标出团和最大团）  \n图14.7 无向图模型中的团和最大团\n\n因子分解无向图中的联合概率可以分解为一系列定义在最大团上的非负函数的乘积形式."
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 350,
+   "ref": "images/32110a1069b4e2a8716ff7251baae0bb9fc720a8d0eadd944b380604f3223dae.jpg",
+   "name": "32110a1069b4e2a8716ff7251baae0bb9fc720a8d0eadd944b380604f3223dae.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\32110a1069b4e2a8716ff7251baae0bb9fc720a8d0eadd944b380604f3223dae.jpg",
+   "size": 3070,
+   "ctx": "\n其中 $f _ { 1 } ( x , y _ { t } )$ 为状态特征，一般和位置t相关， $f _ { 2 } ( x , y _ { t } , y _ { t + 1 } )$ 为转移特征，一般可以简化为 $f _ { 2 } ( y _ { t } , y _ { t + 1 } )$ 并使用状态转移矩阵来表示.\n\n![](images/32110a1069b4e2a8716ff7251baae0bb9fc720a8d0eadd944b380604f3223dae.jpg)（描述：状态转移图，展示变量Y与X之间的关系，用于表示最大熵模型中的状态特征）  \n(a) 最大熵模型\n\n![](images/24001094ec7e8ae77d4087e471c6db5e5c9ba985b76fea98fef4e5c6c8c4b6e4.jpg)（描述：结构图，展示线性链条件随机场中变量Y1到YT与输入X之间的依赖关系）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 353,
+   "ref": "images/24001094ec7e8ae77d4087e471c6db5e5c9ba985b76fea98fef4e5c6c8c4b6e4.jpg",
+   "name": "24001094ec7e8ae77d4087e471c6db5e5c9ba985b76fea98fef4e5c6c8c4b6e4.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\24001094ec7e8ae77d4087e471c6db5e5c9ba985b76fea98fef4e5c6c8c4b6e4.jpg",
+   "size": 8943,
+   "ctx": "![](images/32110a1069b4e2a8716ff7251baae0bb9fc720a8d0eadd944b380604f3223dae.jpg)（描述：状态转移图，展示变量Y与X之间的关系，用于表示最大熵模型中的状态特征）  \n(a) 最大熵模型\n\n![](images/24001094ec7e8ae77d4087e471c6db5e5c9ba985b76fea98fef4e5c6c8c4b6e4.jpg)（描述：结构图，展示线性链条件随机场中变量Y1到YT与输入X之间的依赖关系）  \n(b) 线性链的条件随机场  \n图14.8 最大熵模型和线性链条件随机场\n"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 373,
+   "ref": "images/bb1aad4e61209f05221d49ddd1e55b08e81eb650e71ad491183416e118b4afe2.jpg",
+   "name": "bb1aad4e61209f05221d49ddd1e55b08e81eb650e71ad491183416e118b4afe2.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\bb1aad4e61209f05221d49ddd1e55b08e81eb650e71ad491183416e118b4afe2.jpg",
+   "size": 6190,
+   "ctx": "\n道德化的名称来源是：有共同儿子的父节点都必须结婚（即有连边).\n\n![](images/bb1aad4e61209f05221d49ddd1e55b08e81eb650e71ad491183416e118b4afe2.jpg)（描述：有向图，展示四个节点X1、X2、X3指向X4的结构关系）  \n(a) 有向图\n\n![](images/f19a358c1d586ea764679a9a09f48927615e4f08a5d3b1e39ed66793c69c8bd8.jpg)（描述：有向图的结构示意图，展示四个节点X1、X2、X3、X4之间的连接关系）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 376,
+   "ref": "images/f19a358c1d586ea764679a9a09f48927615e4f08a5d3b1e39ed66793c69c8bd8.jpg",
+   "name": "f19a358c1d586ea764679a9a09f48927615e4f08a5d3b1e39ed66793c69c8bd8.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f19a358c1d586ea764679a9a09f48927615e4f08a5d3b1e39ed66793c69c8bd8.jpg",
+   "size": 6874,
+   "ctx": "![](images/bb1aad4e61209f05221d49ddd1e55b08e81eb650e71ad491183416e118b4afe2.jpg)（描述：有向图，展示四个节点X1、X2、X3指向X4的结构关系）  \n(a) 有向图\n\n![](images/f19a358c1d586ea764679a9a09f48927615e4f08a5d3b1e39ed66793c69c8bd8.jpg)（描述：有向图的结构示意图，展示四个节点X1、X2、X3、X4之间的连接关系）  \n(b) 道德图  \n图14.9 具有“共果关系”的有向图的道德化示例\n"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 472,
+   "ref": "images/5f2a14e684e34cdd4c2d7c02587c1d806edb34dd3a28b993bf29c7bc44a490ae.jpg",
+   "name": "5f2a14e684e34cdd4c2d7c02587c1d806edb34dd3a28b993bf29c7bc44a490ae.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\5f2a14e684e34cdd4c2d7c02587c1d806edb34dd3a28b993bf29c7bc44a490ae.jpg",
+   "size": 5946,
+   "ctx": "\n图14.10给出了带隐变量的贝叶斯网络的图模型结构，其中矩形表示其中的变量重复N次. 这种表示方法称为盘子表示法（PlateNotation），是图模型中表示重复变量的方法.\n\n![](images/5f2a14e684e34cdd4c2d7c02587c1d806edb34dd3a28b993bf29c7bc44a490ae.jpg)（描述：带隐变量的贝叶斯网络结构图，使用盘子表示法展示变量z和x的重复关系）  \n图14.10 带隐变量的贝叶斯网络\n\n给定N个训练样本 $\\mathcal { D } = \\{ \\pmb { x } ^ { ( n ) } \\} _ { n = 1 } ^ { N }$ ,整个训练集的对数边际似然为"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 581,
+   "ref": "images/90f332090d24c0f12b99477ffec11cf8a07ddb5156da08771ffb5b4ff9882514.jpg",
+   "name": "90f332090d24c0f12b99477ffec11cf8a07ddb5156da08771ffb5b4ff9882514.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\90f332090d24c0f12b99477ffec11cf8a07ddb5156da08771ffb5b4ff9882514.jpg",
+   "size": 4920,
+   "ctx": "\n固定分布 $q _ { t + 1 } ( z )$ ，寻找参数 $\\theta _ { t + 1 }$ 使得证据下界 $E L B O ( q _ { t + 1 } , x ; \\theta _ { t + 1 } )$ 最大.由公式(14.49)可知，新的对数边际似然不小于新的证据下界，因此在精确EM中有 $\\log p ( \\pmb { x } ; \\theta _ { t + 1 } ) \\geq \\log p ( \\pmb { x } ; \\theta _ { t } )$\n\n![](images/90f332090d24c0f12b99477ffec11cf8a07ddb5156da08771ffb5b4ff9882514.jpg)（描述：示意图，展示证据下界（ELBO）与对数似然之间的关系，包含KL散度和ELBO的垂直分层结构）  \n(a) 初始状态\n\n![](images/c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg)（描述：该图为ELBO（证据下界）与对数似然之间的关系示"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 584,
+   "ref": "images/c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg",
+   "name": "c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg",
+   "size": 5594,
+   "ctx": "![](images/90f332090d24c0f12b99477ffec11cf8a07ddb5156da08771ffb5b4ff9882514.jpg)（描述：示意图，展示证据下界（ELBO）与对数似然之间的关系，包含KL散度和ELBO的垂直分层结构）  \n(a) 初始状态\n\n![](images/c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg)（描述：该图为ELBO（证据下界）与对数似然之间的关系示意图，展示了KL散度为零时ELBO与log p(x;θ_t)相等的状态）  \n(b) E步更新\n\n![](images/5908f6db83822a58c062fe03ac2332e770ca27b8a8237d2dd84e343d14abc185.jpg)（描述：示意图，展示EM算法中ELBO、KL散度和对数似然之间的关系）  "
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 587,
+   "ref": "images/5908f6db83822a58c062fe03ac2332e770ca27b8a8237d2dd84e343d14abc185.jpg",
+   "name": "5908f6db83822a58c062fe03ac2332e770ca27b8a8237d2dd84e343d14abc185.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\5908f6db83822a58c062fe03ac2332e770ca27b8a8237d2dd84e343d14abc185.jpg",
+   "size": 7181,
+   "ctx": "![](images/c85cbc08ced89d4d0f2c3d21908eab4cf30118db39a13be894ff40b4ca7ecc01.jpg)（描述：该图为ELBO（证据下界）与对数似然之间的关系示意图，展示了KL散度为零时ELBO与log p(x;θ_t)相等的状态）  \n(b) E步更新\n\n![](images/5908f6db83822a58c062fe03ac2332e770ca27b8a8237d2dd84e343d14abc185.jpg)（描述：示意图，展示EM算法中ELBO、KL散度和对数似然之间的关系）  \n图 14.11 EM算法在第t步迭代时的示例  \n(c) M步更新\n"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 623,
+   "ref": "images/becbd59f800841017375509b45fbe666e4568eb7fa9d81c304a6bde7546e6579.jpg",
+   "name": "becbd59f800841017375509b45fbe666e4568eb7fa9d81c304a6bde7546e6579.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\becbd59f800841017375509b45fbe666e4568eb7fa9d81c304a6bde7546e6579.jpg",
+   "size": 8393,
+   "ctx": "\n图14.12给出了高斯混合模型的图模型表示.\n\n![](images/becbd59f800841017375509b45fbe666e4568eb7fa9d81c304a6bde7546e6579.jpg)（描述：高斯混合模型的图模型表示，包含隐变量z(n)、观测变量x(n)以及参数μk、σk和K的结构关系）  \n图 14.12 高斯混合模型\n\n在高斯混合模型中，随机变量x的概率密度函数为"
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 803,
+   "ref": "images/355736f8771e3386c4029f9291b2aa147fb1f6273ccb210776d97908e8b9be57.jpg",
+   "name": "355736f8771e3386c4029f9291b2aa147fb1f6273ccb210776d97908e8b9be57.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\355736f8771e3386c4029f9291b2aa147fb1f6273ccb210776d97908e8b9be57.jpg",
+   "size": 13826,
+   "ctx": "\n我们先介绍链式结构上的信念传播算法\n\n![](images/355736f8771e3386c4029f9291b2aa147fb1f6273ccb210776d97908e8b9be57.jpg)（描述：示意图，展示无向马尔可夫链中变量节点间的消息传递过程，包含双向消息流和变量标记）  \n图14.14 无向马尔可夫链的消息传递过程\n\n本节以无向图为例来介绍信念传播算法，但其同样适用于有向图."
+  },
+  {
+   "file": "14_概率图模型.md",
+   "line": 1305,
+   "ref": "images/1e9da73bd83d43b765dc3a625a4f2a38d16c23fd1bc842cb4e6c22f372a64268.jpg",
+   "name": "1e9da73bd83d43b765dc3a625a4f2a38d16c23fd1bc842cb4e6c22f372a64268.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\1e9da73bd83d43b765dc3a625a4f2a38d16c23fd1bc842cb4e6c22f372a64268.jpg",
+   "size": 41389,
+   "ctx": "\n图14.16给出了概率图模型所涵盖的内容.\n\n![](images/1e9da73bd83d43b765dc3a625a4f2a38d16c23fd1bc842cb4e6c22f372a64268.jpg)（描述：这是一张概率图模型的结构分类图，以树状图形式展示了概率图模型在模型表示、学习和推断三个方面的细分内容，包括有向/无向图模型、参数/结构学习方法以及精确/近似推断算法。）  \n图14.16 概率图模型所涵盖内容的简单概括\n\n与神经网络和深度生成模型的联系许多深度生成模型可以看作在图模型框架中，用神经网络替换手工设计的概率表或简单指数族分布.在这个框架下，图模型回答的是“模型应该分解成哪些概率因子”，神经网络回答的是“这些因子如何用可学习函数表示”，优化算法则回答“如何在不可精确推断时仍然学习参数”.因此，在设计深度生成模型时，仍然可以沿用本章的三个问题：先确定变量和分解结构，再判断关键后验是否可计算，最后选择最大似然、ELBO、采样近似或其他可优化目标.后续深度生成模型一章中的VAE、GAN、扩散模型和流模型，虽然形式差异很大，但都可以从这个框架中找到相应位置"
+  },
+  {
+   "file": "15_深度信念网络.md",
+   "line": 31,
+   "ref": "images/c0ba8a28aa159b88964c29377dd83ef8c2aef6a6ef3a56830d71db64241947b5.jpg",
+   "name": "c0ba8a28aa159b88964c29377dd83ef8c2aef6a6ef3a56830d71db64241947b5.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\c0ba8a28aa159b88964c29377dd83ef8c2aef6a6ef3a56830d71db64241947b5.jpg",
+   "size": 13225,
+   "ctx": "\n图15.1给出了一个包含3个可观测变量和3个隐变量的玻尔兹曼机\n\n![](images/c0ba8a28aa159b88964c29377dd83ef8c2aef6a6ef3a56830d71db64241947b5.jpg)（描述：一个包含六个变量的玻尔兹曼机结构图，其中三个可观测变量和三个隐变量通过全连接的方式表示）  \n图15.1 一个有六个变量的玻尔兹曼机\n\n随机向量X的联合概率由玻尔兹曼分布得到，即"
+  },
+  {
+   "file": "15_深度信念网络.md",
+   "line": 237,
+   "ref": "images/8a135300176b68695a56ae9dae6496b220454b05912dc2d9497a3c87d5c792c4.jpg",
+   "name": "8a135300176b68695a56ae9dae6496b220454b05912dc2d9497a3c87d5c792c4.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\8a135300176b68695a56ae9dae6496b220454b05912dc2d9497a3c87d5c792c4.jpg",
+   "size": 13790,
+   "ctx": "\n受限玻尔兹曼机因其结构最初称为簧风琴模型，2000年后受限玻尔兹曼机的名称才变得流行.\n\n![](images/8a135300176b68695a56ae9dae6496b220454b05912dc2d9497a3c87d5c792c4.jpg)（描述：一个包含4个可见变量和3个隐变量的受限玻尔兹曼机结构图，展示了可见层与隐层之间的全连接关系）  \n图15.3 一个有7个变量的受限玻尔兹曼机\n\n一个受限玻尔兹曼机由 $K _ { v }$ 个可观测变量和 $K _ { h }$ 个隐变量组成，其定义如下："
+  },
+  {
+   "file": "15_深度信念网络.md",
+   "line": 386,
+   "ref": "images/f0835d9fc49a614611bf9e38cc45852340fcf80400a25de5571b01abf67bdad8.jpg",
+   "name": "f0835d9fc49a614611bf9e38cc45852340fcf80400a25de5571b01abf67bdad8.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\f0835d9fc49a614611bf9e38cc45852340fcf80400a25de5571b01abf67bdad8.jpg",
+   "size": 10178,
+   "ctx": "\n图15.4也给出了上述过程的示例\n\n![](images/f0835d9fc49a614611bf9e38cc45852340fcf80400a25de5571b01abf67bdad8.jpg)（描述：示意图，展示受限玻尔兹曼机采样过程中可见层和隐藏层在不同时间步的交替更新关系）  \n图15.4 受限玻尔兹曼机的采样过程\n\n## 15.2.2 参数学习"
+  },
+  {
+   "file": "15_深度信念网络.md",
+   "line": 499,
+   "ref": "images/8ba1a1e663b1810d238f02a22ff80baaf7b0e8674b2f0a93f0a6facce30bf95e.jpg",
+   "name": "8ba1a1e663b1810d238f02a22ff80baaf7b0e8674b2f0a93f0a6facce30bf95e.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\8ba1a1e663b1810d238f02a22ff80baaf7b0e8674b2f0a93f0a6facce30bf95e.jpg",
+   "size": 22377,
+   "ctx": "\n深度玻尔兹曼机（DeepBoltzmann Machine，DBM）与深度信念网络名称相近，但图结构不同：深度玻尔兹曼机通常在相邻层之间都使用无向连接，而深度信念网络只在顶层保留无向连接、下层使用有向生成连接.因此，深度玻尔兹曼机的后验依赖更强，通常需要更复杂的变分推断或MCMC近似；深度信念网络则更强调通过逐层RBM预训练得到可用的深层表示.\n\n![](images/8ba1a1e663b1810d238f02a22ff80baaf7b0e8674b2f0a93f0a6facce30bf95e.jpg)（描述：一个4层深度信念网络的结构图，展示有向连接和顶层无向连接的混合结构）  \n图15.5 一个有4层结构的深度信念网络\n\n对一个有L层隐变量的深度信念网络，令 $v = h ^ { ( 0 ) }$ 表示最底层(第0层）为可观测变量， $\\mathbf { \\Omega } _ { h } ( 1 ) , \\cdots , h ^ { ( L ) }$ 表示其余每层的变量.顶部的两层是一个无向图，可以看作一个受限玻尔兹曼机，用来产生 $p ( h ^ { ( L - 1 ) } "
+  },
+  {
+   "file": "15_深度信念网络.md",
+   "line": 562,
+   "ref": "images/331cb5a6adbe38c850d97a92d404141a3c76a4f8bb8a7e9bbbf72e9b3787868e.jpg",
+   "name": "331cb5a6adbe38c850d97a92d404141a3c76a4f8bb8a7e9bbbf72e9b3787868e.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\331cb5a6adbe38c850d97a92d404141a3c76a4f8bb8a7e9bbbf72e9b3787868e.jpg",
+   "size": 16975,
+   "ctx": "\n播，这在早期深层网络难以直接端到端训练的背景下尤其有效.图15.6给出了深度信念网络的逐层预训练过程.\n\n![](images/331cb5a6adbe38c850d97a92d404141a3c76a4f8bb8a7e9bbbf72e9b3787868e.jpg)（描述：深度信念网络逐层预训练的结构示意图，展示从训练样本到各层受限玻尔兹曼机（RBM）的采样和权重传递过程）  \n图15.6 深度信念网络的逐层预训练过程\n\n具体的逐层训练过程为自下而上依次训练每一层的受限玻尔兹曼机.假设我们已经训练好了前l一1层的受限玻尔兹曼机，那么可以计算隐变量自下而上的条件概率"
+  },
+  {
+   "file": "15_深度信念网络.md",
+   "line": 606,
+   "ref": "images/75ceb6b4ac4c9cee624fd2f9b4c52fcf6f49a99502bd6655d03edb835bdbe5b4.jpg",
+   "name": "75ceb6b4ac4c9cee624fd2f9b4c52fcf6f49a99502bd6655d03edb835bdbe5b4.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\75ceb6b4ac4c9cee624fd2f9b4c52fcf6f49a99502bd6655d03edb835bdbe5b4.jpg",
+   "size": 20619,
+   "ctx": "\n作为判别模型的微调深度信念网络的一个应用是作为深度神经网络的预训练模型，提供神经网络的初始权重.这时只需要向上的认知权重，作为判别模型使用.图15.7给出深度信念网络作为神经网络预训练模型的示例\n\n![](images/75ceb6b4ac4c9cee624fd2f9b4c52fcf6f49a99502bd6655d03edb835bdbe5b4.jpg)（描述：示意图，展示深度信念网络转换为神经网络预训练模型的过程，包含可观测层到隐藏层的权重结构及添加输出层后的神经网络结构）  \n图15.7 深度信念网络作为神经网络的预训练模型\n\n具体的微调过程为：在深度信念网络的最顶层再增加一层输出层，然后使用反向传播算法对这些权重进行微调.在早期优化技术尚不成熟、训练数据相对有限的背景下，这种预训练通常能够提供更好的初始化，并在一定程度上提升收敛速度和最终性能[Larochelle et al., 2007]. 但随着后续深度网络训练技术的发展，更好的激活函数、初始化方法、规范化技术和残差结构逐渐降低了端到端训练的难度，基于DBN的预训练也就不再是训练深层网络的常用方案."
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 11,
+   "ref": "images/0dd83ccbfa325a66777bbb71d227c4820efdcb897d308dfb91cf9e328e16f7aa.jpg",
+   "name": "0dd83ccbfa325a66777bbb71d227c4820efdcb897d308dfb91cf9e328e16f7aa.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0dd83ccbfa325a66777bbb71d227c4820efdcb897d308dfb91cf9e328e16f7aa.jpg",
+   "size": 21848,
+   "ctx": "\n概率生成模型（Probabilistic Generative Model），简称生成模型，是概率统计和机器学习领域的一类重要模型，指可用于随机生成可观测数据的模型，假设在一个连续或离散的高维空间 $\\mathcal { X }$ 中，存在一个随机向量X服从一个未知的数据分布 $p _ { r } ( { \\pmb x } ) , { \\pmb x } \\in \\mathcal { X } .$ 生成模型是根据一些可观测的样本 $\\pmb { x } ^ { ( 1 ) } , \\pmb { x } ^ { ( 2 ) } , \\cdots , \\pmb { x } ^ { ( N ) }$ 来学习一个参数化的模型 $p _ { \\theta } ( { \\pmb x } )$ 来近似未知分布 $p _ { r } ( { \\pmb x } )$ ，并可以用这个模型来生成一些样本，使得“生成”的样本和“真实”的样本尽可能地相似.生成模型通常包含两个基本功能：概率密度估计和生成样本（即采样）.图16.1以手写体数字图像为例给出了生成模型的两个功能示例，其中左图表示手写体数字图像的真实分"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 38,
+   "ref": "images/44616307b6b73184317610f675e0d3cb12661eedbcd6c61b8a1ff2d9e5cb2fee.jpg",
+   "name": "44616307b6b73184317610f675e0d3cb12661eedbcd6c61b8a1ff2d9e5cb2fee.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\44616307b6b73184317610f675e0d3cb12661eedbcd6c61b8a1ff2d9e5cb2fee.jpg",
+   "size": 2895,
+   "ctx": "\n络分别建模这两个分布，并借助变分推断与重参数化技巧来解决这两个困难，就是变分自编码器的基本思想.\n\n![](images/44616307b6b73184317610f675e0d3cb12661eedbcd6c61b8a1ff2d9e5cb2fee.jpg)（描述：示意图，展示隐变量z到观测变量x的生成关系）  \n(a) 含隐变量的生成模型\n\n![](images/b1aed04c46b4756faf65fcf81820f069481344f4cc39af0b6028c267a815443f.jpg)（描述：这是一个表示生成模型的结构图，包含两个节点y和x，其中y指向x，表示变量之间的依赖关系。）  "
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 41,
+   "ref": "images/b1aed04c46b4756faf65fcf81820f069481344f4cc39af0b6028c267a815443f.jpg",
+   "name": "b1aed04c46b4756faf65fcf81820f069481344f4cc39af0b6028c267a815443f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\b1aed04c46b4756faf65fcf81820f069481344f4cc39af0b6028c267a815443f.jpg",
+   "size": 3183,
+   "ctx": "![](images/44616307b6b73184317610f675e0d3cb12661eedbcd6c61b8a1ff2d9e5cb2fee.jpg)（描述：示意图，展示隐变量z到观测变量x的生成关系）  \n(a) 含隐变量的生成模型\n\n![](images/b1aed04c46b4756faf65fcf81820f069481344f4cc39af0b6028c267a815443f.jpg)（描述：这是一个表示生成模型的结构图，包含两个节点y和x，其中y指向x，表示变量之间的依赖关系。）  \n(b) 带标签的生成模型  \n图 16.2 生成模型\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 71,
+   "ref": "images/51f5b5076fb17b2c98b1345d36a1ed75b34619a8079e3c48c60992a77b757839.jpg",
+   "name": "51f5b5076fb17b2c98b1345d36a1ed75b34619a8079e3c48c60992a77b757839.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\51f5b5076fb17b2c98b1345d36a1ed75b34619a8079e3c48c60992a77b757839.jpg",
+   "size": 6826,
+   "ctx": "\n假设一个生成模型（如图16.3所示）中包含隐变量，即有部分变量是不可观测的，其中观测变量X是一个高维空间x中的随机向量，隐变量Z是一个相对低维的空间Z中的随机向量.\n\n![](images/51f5b5076fb17b2c98b1345d36a1ed75b34619a8079e3c48c60992a77b757839.jpg)（描述：该图是一个变分自编码器的结构示意图，展示了隐变量Z和观测变量X之间的生成关系，以及参数θ和φ的作用，实线表示生成模型，虚线表示变分近似。）  \n图 16.3 变分自编码器\n\n本章中，我们假设X和Z都是连续随机向量.实线表示生成模型，虚线表示变分近似."
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 124,
+   "ref": "images/d443b469008a107953db9aa7ea6d85e51c0dc8a9d5748ccafe6449ce40e4125b.jpg",
+   "name": "d443b469008a107953db9aa7ea6d85e51c0dc8a9d5748ccafe6449ce40e4125b.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\d443b469008a107953db9aa7ea6d85e51c0dc8a9d5748ccafe6449ce40e4125b.jpg",
+   "size": 35849,
+   "ctx": "\n将推断网络和生成网络合并就得到了变分自编码器的整个网络结构，如图16.4所示，其中实线表示网络计算操作，虚线表示采样操作.\n\n![](images/d443b469008a107953db9aa7ea6d85e51c0dc8a9d5748ccafe6449ce40e4125b.jpg)（描述：变分自编码器的网络结构示意图，包含推断网络和生成网络，用实线表示网络计算操作，虚线表示采样操作）  \n图16.4 变分自编码器的网络结构\n\n变分自编码器的名称来自于其整个网络结构和自编码器比较类似.我们可以把推断网络看作“编码器”，将可观测变量映射为隐变量；把生成网络看作“解码器”，将隐变量映射为可观测变量．然而，变分自编码器背后的原理和自编码器完全不同.变分自编码器中的编码器和解码器的输出为分布（或分布的参数），而不是确定的编码"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 341,
+   "ref": "images/341d8fd3ab3017e453767676d00ddeab2cf1a7767bdb118fdaebc30d7fe9470d.jpg",
+   "name": "341d8fd3ab3017e453767676d00ddeab2cf1a7767bdb118fdaebc30d7fe9470d.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\341d8fd3ab3017e453767676d00ddeab2cf1a7767bdb118fdaebc30d7fe9470d.jpg",
+   "size": 22521,
+   "ctx": "\n变分自编码器的训练过程如图16.5所示，其中空心矩形表示“目标函数”\n\n![](images/341d8fd3ab3017e453767676d00ddeab2cf1a7767bdb118fdaebc30d7fe9470d.jpg)（描述：变分自编码器的训练过程示意图，包含推断网络、生成网络、隐变量z的采样流程以及目标函数的组成）  \n图 16.5 变分自编码器的训练过程\n\n图16.6给出了在MNIST数据集上变分自编码器学习到的隐变量流形的可视化示例.图16.6a表示将训练集上的每个样本x通过推断网络映射到二维隐变量空间后得到的表示，其中每个点对应 $\\mathbb { E } [ z | { \\boldsymbol { x } } ]$ ，不同颜色表示不同数字；"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 351,
+   "ref": "images/0b3aba059ee8b1600bf014b8a823da7a7a4430afdcfa160dedf7c650d4eeff42.jpg",
+   "name": "0b3aba059ee8b1600bf014b8a823da7a7a4430afdcfa160dedf7c650d4eeff42.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\0b3aba059ee8b1600bf014b8a823da7a7a4430afdcfa160dedf7c650d4eeff42.jpg",
+   "size": 33576,
+   "ctx": "![](images/ba8d46ec74ddd320674bd7135a0e1282a8439f5c4485e2a989cea31fc5096691.jpg)  \n(a)训练集上所有样本在隐空间上的投影\n\n![](images/0b3aba059ee8b1600bf014b8a823da7a7a4430afdcfa160dedf7c650d4eeff42.jpg)（描述：一张展示MNIST数据集上变分自编码器学习到的隐变量流形的图像，呈现了数字0-9在隐空间中的投影分布）  \n(b)隐变量z在图像空间的投影  \n图16.6 在MNIST数据集上变分自编码器学习到的隐变量流形的可视化示例\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 363,
+   "ref": "images/abea8b204656fafda67141dbf13391628218967a18f1f6e1b327108cd7ecd6d0.jpg",
+   "name": "abea8b204656fafda67141dbf13391628218967a18f1f6e1b327108cd7ecd6d0.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\abea8b204656fafda67141dbf13391628218967a18f1f6e1b327108cd7ecd6d0.jpg",
+   "size": 15093,
+   "ctx": "\n如果只是希望有一个模型能生成符合数据分布 $p _ { r } ( { \\pmb x } )$ 的样本，那么可以不显式地估计出数据分布的密度函数．假设在低维空间Z中有一个简单容易采样的分布 $p ( z ) , p ( z )$ 通常为标准多元正态分布 $\\mathcal { N } ( \\mathbf { 0 } , \\pmb { I } )$ .我们用神经网络构建一个映射函数 $G : \\mathcal { Z }  \\mathcal { X }$ ，称为生成网络．训练的目标是让 $G ( z )$ 诱导出的模型分布 $p _ { \\theta } ( { \\pmb x } )$ 尽可能接近数据分布 $p _ { r } ( { \\pmb x } )$ .这种模型就称为隐式密度模型（ImplicitDensityModel）.所谓隐式模型就是指并不显式地建模 $p _ { r } ( { \\pmb x } )$ ，而是建模生成过程.图16.7给出了隐式模型生成样本的过程.\n\n![](images/abea8b204656fafda67141dbf13391628218967a18"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 370,
+   "ref": "images/b4c0c955ddaa509eefca582f974709af14a95dd421b9dc5df1e74ebb909375af.jpg",
+   "name": "b4c0c955ddaa509eefca582f974709af14a95dd421b9dc5df1e74ebb909375af.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\b4c0c955ddaa509eefca582f974709af14a95dd421b9dc5df1e74ebb909375af.jpg",
+   "size": 10597,
+   "ctx": "\n隐式密度模型的一个关键是如何判断生成网络产生的样本是否接近真实数据分布．既然我们不构建显式密度函数，就无法直接通过最大似然估计等方法来训练.生成对抗网络（Generative Adversarial Network,GAN)[Goodfellowet al.,2014]是通过对抗训练的方式来使得生成网络产生的样本服从真实数据分布.在生成对抗网络中，有两个网络进行对抗训练.一个是判别网络，目标是尽量准确地判断一个样本是来自于真实数据还是由生成网络产生；另一个是生成网络，目标是尽量生成判别网络无法区分来源的样本.这两个目标相反的网络不断地进行交替训练.生成对抗网络的流程图如图16.8所示.在理想情况下，如果判\n\n![](images/b4c0c955ddaa509eefca582f974709af14a95dd421b9dc5df1e74ebb909375af.jpg)（描述：生成对抗网络的流程图，展示了生成网络和判别网络的输入输出关系及对抗训练过程）  \n图16.8 生成对抗网络的流程图\n\n别网络在足够大的模型族内也无法区分真实样本和生成样本，就说明生成分布已经接近真实数据分布."
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 453,
+   "ref": "images/239978fe678c45bdedca74343acddca2e98a1f99b7618e618e414a4af3b77b97.jpg",
+   "name": "239978fe678c45bdedca74343acddca2e98a1f99b7618e618e414a4af3b77b97.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\239978fe678c45bdedca74343acddca2e98a1f99b7618e618e414a4af3b77b97.jpg",
+   "size": 27477,
+   "ctx": "\nDCGAN的主要优点是通过一些经验性的网络结构设计使得对抗训练更加稳定．比如：1）使用带步长的卷积（在判别网络中）和微步卷积（在生成网络中）来代替显式汇聚，使上下采样也成为可学习的变换；2）使用批量规范化；3）去除卷积层之后的全连接层：4）在生成网络中，除了最后一层使用Tanh激活函数外，其余层都使用ReLU函数；5)在判别网络中使用LeakyReLU激活函数\n\n![](images/239978fe678c45bdedca74343acddca2e98a1f99b7618e618e414a4af3b77b97.jpg)（描述：DCGAN生成网络的结构图，展示从随机噪声z经过投影、reshape和多个卷积层（CONV 1至CONV 4）逐步生成图像G(z)的过程）  \n图 16.9 DCGAN 中的生成网络（图片来源: [Radford et al., 2016]）\n\n## 16.3.4 模型分析"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 508,
+   "ref": "images/36dd984cab1611630213d370a0860940cc5cdbdc6584cd0486384ad360466906.jpg",
+   "name": "36dd984cab1611630213d370a0860940cc5cdbdc6584cd0486384ad360466906.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\36dd984cab1611630213d370a0860940cc5cdbdc6584cd0486384ad360466906.jpg",
+   "size": 17984,
+   "ctx": "\n图16.10给出了生成对抗网络中的梯度消失问题的示例. 当真实分布 $p _ { r }$ 和模型分布 $p _ { \\theta }$ 没有重叠时，最优的判别器 $D ^ { \\star }$ 对所有生成数据的输出都为0，即$D ^ { \\star } ( G ( z ; \\theta ) ) = 0 , \\forall z .$ 因此，生成网络的梯度消失.\n\n![](images/36dd984cab1611630213d370a0860940cc5cdbdc6584cd0486384ad360466906.jpg)（描述：示意图，展示真实数据分布与生成数据分布无重叠时最优判别器的输出情况）  \n图16.10 生成对抗网络中的梯度消失问题\n\n在实际训练生成对抗网络时，一般不会将判别网络训练到最优，只进行一步或多步梯度下降，使得生成网络的梯度依然存在.另外，判别网络也不能太差，否则生成网络的梯度为错误的梯度，但是，如何在梯度消失和梯度错误之间取得平衡并不是一件容易的事，这个问题使得生成对抗网络在训练时稳定性比较差"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 559,
+   "ref": "images/575e3cc4e19656338256e060b702778df4b485bcf7f0609bd1da08656daf2b67.jpg",
+   "name": "575e3cc4e19656338256e060b702778df4b485bcf7f0609bd1da08656daf2b67.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\575e3cc4e19656338256e060b702778df4b485bcf7f0609bd1da08656daf2b67.jpg",
+   "size": 14313,
+   "ctx": "\n图16.11给出数据真实分布为一个高斯混合分布，模型分布为一个单高斯分布时，使用前向和逆向KL散度来进行模型优化的示例.黑色曲线为真实分布 $p _ { r }$ 的等高线，红色曲线为模型分布 $p _ { \\theta }$ 的等高线.\n\n![](images/575e3cc4e19656338256e060b702778df4b485bcf7f0609bd1da08656daf2b67.jpg)（描述：示意图，展示真实分布与模型分布的等高线对比，用于说明前向和逆向KL散度的优化效果）\n\n![](images/9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg)（描述：示意图，展示前向KL散度的等高线分布，包含多个同心椭圆和红色轮廓线）  \n图 16.11 前向和逆向KL散度"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 561,
+   "ref": "images/9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg",
+   "name": "9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg",
+   "size": 17488,
+   "ctx": "\n![](images/575e3cc4e19656338256e060b702778df4b485bcf7f0609bd1da08656daf2b67.jpg)（描述：示意图，展示真实分布与模型分布的等高线对比，用于说明前向和逆向KL散度的优化效果）\n\n![](images/9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg)（描述：示意图，展示前向KL散度的等高线分布，包含多个同心椭圆和红色轮廓线）  \n图 16.11 前向和逆向KL散度\n\n![](images/2df384f0dc22ada202a8e765fd9bfcd0e89b0f9ce3a45c2a6c44d37995df65d7.jpg)（描述：示意图，展示逆向KL散度的等高线分布，包含两个椭圆区域的同心圆轮廓）"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 564,
+   "ref": "images/2df384f0dc22ada202a8e765fd9bfcd0e89b0f9ce3a45c2a6c44d37995df65d7.jpg",
+   "name": "2df384f0dc22ada202a8e765fd9bfcd0e89b0f9ce3a45c2a6c44d37995df65d7.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\2df384f0dc22ada202a8e765fd9bfcd0e89b0f9ce3a45c2a6c44d37995df65d7.jpg",
+   "size": 16286,
+   "ctx": "![](images/9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg)（描述：示意图，展示前向KL散度的等高线分布，包含多个同心椭圆和红色轮廓线）  \n图 16.11 前向和逆向KL散度\n\n![](images/2df384f0dc22ada202a8e765fd9bfcd0e89b0f9ce3a45c2a6c44d37995df65d7.jpg)（描述：示意图，展示逆向KL散度的等高线分布，包含两个椭圆区域的同心圆轮廓）\n\n在前向KL散度中，\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 723,
+   "ref": "images/ca5f4bc05c6d44f8c1007666b535c0a983d373ceeaf9a0ca8e53b1585997a97f.jpg",
+   "name": "ca5f4bc05c6d44f8c1007666b535c0a983d373ceeaf9a0ca8e53b1585997a97f.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\ca5f4bc05c6d44f8c1007666b535c0a983d373ceeaf9a0ca8e53b1585997a97f.jpg",
+   "size": 35999,
+   "ctx": "\n扩散模型的核心由两部分构成：一部分是人为设定的前向扩散过程，把样本$\\scriptstyle { \\mathbf { { \\vec { x } } } } _ { 0 }$ 逐步加上高斯噪声，得到随机变量序列 ${ \\pmb x } _ { 1 } , { \\pmb x } _ { 2 } , \\cdots , { \\pmb x } _ { T }$ .当步数T足够大时， ${ \\pmb x } _ { T }$ 将接近一个简单分布，比如标准高斯分布.另一部分是由神经网络学习的反向去噪过程，使其能够从 ${ \\pmb x } _ { T }$ 开始，一步步恢复出 ${ \\pmb x } _ { T - 1 } , { \\pmb x } _ { T - 2 } , \\cdots , { \\pmb x } _ { 0 }$ .图16.12给出了这一基本流程：上半部分是从数据到噪声的前向过程，下半部分是由神经网络参数化的反向去噪过程\n\n![](images/ca5f4bc05c6d44f8c1007666b535c0a983d373ceeaf9a0ca8e53b1585997a97f.jp"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 776,
+   "ref": "images/46239bf35ffc1a87f981072e51377fb84bf7fffd1a554671514adeaf3e7c52f9.jpg",
+   "name": "46239bf35ffc1a87f981072e51377fb84bf7fffd1a554671514adeaf3e7c52f9.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\46239bf35ffc1a87f981072e51377fb84bf7fffd1a554671514adeaf3e7c52f9.jpg",
+   "size": 22704,
+   "ctx": "\n图16.13从信噪比的角度刻画了公式(16.63):随着t增大,样本中的信号成分$\\sqrt { \\bar { \\alpha } _ { t } } \\pmb { x } _ { 0 }$ 逐渐减弱，而噪声成分 $\\sqrt { 1 - \\bar { \\alpha } _ { t } } .$ ε逐渐增强，对应的信噪比也持续下降.\n\n![](images/46239bf35ffc1a87f981072e51377fb84bf7fffd1a554671514adeaf3e7c52f9.jpg)（描述：示意图，展示前向扩散过程中信号与噪声随时间t变化的相对占比，蓝色代表信号，橙色代表噪声）  \n图16.13 前向扩散中信号与噪声的相对占比变化\n\n## 16.4.2 反向去噪过程"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 947,
+   "ref": "images/d821bdbf869f97fd7b294785dd782b708baeeec2c75f3be5299fb0ef8d86c103.jpg",
+   "name": "d821bdbf869f97fd7b294785dd782b708baeeec2c75f3be5299fb0ef8d86c103.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\d821bdbf869f97fd7b294785dd782b708baeeec2c75f3be5299fb0ef8d86c103.jpg",
+   "size": 5418,
+   "ctx": "\\begin{array} { r } { \\pmb { x } _ { t } = \\cos \\theta _ { t } \\pmb { x } _ { 0 } + \\sin \\theta _ { t } \\pmb { \\epsilon } . } \\end{array}\\tag{16.83}\n$$\n\n![](images/d821bdbf869f97fd7b294785dd782b708baeeec2c75f3be5299fb0ef8d86c103.jpg)（描述：二维平面中的几何示意图，展示向量x_t在由x_0和ε张成的子空间中随角度θ_t旋转的过程）  \n$\\hat { \\alpha } _ { t }$ 可以看成一个“旋转进度条”，它把抽象的时间步t转化成了更直观的几何位置.\n\n若只关注 $\\scriptstyle { \\mathbf { { \\vec { x } } } } _ { 0 }$ 与 $\\epsilon$ 张成的二维子空间中的几何关系，那么扩散过程可以理解为状态从“更接近原始图像”逐步旋转到“更接近纯噪声”的过程，而 $\\hat { \\alpha } _ { t"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 986,
+   "ref": "images/92973d7c910e028fde28e79db703dd9d8bfe6a2e4610d0c5d00fe215f71b4684.jpg",
+   "name": "92973d7c910e028fde28e79db703dd9d8bfe6a2e4610d0c5d00fe215f71b4684.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\92973d7c910e028fde28e79db703dd9d8bfe6a2e4610d0c5d00fe215f71b4684.jpg",
+   "size": 1382,
+   "ctx": "\n值得注意的是，尽管四种预测在数学上可以相互转换，但当数据的内在维数远小于其所处空间的维数时，不同参数化的表现可能存在显著差异.\n\n![](images/92973d7c910e028fde28e79db703dd9d8bfe6a2e4610d0c5d00fe215f71b4684.jpg)（描述：该图是关于去噪过程的示意图，展示了在不同时间步上对数据进行去噪的流程，与正文中的单步去噪能力训练方法相关）\n\n在实际训练中，通常从 $\\{ 1 , 2 , \\cdots , T \\}$ 中均匀采样一个时间步t，构造相应的 $\\mathbf { \\Delta } _ { \\mathbf { \\mathcal { X } } _ { t } }$ ，再用公式(16.78)更新网络参数.也就是说，训练时网络学习的是“任意噪声水平上的单步去噪能力”，而不必在一次前向传播中显式累加所有时间步的损失.\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1142,
+   "ref": "images/62e3c7b2439eb71a3ba52e37199190a361f0e20a405a54495cae64c467cf6571.jpg",
+   "name": "62e3c7b2439eb71a3ba52e37199190a361f0e20a405a54495cae64c467cf6571.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\62e3c7b2439eb71a3ba52e37199190a361f0e20a405a54495cae64c467cf6571.jpg",
+   "size": 39912,
+   "ctx": "\n图16.14给出了图像扩散中常见的去噪网络示意：编码端逐步汇聚上下文，解码端逐步恢复分辨率，时间步和条件信息则在多个层级注入网络，实际模型中，时间步与条件信息通常会在多个层级中注入，而不仅仅只作用于一个位置\n\n![](images/62e3c7b2439eb71a3ba52e37199190a361f0e20a405a54495cae64c467cf6571.jpg)（描述：图16.14是扩散模型中常见的U-Net式去噪网络结构示意图，展示了编码器、解码器、瓶颈层以及时间步和条件信息的注入方式）  \n图 16.14 扩散模型中常见的U-Net 式去噪网络\n\n随着模型规模增大，纯卷积U-Net之外也出现了基于Transformer的扩散骨干，例如 DiT（Diffusion Transformer）一类结构 [Peebles et al.，2023]. 这类方法通常把隐变量切分成图块（patch）序列，再用Transformer进行全局建模.与 $\\mathrm { U - N e t }$ 相比，Transformer骨干往往更便于随模型规模扩展，并且与大规模预训练和统一多模态建模更"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1197,
+   "ref": "images/22b614ac56cba78317b61efec315a83c956d363803c42488759f2476a3cabb99.jpg",
+   "name": "22b614ac56cba78317b61efec315a83c956d363803c42488759f2476a3cabb99.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\22b614ac56cba78317b61efec315a83c956d363803c42488759f2476a3cabb99.jpg",
+   "size": 19532,
+   "ctx": "\n图16.15给出了隐空间扩散模型的典型结构：先用自动编码器把高维图像压缩到隐空间，再在隐空间中执行扩散与去噪，并通过交叉注意力等机制把文本条件注入去噪网络.\n\n![](images/22b614ac56cba78317b61efec315a83c956d363803c42488759f2476a3cabb99.jpg)（描述：该图为隐空间扩散模型的基本框架示意图，展示了从图像输入到编码器、隐变量、前向加噪、去噪网络（含交叉注意力机制）、解码器再到生成图像的完整流程）  \n图16.15 隐空间扩散模型的基本框架\n\n隐空间扩散模型的优势主要体现在三个方面.首先，隐空间维度通常远低于原始像素空间，因此无论训练还是采样，每一步需要处理的张量都更小，计算与显存开销明显降低.其次，自动编码器已经在一定程度上把局部冗余压缩掉，使得扩散模型可以把更多建模能力集中在对象结构、语义关系和全局布局等更高层的信息上.再次，条件信息通过交叉注意力等机制注入隐空间去噪网络后，往往比在高分辨率像素空间中直接建模更高效，也更容易扩展到文本到图像、图像编辑、多模态生成等场景."
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1218,
+   "ref": "images/3607882f77f41413f8c9df4f45ec528ed1a68c46aaa763fcc3d05a311dc1ffaa.jpg",
+   "name": "3607882f77f41413f8c9df4f45ec528ed1a68c46aaa763fcc3d05a311dc1ffaa.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\3607882f77f41413f8c9df4f45ec528ed1a68c46aaa763fcc3d05a311dc1ffaa.jpg",
+   "size": 1272,
+   "ctx": "\n与扩散模型相比，流匹配的常见特点在于：(1）不需要先定义一个固定的前向加噪过程，训练目标更简洁；(2）传输路径可以被设计得更直，从而有机会减少采样步数；(3）概念上更加直观—网络学到的就是“粒子在每个时刻该往哪个方向移动”.\n\n![](images/3607882f77f41413f8c9df4f45ec528ed1a68c46aaa763fcc3d05a311dc1ffaa.jpg)（描述：示意图，展示流匹配中粒子在不同时间点的移动路径，用于解释其数学框架）\n\n为了理解流匹配的数学框架，我们先简要回顾微分方程的基本概念\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1264,
+   "ref": "images/7598e2bae6d1837d5b1b6796844d00b043a4df00ed95b60dd8a68146b4f7ea89.jpg",
+   "name": "7598e2bae6d1837d5b1b6796844d00b043a4df00ed95b60dd8a68146b4f7ea89.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\7598e2bae6d1837d5b1b6796844d00b043a4df00ed95b60dd8a68146b4f7ea89.jpg",
+   "size": 14178,
+   "ctx": "\n其中 $\\textstyle { \\frac { \\partial f } { \\partial \\mathbf { x } } }$ 为变换f的雅可比矩阵.\n\n![](images/7598e2bae6d1837d5b1b6796844d00b043a4df00ed95b60dd8a68146b4f7ea89.jpg)（描述：示意图，展示变量变换前后概率密度的变化，包含两个概率分布曲线和空间拉伸与密度降低的关系说明）\n\n直观上，可逆变换在局部对空间进行拉伸或压缩，为了保持概率总量守恒，密度必须相应地缩放，缩放因子正是雅可比行列式的绝对值的倒数.以一维情形为例，若 $y = 2 x$ ,则 $p _ { y } ( y ) = p _ { x } ( y / 2 ) \\cdot | 1 / 2 |$ 密度被“拉伸”后需相应缩小，使得总概率仍为1.\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1270,
+   "ref": "images/d5f5e362e927b929c01d57fd88b00c19c1e2c7e2c9e2761d686c684a8f26fa9a.jpg",
+   "name": "d5f5e362e927b929c01d57fd88b00c19c1e2c7e2c9e2761d686c684a8f26fa9a.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\d5f5e362e927b929c01d57fd88b00c19c1e2c7e2c9e2761d686c684a8f26fa9a.jpg",
+   "size": 16181,
+   "ctx": "\n给定基础分布 $p _ { 0 } ( z _ { 0 } )$ (如标准高斯分布），标准化流通过一系列可逆且可微的变换 $f _ { 1 } , f _ { 2 } , \\cdots , f _ { K }$ 逐步将 $z _ { \\mathrm { 0 } }$ 映射为 $z _ { K }$ ，使其分布逼近目标数据分布x（如图16.16所示). 每一步变换后的密度都可以通过公式(16.103)精确计算.但离散标准化流的每一步变换为了保证可逆性和雅可比行列式的高效计算，结构设计受到较大限制.\n\n![](images/d5f5e362e927b929c01d57fd88b00c19c1e2c7e2c9e2761d686c684a8f26fa9a.jpg)（描述：示意图，展示标准化流通过一系列可逆变换从基础分布逐步映射到目标数据分布的过程）  \n图16.16 标准化流的基本结构  \n连续标准化流(Continuous Normalizing Flow,CNF) [Chen et al., 2018]\n"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1352,
+   "ref": "images/29a2161575a0b8292873e26f07e18c571020ad9845c2168be977994a58001540.jpg",
+   "name": "29a2161575a0b8292873e26f07e18c571020ad9845c2168be977994a58001540.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\29a2161575a0b8292873e26f07e18c571020ad9845c2168be977994a58001540.jpg",
+   "size": 25884,
+   "ctx": "\n图16.17展示了条件流匹配的核心思想：每条彩色直线是一条从噪声点到数据点的条件路径，网络学习的边际速度场（黑色箭头）是这些条件方向在每个位置上的加权平均.\n\n![](images/29a2161575a0b8292873e26f07e18c571020ad9845c2168be977994a58001540.jpg)（描述：示意图，展示条件流匹配中从噪声点到数据点的条件路径（红色线）和边际速度场（黑色箭头）随时间t的变化过程）  \n图 16.17 条件流匹配示意\n\n采样时，从 $\\mathbf { \\boldsymbol { x } } _ { 0 } \\sim \\mathcal { N } ( \\mathbf { \\boldsymbol { 0 } } , I )$ 出发，用ODE求解器对速度场 $v _ { \\theta }$ 进行数值积分，从 $t = 0$ 积分到t=1即可得到生成样本.由于流匹配的传输路径通常比较平直，在实践中往往只需较少的积分步数（如20\\~50步）即可获得高质量样本."
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1419,
+   "ref": "images/b876208958018ff2b43d44460558476dffcf015d875bfa1dae3f423498023fd9.jpg",
+   "name": "b876208958018ff2b43d44460558476dffcf015d875bfa1dae3f423498023fd9.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\b876208958018ff2b43d44460558476dffcf015d875bfa1dae3f423498023fd9.jpg",
+   "size": 6793,
+   "ctx": "\n流匹配框架中的一个重要自由度是：如何选择从噪声到数据的传输路径?在前面的讨论中，我们使用了最简单的独立耦合：随机采样一个噪声 $\\scriptstyle { \\mathbf { { \\vec { x } } } } _ { 0 }$ 和一个数据点 $\\scriptstyle { \\mathbf { { x } } } _ { 1 }$ ，然后用线性插值连接它们.这种做法存在一个关键问题：路径交叉（如图16.18(a)所示).虽然ODE的解具有唯一性，不同的边际轨迹不会交叉，但不同数据点对应的条件路径可能在空间中大量相交.当两条条件路径在某个中间时刻t经过同一个空间位置时，它们指向不同的目标 $\\scriptstyle { \\pmb { x } } _ { 1 }$ ，导致训练时网络在该位置收到相互矛盾的梯度信号.这不仅增大了训练方差，也使得学到的边际速度场变得弯曲，采样时需要更多的ODE求解步数才能保证精度.\n\n![](images/b876208958018ff2b43d44460558476dffcf015d875bfa1dae3f423498023fd9.jpg)（描述：示意图"
+  },
+  {
+   "file": "16_深度生成模型.md",
+   "line": 1422,
+   "ref": "images/621e77ecf77ca0255b6d44eb732245317be10616663dea8c9cd4a1529e641966.jpg",
+   "name": "621e77ecf77ca0255b6d44eb732245317be10616663dea8c9cd4a1529e641966.jpg",
+   "abs": "F:\\wholeextract\\deeplearning\\_mineru\\nndl-v2\\images\\621e77ecf77ca0255b6d44eb732245317be10616663dea8c9cd4a1529e641966.jpg",
+   "size": 6037,
+   "ctx": "![](images/b876208958018ff2b43d44460558476dffcf015d875bfa1dae3f423498023fd9.jpg)（描述：示意图，展示多个从P0到P1的路径交叉情况，用于说明条件路径在空间中相交的问题）  \n(a)独立耦合:路径交叉\n\n![](images/621e77ecf77ca0255b6d44eb732245317be10616663dea8c9cd4a1529e641966.jpg)（描述：示意图，展示独立耦合与最优传输耦合中路径交叉与不交叉的对比）  \n(b)最优传输耦合:路径不交叉  \n图16.18 独立耦合与最优传输耦合的对比\n"
+  }
+ ]
+}

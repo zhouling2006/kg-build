@@ -1,0 +1,1524 @@
+=== SYSTEM ===
+你是教材的知识点提炼引擎。输入是一章教材的完整原文（可能含表格、协议字段说明、代码块等）。
+
+任务：把这一章可学的知识整理成一份"知识单元树"——像一份带索引/目录的学习清单：大主题下面有分组，分组下面是具体可学习的知识单元。层级按知识本身的逻辑组织（不必照搬书本章节小节划分），顺序大致按原文出现顺序/学习依赖先后。
+
+组织原则：
+1. 叶子 = 一个可以独立学习、需要掌握的点：一个概念/定义、一个机制、一个原理、一个流程、一种方法、一个重要结论。
+   强相关、需要连着学的概念可以合成一个叶子，例如成对/成套的概念（如"电路交换与分组交换""TCP与UDP的对比"）合为一条来学；
+   联系弱、各自独立的知识就分开各自成叶。同一概念在正文不同小节/不同位置多次展开时，合并进同一个叶子，不要拆开重复。
+2. 分组 = 同一主题下的若干叶子聚在一起。
+3. 合并与否由内容决定：可以合并，也可以不合并，关键是"适合作为一个学习单元"。
+4. 层级一般 2~3 层：主题（可选） > 分组 > 叶子；不要为了好看堆出 4 层以上。
+
+条目要求：
+- title：规范术语（≤50字），去掉"叫做/称为/是一种"等叙述。
+- summary：所有节点都必须写，不允许为空。
+  叶子：1~3 句（60~150字），讲清"是什么 + 关键条件/机制/结论"，重要参数、协议字段或公式用原文记号写进 summary；
+  分组/主题（非叶子）：写一段连贯导读（80~200字），内容自然覆盖三个层面——这一组讲了什么
+  （覆盖其下所有叶子的范围）、为什么要学（解决什么问题、在学科体系/本章脉络中的位置）、
+  学了有什么用（能做什么、后续哪些知识点依赖它）。语言自由组织，不要用固定小标题逐条罗列，
+  但三个层面都要覆盖到，缺失或空洞会被视为不合格。
+  这段导读将来直接作为知识目录该分组的 index_content。
+- 命名与结构约束：同一父节点下的兄弟节点 title 不得重复；任一节点 title 不得与其祖先或后代节点相同
+  （目录层与知识点层不得同名，避免索引与链接歧义）。
+- 内容覆盖：把整章扫完，每一处值得学的都要进树，不要因为正文靠后而遗漏。
+- 忽略课后习题、"本章的重要概念"等汇总小节、与正文无关的排版内容。
+
+输出：仅输出 JSON，不要 markdown 代码块包装，不要多余文字。
+格式：{"units":[{"title":"...","summary":"...","children":[
+        {"title":"...","summary":"...","children":[...]}]}]}
+children 可省略（叶子）。树的顺序即学习顺序。
+
+
+=== USER ===
+【本章标题】第16章 深度生成模型
+
+【整章原文】
+## 第16章 深度生成模型
+
+我不能创造的东西，我就不了解.
+
+-理查德·菲利普斯·费曼(Richard Phillips Feynman)
+
+1965年诺贝尔物理奖获得者
+
+概率生成模型（Probabilistic Generative Model），简称生成模型，是概率统计和机器学习领域的一类重要模型，指可用于随机生成可观测数据的模型，假设在一个连续或离散的高维空间 $\mathcal { X }$ 中，存在一个随机向量X服从一个未知的数据分布 $p _ { r } ( { \pmb x } ) , { \pmb x } \in \mathcal { X } .$ 生成模型是根据一些可观测的样本 $\pmb { x } ^ { ( 1 ) } , \pmb { x } ^ { ( 2 ) } , \cdots , \pmb { x } ^ { ( N ) }$ 来学习一个参数化的模型 $p _ { \theta } ( { \pmb x } )$ 来近似未知分布 $p _ { r } ( { \pmb x } )$ ，并可以用这个模型来生成一些样本，使得“生成”的样本和“真实”的样本尽可能地相似.生成模型通常包含两个基本功能：概率密度估计和生成样本（即采样）.图16.1以手写体数字图像为例给出了生成模型的两个功能示例，其中左图表示手写体数字图像的真实分布 $p _ { r } ( { \pmb x } )$ 以及从中采样的一些“真实”样本，右图表示估计出了分布 $p _ { \theta } ( { \pmb x } )$ 以及从中采样的“生成”样本.
+
+![](images/0dd83ccbfa325a66777bbb71d227c4820efdcb897d308dfb91cf9e328e16f7aa.jpg)（描述：示意图，展示生成模型的密度估计和采样过程，左侧为真实数据分布pr(x)上的样本点，右侧为近似分布pθ(x)上的采样结果）  
+图 16.1 生成模型的两个功能
+
+生成模型的应用十分广泛，可以用来建模不同的数据，比如图像、文本、声音等.但对于高维空间中的复杂分布，密度估计和生成样本通常都不容易实现：一是高维随机向量难以直接建模，需要通过隐变量、条件独立性等方法来降低建模难度；二是即使已经得到一个复杂分布，也很难高效采样.
+
+深度生成模型就是利用深度神经网络近似复杂函数的能力来建模一个复杂分布 $p _ { r } ( { \pmb x } )$ ，或直接学习从简单分布到数据分布的生成过程.从问题视角看，深度生成模型通常围绕以下几个核心问题展开：如何学习数据分布，如何从简单噪声中生成高维样本，如何在生成过程中引入可解释的隐变量或条件控制，以及如何在生成质量、训练稳定性和采样效率之间取得平衡.本章主要聚焦四类最具代表性的范式：它们分别体现了隐变量建模、对抗训练、多步去噪和连续流变换四种典型思想.
+
+深度生成模型广泛应用于图像生成、视频生成、语音合成、文本生成、分子设计以及科学计算等任务中.随着大规模神经网络的发展，生成模型也从单纯的概率建模工具，逐步成为许多人工智能系统中的基础模块.
+
+## 16.1 概率生成模型
+
+生成模型一般具有三个基本功能:密度估计、生成样本和监督学习.
+
+概率密度估计简称密度估计，参见第10.2节.
+
+## 16.1.1 密度估计
+
+给定一组数据 $\mathcal { D } = \{ \pmb { x } ^ { ( n ) } \} _ { n = 1 } ^ { N }$ ，假设它们都是独立地从相同的概率密度函数为 $p _ { r } ( { \pmb x } )$ 的未知分布中产生的.密度估计（DensityEstimation）是根据数据集D来估计其概率密度函数 $p _ { \theta } ( { \pmb x } )$
+
+在机器学习中，密度估计是一类无监督学习问题.比如在手写体数字图像的密度估计问题中，我们将图像表示为一个随机向量X，其中每一维都表示一个像素值.假设手写体数字图像都服从一个未知的分布 $p _ { r } ( { \pmb x } )$ ，希望通过一些观测样本来估计其分布，但是，手写体数字图像中不同像素之间存在复杂的依赖关系(比如相邻像素的颜色一般是相似的），很难用一个明确的图模型来描述其依赖关系，所以直接建模 $p _ { r } ( { \pmb x } )$ 比较困难.因此，我们通常通过引入隐变量z来简化模型，这样密度估计问题可以转换为估计变量 $( x , z )$ 的两个局部条件概率 $p _ { \theta } ( z )$ 和$p _ { \theta } ( { \pmb x } | z )$ .一般为了简化模型，假设隐变量z的先验分布为标准高斯分布 $\mathcal { N } ( \mathbf { 0 } , \pmb { I } )$ 隐变量z的每一维之间都是独立的．在这个假设下，先验分布 $p ( z ; \theta )$ 中没有参数.因此，密度估计的重点是估计条件分布 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$
+
+如果要建模含隐变量的分布（如图16.2a），常可以从EM算法或其变分近似的角度来理解密度估计问题.而在EM算法中，需要估计条件分布 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 以及近似后验分布 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ .当这两个分布都比较复杂时，会遇到两个核心困难：一方面，后验分布 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 往往难以直接计算；另一方面，即使能够写出目标函数，也未必容易把梯度高效地传回到随机隐变量对应的网络参数上.利用神经网
+
+EM算法参见第14.2.2.1节.
+
+络分别建模这两个分布，并借助变分推断与重参数化技巧来解决这两个困难，就是变分自编码器的基本思想.
+
+![](images/44616307b6b73184317610f675e0d3cb12661eedbcd6c61b8a1ff2d9e5cb2fee.jpg)（描述：示意图，展示隐变量z到观测变量x的生成关系）  
+(a) 含隐变量的生成模型
+
+![](images/b1aed04c46b4756faf65fcf81820f069481344f4cc39af0b6028c267a815443f.jpg)（描述：这是一个表示生成模型的结构图，包含两个节点y和x，其中y指向x，表示变量之间的依赖关系。）  
+(b) 带标签的生成模型  
+图 16.2 生成模型
+
+## 16.1.2 生成样本
+
+生成样本就是给定一个概率密度函数为 $p _ { \theta } ( { \pmb x } )$ 的分布，生成一些服从这个分布的样本，也称为采样.
+
+一些常用的采样方法参见第14.5节.
+
+对于图16.2a中的图模型，在得到两个变量的局部条件概率 $p _ { \theta } ( z )$ 和 $p _ { \theta } ( { \pmb x } | { \pmb z } )$ 之后，我们就可以生成数据x，具体过程可以分为两步进行：
+
+（1）根据隐变量的先验分布 $p _ { \theta } ( z )$ 进行采样，得到样本z.
+
+（2）根据条件分布 $p _ { \theta } ( { \pmb x } | z )$ 进行采样，得到样本x.
+
+为了便于采样，通常 $p _ { \theta } ( { \pmb x } | z )$ 不能太过复杂.因此，另一种生成样本的思想是从一个简单分布 $p ( z ) , z \in \mathcal { Z }$ （比如标准正态分布）中采集一个样本z，并利用一个深度神经网络 $g : \mathcal { Z }  \mathcal { X }$ 使得 $g ( z )$ 服从 $p _ { r } ( { \pmb x } )$ .这样，我们就可以避免密度估计问题，并有效降低生成样本的难度，这正是生成对抗网络的思想.
+
+## 16.1.3 监督学习
+
+生成模型也可以应用于监督学习．监督学习的目标是建模样本x和输出标签y之间的条件概率分布 $p ( y | \mathbf { \boldsymbol { x } } )$ .我们可以将监督学习问题转换为联合概率分布$p ( { \pmb x } , { \pmb y } )$ 的密度估计问题，再推断出 $p ( y | \mathbf { \boldsymbol { x } } )$
+
+图16.2b给出了带标签的生成模型的图模型表示，可以用于监督学习.
+
+监督学习中比较典型的生成模型有朴素贝叶斯分类器、隐马尔可夫模型.和生成模型相对应的另一类监督学习模型是判别模型（DiscriminativeModel）.判别模型直接建模条件概率分布 $p ( y | \mathbf { \boldsymbol { x } } )$ ，并不建模其联合概率分布 $p ( { \pmb x } , { \pmb y } )$ .常见的判别模型有Logistic回归、支持向量机等．如果已经知道联合分布 $p ( { \pmb x } , { \pmb y } )$ ，就可以通过贝叶斯公式得到判别式的 $p ( y | \mathbf { \boldsymbol { x } } )$ ;但仅有判别模型 $p ( y | \mathbf { \boldsymbol { x } } )$ 时，通常无法恢复完整的生成分布 $p ( { \pmb x } , { \pmb y } )$
+
+## 16.2 变分自编码器
+
+假设一个生成模型（如图16.3所示）中包含隐变量，即有部分变量是不可观测的，其中观测变量X是一个高维空间x中的随机向量，隐变量Z是一个相对低维的空间Z中的随机向量.
+
+![](images/51f5b5076fb17b2c98b1345d36a1ed75b34619a8079e3c48c60992a77b757839.jpg)（描述：该图是一个变分自编码器的结构示意图，展示了隐变量Z和观测变量X之间的生成关系，以及参数θ和φ的作用，实线表示生成模型，虚线表示变分近似。）  
+图 16.3 变分自编码器
+
+本章中，我们假设X和Z都是连续随机向量.实线表示生成模型，虚线表示变分近似.
+
+这个生成模型的联合概率密度函数可以分解为
+
+$$
+p ( \pmb { x } , \pmb { z } ; \theta ) = p ( \pmb { x } | \boldsymbol { z } ; \theta ) p ( \boldsymbol { z } ; \theta ) ,\tag{16.1}
+$$
+
+其中 $p ( z ; \theta )$ 为隐变量z先验分布的概率密度函数， $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 为已知z时观测变量x的条件概率密度函数，θ表示两个密度函数的参数.一般情况下，我们可以假设 $p ( z ; \theta )$ 和 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 为某种参数化的分布族，比如正态分布.这些分布的形式已知，只是参数θ未知，可以通过最大化似然来进行估计.
+
+给定一个样本x，其对数边际似然 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 可以分解为
+
+$$
+\begin{array} { r } { \log p ( { \pmb x } ; { \pmb \theta } ) = E L B O ( { \boldsymbol q } , { \pmb x } ; { \boldsymbol \theta } , \phi ) + \mathrm { K L } ( { \boldsymbol q } ( { \boldsymbol z } ; { \boldsymbol \phi } ) , p ( { \boldsymbol z } | { \pmb x } ; { \boldsymbol \theta } ) ) , } \end{array}\tag{16.2}
+$$
+
+其中 $q ( z ; \phi )$ 是额外引入的变分密度函数，其参数为 $\phi$ $E L B O ( q , \pmb { x } ; \theta , \phi )$ 为证据下界，
+
+参见公式(14.49).
+
+$$
+E L B O ( q , \pmb { x } ; \theta , \phi ) = \mathbb { E } _ { z \sim q ( z ; \phi ) } \bigg [ \log \frac { p ( \pmb { x } , z ; \theta ) } { q ( z ; \phi ) } \bigg ] .\tag{16.3}
+$$
+
+最大化对数边际似然log $p ( { \boldsymbol { x } } ; { \boldsymbol { \theta } } )$ 可以用EM算法来求解.在EM算法的每次迭代中，具体可以分为两步：
+
+EM算法参见第14.2.2.1节.
+
+（1）E步：固定θ，寻找一个密度函数 $q ( z ; \phi )$ 使其等于或接近于后验密度函数 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$
+
+（2）M步：固定 $q ( z ; \phi )$ ，寻找θ来最大化 $E L B O ( q , \pmb { x } ; \theta , \phi )$
+
+不断重复上述两步骤，直到收敛.
+
+在EM算法的每次迭代中，理论上最优的 $q ( z ; \phi )$ 为隐变量的后验概率密度函数 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ ,即
+
+$$
+p ( z | \mathbf { x } ; \theta ) = \frac { p ( \mathbf { \boldsymbol { x } } | z ; \theta ) p ( z ; \theta ) } { \int p ( \mathbf { \boldsymbol { x } } | z ; \theta ) p ( z ; \theta ) \mathrm { d } z } .\tag{16.4}
+$$
+
+后验概率密度函数 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 的计算是一个统计推断问题，涉及积分计算.当隐变量z是有限的一维离散变量时，计算起来比较容易，但在一般情况下，这个后验概率密度函数是很难计算的，通常需要通过变分推断来近似估计，在变分推断中，为了降低复杂度，通常会选择一些比较简单的分布 $q ( z ; \phi )$ 来近似推断$p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ .当 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 比较复杂时，近似效果不佳.此外，概率密度函数 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 一般也比较复杂，很难直接用已知的分布族函数进行建模.
+
+变分自编码器(Variational Autoencoder, VAE)[Kingma et al., 2014]是一种深度生成模型，其核心思想是利用神经网络近似难以直接计算的后验分布和复杂的条件生成分布.具体地，它利用神经网络来分别建模两个复杂的条件概率密度函数.
+
+（1）变分分布 $q ( z ; \phi )$ :预测该分布的网络称为推断网络，其输入为x，输出为变分分布 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$
+
+（2）概率分布 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ :预测该分布的网络称为生成网络，其输入为z，输出为概率分布 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$
+
+将推断网络和生成网络合并就得到了变分自编码器的整个网络结构，如图16.4所示，其中实线表示网络计算操作，虚线表示采样操作.
+
+![](images/d443b469008a107953db9aa7ea6d85e51c0dc8a9d5748ccafe6449ce40e4125b.jpg)（描述：变分自编码器的网络结构示意图，包含推断网络和生成网络，用实线表示网络计算操作，虚线表示采样操作）  
+图16.4 变分自编码器的网络结构
+
+变分自编码器的名称来自于其整个网络结构和自编码器比较类似.我们可以把推断网络看作“编码器”，将可观测变量映射为隐变量；把生成网络看作“解码器”，将隐变量映射为可观测变量．然而，变分自编码器背后的原理和自编码器完全不同.变分自编码器中的编码器和解码器的输出为分布（或分布的参数），而不是确定的编码
+
+理论上q(z;φ)可以不依赖x. 但由于 $q ( z ; \phi )$ 的目标是近似后验分布 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ ,其和x相关，因此变分分布一般写为 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$
+
+变分自编码器可看作神经网络与贝叶斯网络的混合体：只有隐变量对应的节点是随机变量，其余节点仍是普通神经元.
+
+## 16.2.1 推断网络
+
+为简单起见，假设 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ 是服从对角化协方差的高斯分布，
+
+$$
+q ( z | \mathbf { x } ; \phi ) = \mathcal { N } ( z ; \mu _ { I } , \pmb { \sigma } _ { I } ^ { 2 } \pmb { I } ) ,\tag{16.5}
+$$
+
+其中 $\pmb { \mu } _ { I }$ 和 $\sigma _ { I } ^ { 2 }$ 是高斯分布的均值和方差，可以通过推断网络 $f _ { I } ( x ; \phi )$ 来预测. 推断网络 $f _ { I } ( { \pmb x } ; \phi )$ 可以是全连接网络或卷积网络，比如一个两层神经网络：
+
+$$
+\pmb { h } = \sigma \big ( \pmb { W } ^ { ( 1 ) } \pmb { x } + \pmb { b } ^ { ( 1 ) } \big ) ,\tag{16.6}
+$$
+
+$$
+\pmb { \mu } _ { I } = \pmb { W } ^ { ( 2 ) } \pmb { h } + \pmb { b } ^ { ( 2 ) } ,\tag{16.7}
+$$
+
+$$
+\pmb { \sigma } _ { I } ^ { 2 } = \mathrm { s o f t p l u s } \big ( \pmb { W } ^ { ( 3 ) } \pmb { h } + \pmb { b } ^ { ( 3 ) } \big ) ,\tag{16.8}
+$$
+
+其中 $\phi$ 代表所有的网络参数 $\left\{ W ^ { ( 1 ) } , W ^ { ( 2 ) } , W ^ { ( 3 ) } , b ^ { ( 1 ) } , b ^ { ( 2 ) } , b ^ { ( 3 ) } \right\}$ , σ 和 softplus 为激活函数.
+
+优化目标 推断网络的目标是使得 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ 尽可能接近真实的后验 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 需要找到一组网络参数 $\phi ^ { * }$ 来最小化两个分布的KL散度，即
+
+softplus(x) = log(1 +$\mathrm { e } ^ { x } )$ .这里使用 softplus激活函数是由于方差总是非负的.在实际实现中，也可以用一个线性层（不需要激活函数）来预测 $\log ( \sigma _ { I } ^ { 2 } )$ 1
+
+$$
+\phi ^ { * } = \underset { \phi } { \arg \operatorname* { m i n } } \mathrm { { K L } } \left( q ( z | \pmb { x } ; \phi ) , p ( z | \pmb { x } ; \theta ) \right) .\tag{16.9}
+$$
+
+然而，直接计算上面的KL散度通常不可行，因为 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 一般无法计算．传统方法是利用采样或者变分法来近似推断.基于采样的方法比较通用，但代价较高、梯度估计方差也可能较大：因此，在本章的主线中更关注变分推断方法，即用简单的分布 $q$ 去近似复杂的分布 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ .但是，在深度生成模型中， $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 通常比较复杂，很难用简单分布去近似.因此，我们需要找到一种间接计算方法.
+
+变分推断参见第14.4节.
+
+根据公式(16.2) 可知，变分分布 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ 与真实后验 $p ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \theta } )$ 的KL散度等于对数边际似然 $\log p ( { \pmb x } ; { \boldsymbol \theta } )$ 与其下界 $E L B O ( q , \pmb { x } ; \theta , \phi )$ 的差,即
+
+$$
+\operatorname { K L } ( q ( \boldsymbol { z } | \boldsymbol { x } ; \phi ) , p ( \boldsymbol { z } | \boldsymbol { x } ; \theta ) ) = \log p ( \boldsymbol { x } ; \theta ) - E L B O ( q , \boldsymbol { x } ; \theta , \phi ) .\tag{16.10}
+$$
+
+因此，推断网络的目标函数可以转换为
+
+可以看作EM算法中的E步.
+
+$$
+\phi ^ { * } = \underset { \phi } { \arg \operatorname* { m i n } } \mathrm { { K L } } \left( q ( \boldsymbol { z } | \mathbf { x } ; \phi ) , p ( \boldsymbol { z } | \mathbf { x } ; \theta ) \right)\tag{16.11}
+$$
+
+$$
+\mathbf { \Pi } = \underset { \phi } { \arg \operatorname* { m i n } } \log p ( \mathbf { \boldsymbol { x } } ; \theta ) - E L B O ( q , \mathbf { \boldsymbol { x } } ; \theta , \phi )\tag{16.12}
+$$
+
+第一项与φ无关.
+
+$$
+\displaystyle = \arg \operatorname* { m a x } _ { \phi } E L B O ( q , \pmb { x } ; \theta , \phi ) ,\tag{16.13}
+$$
+
+即推断网络的目标转换为寻找一组网络参数 $\phi ^ { * }$ 使得证据下界 $E L B O ( q , \pmb { x } ; \theta , \phi )$ 最大，这和变分推断中的转换类似.
+
+参见公式(14.85).
+
+## 16.2.2 生成网络
+
+生成模型的联合分布 $p ( \pmb { x } , \pmb { z } ; \theta )$ 可以分解为两部分：隐变量z的先验分布$p ( z ; \theta )$ 和条件概率分布 $p ( { \boldsymbol { \mathscr { x } } } | { \boldsymbol { \mathscr { z } } } ; { \boldsymbol { \theta } } )$
+
+先验分布 $p ( z ; \theta )$ 为简单起见，我们一般假设隐变量z的先验分布为各向同性的标准高斯分布 $\mathcal { N } ( z ; \mathbf { 0 } , I )$ .隐变量z的各维相互独立.
+
+条件概率分布 $p ( x | z ; \theta )$ 条件概率分布 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 可以通过生成网络来建模.为简单起见，我们同样用参数化的分布族来表示条件概率分布 $p ( { \pmb x } | { \pmb z } ; { \boldsymbol \theta } )$ ，这些分布族的参数可以用生成网络计算得到.
+
+根据变量x的类型不同，可以假设 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 服从不同的分布族.
+
+(1)如果 ${ \pmb x } \in \{ 0 , 1 \} ^ { D }$ 是D维的二值的向量，可以假设 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 服从多变量的伯努利分布，即
+
+$$
+p ( \pmb { x } | \boldsymbol { z } ; \theta ) = \prod _ { d = 1 } ^ { D } p ( x _ { d } | \boldsymbol { z } ; \theta )\tag{16.14}
+$$
+
+$$
+= \prod _ { d = 1 } ^ { D } \gamma _ { d } ^ { x _ { d } } ( 1 - \gamma _ { d } ) ^ { ( 1 - x _ { d } ) } ,\tag{16.15}
+$$
+
+其中 $\gamma _ { d } \triangleq p ( x _ { d } = 1 | z ; \theta )$ 为第d维分布的参数，可通过生成网络来预测
+
+(2)如果 $\pmb { x } \in \mathbb { R } ^ { D }$ 是D维的连续向量，可以假设 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 服从对角化协方差的高斯分布，即
+
+$$
+p ( \pmb { x } | \mathbf { \mathscr { z } } ; \theta ) = \mathcal { N } ( \pmb { x } ; \pmb { \mu } _ { G } , \pmb { \sigma } _ { G } ^ { 2 } \pmb { I } ) ,\tag{16.16}
+$$
+
+其中 $\pmb { \mu } _ { G } \in \mathbb { R } ^ { D }$ 和 ${ \pmb { \sigma } } _ { G } \in \mathbb { R } ^ { D }$ 同样可以用生成网络 $f _ { G } ( z ; \theta )$ 来预测.
+
+优化目标 生成网络 $f _ { G } ( z ; \theta )$ 的目标是寻找最优参数 $\theta ^ { * }$ 来最大化证据下界，即
+
+可以看作EM算法中的M步.
+
+$$
+\theta ^ { * } = \operatorname * { a r g m a x } _ { \theta } E L B O ( q , \pmb { x } ; \theta , \phi ) .\tag{16.17}
+$$
+
+## 16.2.3 优化目标
+
+结合公式(16.13)和公式(16.17)，可以看到：无论是推断网络还是生成网络，其优化目标最终都统一为最大化证据下界 $E L B O ( q , \pmb { x } ; \theta , \phi )$ .因此，变分自编码器的整体目标可以写为
+
+$$
+\operatorname* { m a x } _ { \theta , \phi } E L B O ( q , \boldsymbol { x } ; \theta , \phi ) = \operatorname* { m a x } _ { \theta , \phi } \mathbb { E } _ { \boldsymbol { z } \sim q ( \boldsymbol { z } ; \phi ) } \bigg [ \log \frac { p ( \boldsymbol { x } | \boldsymbol { z } ; \theta ) p ( \boldsymbol { z } ; \theta ) } { q ( \boldsymbol { z } ; \phi ) } \bigg ]\tag{16.18}
+$$
+
+$$
+= \operatorname* { m a x } _ { \theta , \phi } \mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } \Big [ \log p ( \boldsymbol { x } | \boldsymbol { z } ; \theta ) \Big ] - \mathrm { K L } \Big ( q ( \boldsymbol { z } | \boldsymbol { x } ; \phi ) , p ( \boldsymbol { z } ; \theta ) \Big ) ,\tag{16.19}
+$$
+
+其中 $p ( z ; \theta )$ 为先验分布，θ和 $\phi$ 分别表示生成网络和推断网络的参数.
+
+这个目标可以自然地分成两部分来理解：
+
+(1) $\mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } [ \log p ( \pmb { x } | z ; \theta ) ]$ 对应于重构项，鼓励模型在给定隐变量z时能够较好地生成原始样本x；
+
+(2) $\mathrm { K L } ( q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } ) , p ( \boldsymbol { z } ; \boldsymbol { \theta } ) )$ 对应于正则项，约束近似后验不要偏离先验分布太远，从而使隐空间保持较好的规整性.因此，VAE并不是单纯地追求“重构得尽量像”，而是在重构能力与隐空间规整性之间取得平衡.
+
+我们分别来看公式(16.19)中的两项.
+
+(1)第一项的期望 $\mathbb { E } _ { z \sim q ( z | x ; \phi ) } [ \log p ( \pmb { x } | z ; \theta ) ]$ 一般难以直接解析计算，通常通过采样近似.对于每个样本x，若根据 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ 采集M个样本 $z ^ { ( m ) }$ $1 \leq m \leq$ M,则有
+
+$$
+\mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } [ \log p ( \pmb { x } | z ; \theta ) ] \approx \frac { 1 } { M } \sum _ { m = 1 } ^ { M } \log p ( \pmb { x } | z ^ { ( m ) } ; \theta ) .\tag{16.20}
+$$
+
+期望 $\mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } [ \log p ( \pmb { x } | z ; \theta ) ]$ 依赖于参数 $\phi .$ 但在上面的近似中，这个期望变得和参数 $\phi$ 无关.当使用梯度下降法来学习参数时，期望 $\mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } [ \log p ( \pmb { x } | z ; \theta ) ]$ 关于参数 $\phi$ 的梯度为0.这种情况是由于变量 $_ z$ 和参数 $\phi$ 之间不是直接的确定性关系，而是一种“采样”关系.这种情况可以通过两种方法解决：一种是重参数化，我们在下一节具体介绍；另一种是梯度估计的方法，具体参考第12.3节.
+
+（2）第二项的KL散度在很多情形下可以直接得到闭式解．特别地，当$q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ 和 $p ( z ; \theta )$ 都取高斯分布时，KL散度的计算非常方便.
+
+给定D维空间中的两个正态分布 $\mathcal { N } ( \mu _ { 1 } , \Sigma _ { 1 } )$ 和 $\mathcal { N } ( \mu _ { 2 } , \Sigma _ { 2 } )$ ,其KL散度为
+
+$$
+\begin{array} { r l } & { \mathrm { K L } \Big ( \mathcal { N } ( \pmb { \mu } _ { 1 } , \pmb { \Sigma } _ { 1 } ) , \mathcal { N } ( \pmb { \mu } _ { 2 } , \pmb { \Sigma } _ { 2 } ) \Big ) } \\ & { = \cfrac { 1 } { 2 } \Big ( \mathrm { t r } ( \pmb { \Sigma } _ { 2 } ^ { - 1 } \pmb { \Sigma } _ { 1 } ) + ( \pmb { \mu } _ { 2 } - \pmb { \mu } _ { 1 } ) ^ { \top } \pmb { \Sigma } _ { 2 } ^ { - 1 } ( \pmb { \mu } _ { 2 } - \pmb { \mu } _ { 1 } ) - D + \log \frac { | \pmb { \Sigma } _ { 2 } | } { | \pmb { \Sigma } _ { 1 } | } \Big ) , } \end{array}\tag{16.21}
+$$
+
+从EM算法角度来看，变分自编码器优化推断网络和生成网络的过程，可以分别看作EM算法中的E步和M步.但在变分自编码器中，这两步的目标合二为一，都是最大化证据下界.
+
+其中 $\operatorname { t r } ( \cdot )$ 表示矩阵的迹，·表示矩阵的行列式. 当 $p ( z ; \theta ) \ = \ \mathcal { N } ( z ; \mathbf { 0 } , I )$ 且$q ( z | \mathbf { x } ; \boldsymbol { \phi } ) = \mathcal { N } ( z ; \mu _ { I } , \pmb { \sigma } _ { I } ^ { 2 } I )$ 时，
+
+矩阵的“迹”为主对角 线(从左上到右下)上 各元素之和.
+
+$$
+\begin{array} { l } { { \displaystyle \mathrm { K L } \left( q ( \boldsymbol { z } | \mathbf { x } ; \phi ) , p ( \boldsymbol { z } ; \theta ) \right) } } \\ { { \displaystyle = \frac { 1 } { 2 } \Big ( \mathrm { t r } ( \pmb { \sigma } _ { I } ^ { 2 } \pmb { I } ) + \pmb { \mu } _ { I } ^ { \top } \pmb { \mu } _ { I } - D - \log | \pmb { \sigma } _ { I } ^ { 2 } \pmb { I } | \Big ) , } } \end{array}\tag{16.22}
+$$
+
+其中 $\pmb { \mu } _ { I }$ 和 $\sigma _ { I }$ 由推断网络 $f _ { I } ( { \pmb x } ; \phi )$ 输出.
+
+## 16.2.4 重参数化
+
+重参数化（Reparameterization）是将一个函数f(θ)的参数θ用另外一组参数表示 $\theta = g ( \vartheta )$ ，这样函数 $f ( \theta )$ 就转换成参数为θ的函数 ${ \hat { f } } ( \vartheta ) = f ( g ( \vartheta ) )$ . 重参数化通常用来将原始参数转换为另外一组具有特殊属性的参数.比如当θ为一个很大的矩阵时，可以使用两个低秩矩阵的乘积来再参数化，从而减少参数量.
+
+重参数化的另一个例子是逐层规范化，参见第7.5节.
+
+在公式(16.19)中,期望 $\mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } \Big \lceil \log p ( \pmb { x } | z ; \theta ) \Big \rceil$ 依赖于分布 $q$ 的参数 $\phi .$ 但是，由于随机变量z采样自后验分布 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ ，它们之间不是确定性关系，因此无法直接求解 $_ { z }$ 关于参数 $\phi$ 的导数.这时，我们可以通过重参数化方法来将 $_ z$ 和$\phi$ 之间随机性的采样关系转变为确定性函数关系.
+
+我们引入一个分布为 $p ( \epsilon )$ 的随机变量∈，期望 $\begin{array} { r } { \mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } \Big [ \log p ( \mathbf { \boldsymbol { x } } | z ; \theta ) \Big ] } \end{array}$ 可以重写为
+
+$$
+\mathbb { E } _ { z \sim q ( z | \mathbf { x } ; \phi ) } \Big [ \log p ( \mathbf { \boldsymbol { x } } | z ; \boldsymbol { \theta } ) \Big ] = \mathbb { E } _ { \epsilon \sim p ( \epsilon ) } \Big [ \log p ( \mathbf { \boldsymbol { x } } | g ( \boldsymbol { \phi } , \epsilon ) ; \boldsymbol { \theta } ) \Big ] ,\tag{16.23}
+$$
+
+其中 $z \triangleq g ( \phi , \epsilon )$ 为一个确定性函数.
+
+对于上述对角高斯近似后验 $q ( \boldsymbol { z } | \boldsymbol { x } ; \boldsymbol { \phi } )$ ，若推断网络输出均值 $\pmb { \mu } _ { I }$ 和标准差$\sigma _ { I }$ ，就可以通过下面方式来重参数化：
+
+$$
+z = \pmb { \mu } _ { I } + \pmb { \sigma } _ { I } \odot \pmb { \epsilon } ,\tag{16.24}
+$$
+
+参见习题16-12.
+
+其中 $\epsilon \sim \mathcal { N } ( 0 , I )$ ． 这样 $_ z$ 和参数 $\phi$ 的关系从采样关系变为确定性关系，使得$z \sim q ( z | x ; \phi )$ 的随机性独立于参数 $\phi$ ，从而可以求 $_ z$ 关于 $\phi$ 的导数.
+
+## 16.2.5 训练
+
+有了重参数化技巧之后，VAE就可以像普通神经网络一样，用随机梯度下降法端到端地学习参数θ和φ.
+
+给定一个数据集 $\mathcal { D } = \{ \pmb { x } ^ { ( n ) } \} _ { n = 1 } ^ { N }$ ，对于每个样本 $\mathbf { \boldsymbol { x } } ^ { ( n ) }$ ，从标准高斯分布中采样M个噪声变量 $\epsilon ^ { ( n , m ) }$ ，并通过公式(16.24)构造对应的隐变量 $z ^ { ( n , m ) }$ .这样，变分自编码器在整个数据集上的目标函数可以近似写为
+
+$$
+\begin{array} { c } { \displaystyle \mathcal { J } ( \phi , \theta | \mathcal { D } ) = \sum _ { n = 1 } ^ { N } \left[ \frac { 1 } { M } \sum _ { m = 1 } ^ { M } \log p ( \pmb { x } ^ { ( n ) } | \pmb { z } ^ { ( n , m ) } ; \theta ) \right. } \\ { \displaystyle \left. - \mathrm { K L } \left( q ( \pmb { z } | \pmb { x } ^ { ( n ) } ; \phi ) , \mathcal { N } ( \pmb { z } ; \mathbf { 0 } , I ) \right) \right] . } \end{array}\tag{16.25}
+$$
+
+如果进一步采用随机梯度方法，每次只采样一个样本x及其对应的噪声变量∈,并假设 $p ( { \pmb x } | { \pmb z } ; { \pmb \theta } )$ 服从高斯分布 $\mathcal { N } ( \boldsymbol { x } ; \boldsymbol { \mu } _ { G } , \lambda I )$ ，其中 $\mu _ { G } = f _ { G } ( z ; \theta )$ 是生成
+
+网络输出、λ为控制方差的超参数，则在忽略与参数无关的常数项，并对整个目标乘上一个正常数后，目标函数可等价地改写为
+
+$$
+\mathcal { J } ( \phi , \theta | x ) = - \frac { 1 } { 2 } \| x - \mu _ { G } \| ^ { 2 } - \lambda \mathrm { K L } \left( \mathcal { N } ( z ; \mu _ { I } , \sigma _ { I } ^ { 2 } I ) , \mathcal { N } ( z ; \mathbf { 0 } , I ) \right) .\tag{16.26}
+$$
+
+参见习题16-2.
+
+其中第一项对应重构项，刻画由当前隐变量恢复样本x的能力；第二项对应KL正则项，约束近似后验不要偏离先验太远.这个形式和自编码器中的“重构误差+正则化”在表面上类似，但机理并不相同：自编码器学习的是确定性编码与解码映射，而VAE学习的是一个显式的概率生成模型及其近似推断过程
+
+参见习题16-3.
+
+从训练动态来看，VAE始终在平衡两种要求：一方面，希望重构项尽量大，从而使生成样本更接近输入；另一方面，希望KL项不要过大，从而使隐变量分布保持规整.若KL项过强，编码器可能倾向于忽略输入样本，使隐变量过早逼近先验分布，这会导致所谓的后验坍塌（posterior collapse)；若KL项过弱，则隐空间虽然更容易“记住”训练样本，却可能失去良好的生成与插值性质.
+
+后验坍塌是VAE训练中常见的实际问题，其典型表现是解码器几乎忽略隐变量z，生成主要依赖解码器自身的条件结构；在使用很强的自回归解码器时，这个问题尤其明显．常用的缓解方法包括：KL退火（KLAnnealing），即在训练初期逐渐增大KL项的权重，给编码器足够时间学到有意义的表示；β-VAE，通过调节正则化项的权重 $\beta$ 来平衡重构质量和隐空间质量；以及自由比特（FreeBits)，为每个隐变量维度设置KL散度的最低值，防止其完全退化为先验.
+
+变分自编码器的训练过程如图16.5所示，其中空心矩形表示“目标函数”
+
+![](images/341d8fd3ab3017e453767676d00ddeab2cf1a7767bdb118fdaebc30d7fe9470d.jpg)（描述：变分自编码器的训练过程示意图，包含推断网络、生成网络、隐变量z的采样流程以及目标函数的组成）  
+图 16.5 变分自编码器的训练过程
+
+图16.6给出了在MNIST数据集上变分自编码器学习到的隐变量流形的可视化示例.图16.6a表示将训练集上的每个样本x通过推断网络映射到二维隐变量空间后得到的表示，其中每个点对应 $\mathbb { E } [ z | { \boldsymbol { x } } ]$ ，不同颜色表示不同数字；
+
+图16.6b表示在二维标准高斯分布上均匀采样不同的隐变量z，再通过生成网络得到相应的E $[ x | z ]$
+
+![](images/ba8d46ec74ddd320674bd7135a0e1282a8439f5c4485e2a989cea31fc5096691.jpg)  
+(a)训练集上所有样本在隐空间上的投影
+
+![](images/0b3aba059ee8b1600bf014b8a823da7a7a4430afdcfa160dedf7c650d4eeff42.jpg)（描述：一张展示MNIST数据集上变分自编码器学习到的隐变量流形的图像，呈现了数字0-9在隐空间中的投影分布）  
+(b)隐变量z在图像空间的投影  
+图16.6 在MNIST数据集上变分自编码器学习到的隐变量流形的可视化示例
+
+标准 VAE 使用连续隐变量，而VQ-VAE（Vector Quantized VAE）[van den Oord et al., 2017]将隐变量量化为离散码本中的向量，学习离散的潜在表示.VQ-VAE及其后续变体常用于图像、音频等模态的离散分词器设计；隐空间扩散模型则更一般地依赖自动编码器把高维数据压缩到更紧凑的表示空间，这个自动编码器可以是向量量化的，也可以是带KL正则的连续隐变量模型.此外，层次化 $\mathrm { V A E }$ （如VDVAE）通过引入多层隐变量来增强建模能力，是连接VAE与后续深度生成模型的重要桥梁.
+
+## 16.3 生成对抗网络
+
+变分自编码器、深度信念网络等都是显式地构建出样本的密度函数 $p ( { \boldsymbol { x } } ; { \boldsymbol { \theta } } )$ 并通过最大似然估计来求解参数,称为显式密度模型（Explicit DensityModel).比如，变分自编码器的密度函数为 $p ( \pmb { x } , z ; \theta ) = p ( \pmb { x } | z ; \theta ) p ( z ; \theta )$ . 我们假设$p ( { \boldsymbol { \mathscr { x } } } | { \boldsymbol { \mathscr { z } } } ; { \boldsymbol { \theta } } )$ 为一个参数分布族，并使用神经网络来预测这个分布族的参数.这种做法给出了清晰的似然目标，但也会把生成质量部分绑定到观测分布族的选择上.
+
+如果只是希望有一个模型能生成符合数据分布 $p _ { r } ( { \pmb x } )$ 的样本，那么可以不显式地估计出数据分布的密度函数．假设在低维空间Z中有一个简单容易采样的分布 $p ( z ) , p ( z )$ 通常为标准多元正态分布 $\mathcal { N } ( \mathbf { 0 } , \pmb { I } )$ .我们用神经网络构建一个映射函数 $G : \mathcal { Z }  \mathcal { X }$ ，称为生成网络．训练的目标是让 $G ( z )$ 诱导出的模型分布 $p _ { \theta } ( { \pmb x } )$ 尽可能接近数据分布 $p _ { r } ( { \pmb x } )$ .这种模型就称为隐式密度模型（ImplicitDensityModel）.所谓隐式模型就是指并不显式地建模 $p _ { r } ( { \pmb x } )$ ，而是建模生成过程.图16.7给出了隐式模型生成样本的过程.
+
+![](images/abea8b204656fafda67141dbf13391628218967a18f1f6e1b327108cd7ecd6d0.jpg)（描述：流程图，展示从标准正态分布采样z，通过生成网络G(z,θ)映射生成图像x的过程）  
+图16.7 隐式模型生成样本的过程
+
+## 16.3.1 网络分解
+
+隐式密度模型的一个关键是如何判断生成网络产生的样本是否接近真实数据分布．既然我们不构建显式密度函数，就无法直接通过最大似然估计等方法来训练.生成对抗网络（Generative Adversarial Network,GAN)[Goodfellowet al.,2014]是通过对抗训练的方式来使得生成网络产生的样本服从真实数据分布.在生成对抗网络中，有两个网络进行对抗训练.一个是判别网络，目标是尽量准确地判断一个样本是来自于真实数据还是由生成网络产生；另一个是生成网络，目标是尽量生成判别网络无法区分来源的样本.这两个目标相反的网络不断地进行交替训练.生成对抗网络的流程图如图16.8所示.在理想情况下，如果判
+
+![](images/b4c0c955ddaa509eefca582f974709af14a95dd421b9dc5df1e74ebb909375af.jpg)（描述：生成对抗网络的流程图，展示了生成网络和判别网络的输入输出关系及对抗训练过程）  
+图16.8 生成对抗网络的流程图
+
+别网络在足够大的模型族内也无法区分真实样本和生成样本，就说明生成分布已经接近真实数据分布.
+
+## 16.3.1.1 判别网络
+
+判别网络（Discriminator Network） $D ( { \boldsymbol { x } } ; \phi )$ 的目标是区分出一个样本x是来自于真实分布 $p _ { r } ( { \pmb x } )$ 还是来自于生成模型 $p _ { \theta } ( { \pmb x } )$ ，因此判别网络实际上是一个二分类的分类器.用标签 $y = 1$ 来表示样本来自真实分布， $y = 0$ 表示样本来自生成模型，判别网络 $D ( { \boldsymbol { x } } ; \phi )$ 的输出为æ属于真实数据分布的概率，即
+
+$$
+p ( \boldsymbol { y } = 1 | \boldsymbol { x } ) = D ( \boldsymbol { x } ; \boldsymbol { \phi } ) ,\tag{16.27}
+$$
+
+则样本来自生成模型的概率为 $p ( \boldsymbol { y } = 0 | \pmb { x } ) = 1 - D ( \pmb { x } ; \boldsymbol { \phi } )$
+
+给定一个样本 $( x , y ) , y \in \{ 1 , 0 \}$ 表示其来自于 $p _ { r } ( { \pmb x } )$ 还是 $p _ { \theta } ( { \pmb x } )$ ，判别网络的目标函数为最小化交叉熵，即
+
+$$
+\operatorname* { m i n } _ { \phi } - \biggl ( \mathbb { E } _ { x } \Bigl [ y \log p ( y = 1 | x ) + ( 1 - y ) \log p ( y = 0 | x ) \Bigr ] \biggr ) .\tag{16.28}
+$$
+
+假设分布 $p ( { \pmb x } )$ 是由分布 $p _ { r } ( { \pmb x } )$ 和分布 $p _ { \theta } ( { \pmb x } )$ 等比例混合而成，即 $p ( { \pmb x } ) \ =$ $\frac { 1 } { 2 } \big ( p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) \big )$ ，则上式等价于
+
+$$
+\underset { \phi } { \operatorname* { m a x } } \mathbb { E } _ { { \pmb x } \sim p _ { r } ( { \pmb x } ) } \Big [ \log D ( { \pmb x } ; \phi ) \Big ] + \mathbb { E } _ { { \pmb x } ^ { \prime } \sim p _ { \theta } ( { \pmb x } ^ { \prime } ) } \Big [ \log ( 1 - D ( { \pmb x } ^ { \prime } ; \phi ) ) \Big ]\tag{16.29}
+$$
+
+$$
+= \operatorname* { m a x } _ { \phi } \mathbb { E } _ { { \boldsymbol { x } } \sim { \boldsymbol { p } } _ { r } ( { \boldsymbol { x } } ) } \Big [ \log D ( { \boldsymbol { x } } ; \phi ) \Big ] + \mathbb { E } _ { { \boldsymbol { z } } \sim { \boldsymbol { p } } ( { \boldsymbol { z } } ) } \Big [ \log \Big ( 1 - D \big ( G ( { \boldsymbol { z } } ; { \boldsymbol { \theta } } ) ; \phi \big ) \Big ) \Big ] ,\tag{16.30}
+$$
+
+其中 $\theta$ 和 $\phi$ 分别是生成网络和判别网络的参数
+
+## 16.3.1.2 生成网络
+
+生成网络（GeneratorNetwork）的目标刚好和判别网络相反，即让判别网络将自己生成的样本判别为真实样本.理论分析中，常把生成器写成最小化
+
+$$
+\operatorname* { m i n } _ { \theta } \bigg ( \mathbb { E } _ { z \sim p ( z ) } \Big [ \log \Big ( 1 - D \big ( G ( z ; \theta ) ; \phi \big ) \Big ) \Big ] \bigg ) ,\tag{16.31}
+$$
+
+这与整个极小极大目标保持一致；但在实际训练中，更常用非饱和生成器目标
+
+$$
+\operatorname* { m a x } _ { \theta } \bigg ( \mathbb { E } _ { z \sim p ( z ) } \Big [ \log D \Big ( G ( z ; \theta ) ; \phi \Big ) \Big ] \bigg ) ,\tag{16.32}
+$$
+
+因为它与原目标共享相同的最优点，但梯度性质通常更好．直观地说，当判别网络D以很高的概率认为生成网络 $G ^ { \vec { p } \vec { z } }$ 生的样本是“假”样本时， $D ( G ( z ; \theta ) ; \phi )$ 接近0，判别器的Sigmoid输出已经接近饱和，原始极小极大目标传回生成器的有效梯度会很弱.非饱和目标直接增大 $\log D ( G ( z ; \theta ) ; \phi )$ ，在这一阶段通常能给生成器提供更强的学习信号.因此，实际训练往往采用公式(16.32)对应的非饱和损失.
+
+还有一种改进生成网络梯度的方法是将真实样本和生成样本的标签互换，即把生成样本的标签视为1.
+
+## 16.3.2 训练
+
+和单目标的优化任务相比，生成对抗网络的两个网络的优化目标刚好相反因此生成对抗网络的训练比较难，往往不太稳定.一般情况下，需要平衡两个网络的能力：判别网络过强时，生成器可能接收不到有效梯度；判别网络过弱时，它又无法提供有意义的分布差异信号，在训练时通常需要使用一些技巧，使判别网络能够提供有效反馈，同时避免过快进入饱和状态
+
+生成对抗网络的训练流程如算法16.1所示.每次迭代时，判别网络更新K次而生成网络更新一次，即首先要保证判别网络足够强才能开始训练生成网络.在实践中K是一个超参数，其取值一般取决于具体任务.
+
+算法16.1 生成对抗网络的训练过程  
+输入：训练集D，对抗训练迭代次数T，每次判别网络的训练迭代次数K，小  
+批量样本数量M  
+1 随机初始化 θ, φ;  
+2 for $t \gets 1$ to T do  
+//训练判别网络 $D ( x ; \phi )$   
+3 for $k \gets 1$ to K do  
+//采集小批量训练样本  
+4 从训练集D中采集M个样本 $\{ \pmb { x } ^ { ( m ) } \} , 1 \leq m \leq M ;$   
+5 从分布 $\mathcal { N } ( \mathbf { 0 } , \pmb { I } )$ 中采集M个样本 $\{ z ^ { ( m ) } \} , 1 \leq m \leq M ;$   
+6 使用随机梯度上升更新φ，梯度为  
+$\frac { \partial } { \partial \phi } \bigg [ \frac { 1 } { M } \sum _ { m = 1 } ^ { M } \bigg ( \log D ( \pmb { x } ^ { ( m ) } ; \phi ) + \log \big ( 1 - D \big ( G ( z ^ { ( m ) } ; \theta ) ; \phi ) \big ) \bigg ) \bigg ]$   
+7 end  
+//训练生成网络 $G ( z ; \theta )$   
+8 从分布 $\mathcal { N } ( \mathbf { 0 } , \pmb { I } )$ 中采集M个样本 $\{ z ^ { ( m ) } \} , 1 \leq m \leq M ;$   
+9 使用随机梯度上升更新θ,梯度为  
+$\frac { \partial } { \partial \theta } \bigg [ \frac { 1 } { M } \sum _ { m = 1 } ^ { M } \log D \big ( G ( \pmb { z } ^ { ( m ) } ; \theta ) ; \phi \big ) \bigg ] ;$   
+10 end  
+输出：生成网络 $G ( z ; \theta )$
+
+## 16.3.3 一个生成对抗网络的具体实现:DCGAN
+
+深度卷积生成对抗网络（Deep Convolutional Generative AdversarialNetwork， DCGAN）是一个代表性的生成对抗网络 [Radford et al., 2016]. 在DCGAN中，判别网络仍然采用卷积神经网络，但用带步长的卷积来完成下采样，而不再显式使用最大汇聚（pooling）操作；生成网络则使用一类“反向”的卷积结构，如图16.9所示，通过微步卷积（也常称转置卷积）逐步把低维噪声向量变换为 $6 4 \times 6 4$ 的图像.第一层是全连接层，输入是从均匀分布中随机采样的100维向量z,输出是 $4 \times 4 \times 1 0 2 4$ 的向量，重塑为 $4 \times 4 \times 1 0 2 4$ 的张量；然后是四层的微步卷积，没有汇聚层.
+
+DCGAN的主要优点是通过一些经验性的网络结构设计使得对抗训练更加稳定．比如：1）使用带步长的卷积（在判别网络中）和微步卷积（在生成网络中）来代替显式汇聚，使上下采样也成为可学习的变换；2）使用批量规范化；3）去除卷积层之后的全连接层：4）在生成网络中，除了最后一层使用Tanh激活函数外，其余层都使用ReLU函数；5)在判别网络中使用LeakyReLU激活函数
+
+![](images/239978fe678c45bdedca74343acddca2e98a1f99b7618e618e414a4af3b77b97.jpg)（描述：DCGAN生成网络的结构图，展示从随机噪声z经过投影、reshape和多个卷积层（CONV 1至CONV 4）逐步生成图像G(z)的过程）  
+图 16.9 DCGAN 中的生成网络（图片来源: [Radford et al., 2016]）
+
+## 16.3.4 模型分析
+
+我们把判别网络和生成网络合并为一个整体，将整个生成对抗网络的目标函数看作最小化最大化游戏（MinimaxGame）：
+
+$$
+\operatorname* { m i n } _ { \theta } \operatorname* { m a x } _ { \phi } \bigg ( \mathbb { E } _ { { \boldsymbol { x } } \sim p _ { r } ( { \boldsymbol { x } } ) } \Big [ \log D ( { \boldsymbol { x } } ; \phi ) \Big ] + \mathbb { E } _ { { \boldsymbol { x } } \sim p _ { \theta } ( { \boldsymbol { x } } ) } \Big [ \log \Big ( 1 - D ( { \boldsymbol { x } } ; \phi ) \Big ) \Big ] \bigg )\tag{16.33}
+$$
+
+$$
+= \underset { \theta } { \mathrm { m i n } } \underset { \phi } { \mathrm { m a x } } \left( \mathbb { E } _ { \boldsymbol { x } \sim p _ { r } ( \boldsymbol { x } ) } \Big [ \log D ( \boldsymbol { x } ; \phi ) \Big ] + \mathbb { E } _ { \boldsymbol { z } \sim p ( \boldsymbol { z } ) } \Big [ \log \Big ( 1 - D \big ( G ( \boldsymbol { z } ; \theta ) ; \phi \big ) \Big ) \Big ] \right) .\tag{16.34}
+$$
+
+因为之前提到的生成网络梯度问题，这个最小化最大化形式的目标函数一般用来进行理论分析，并不是实际训练时的目标函数
+
+假设 $p _ { r } ( { \pmb x } )$ 和 $p _ { \theta } ( { \pmb x } )$ 已知，则最优的判别器为
+
+参见习题16-7.
+
+$$
+D ^ { \star } ( { \pmb x } ) = \frac { p _ { r } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) } .\tag{16.35}
+$$
+
+将最优的判别器 $D ^ { \star } ( x )$ 代入公式(16.33),其目标函数变为
+
+$$
+\mathcal { L } ( G | D ^ { \star } ) = \mathbb { E } _ { \pmb { x } \sim p _ { r } ( \pmb { x } ) } \Big [ \log D ^ { \star } ( \pmb { x } ) \Big ] + \mathbb { E } _ { \pmb { x } \sim p _ { \theta } ( \pmb { x } ) } \Big [ \log ( 1 - D ^ { \star } ( \pmb { x } ) ) \Big ]\tag{16.36}
+$$
+
+$$
+= \mathbb { E } _ { { \mathbf { x } } \sim p _ { r } ( { \mathbf { x } } ) } \Big [ \log \frac { p _ { r } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) } \Big ] + \mathbb { E } _ { { \mathbf { x } } \sim p _ { \theta } ( { \pmb x } ) } \Big [ \log \frac { p _ { \theta } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) } \Big ]\tag{16.37}
+$$
+
+$$
+= \operatorname { K L } ( p _ { r } , p _ { a } ) + \operatorname { K L } ( p _ { \theta } , p _ { a } ) - 2 \log 2\tag{16.38}
+$$
+
+$$
+= 2 \mathrm { J S } ( p _ { r } , p _ { \theta } ) - 2 \log 2 ,\tag{16.39}
+$$
+
+其中JS(·)为JS散度 $\begin{array} { r } { { \mathbf { \nabla } } _ { \cdot } p _ { a } ( { \pmb x } ) = \frac { 1 } { 2 } \Big ( p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) \Big ) } \end{array}$ 为一个“平均”分布.
+
+JS散度参见 第E.3.3节.
+
+在生成对抗网络中，当判别网络为最优时，生成网络的优化目标是最小化真实分布 $p _ { r }$ 和模型分布 $p _ { \theta }$ 之间的JS散度.当两个分布相同时，JS散度为0，最优生成网络 $G ^ { \star }$ 对应的损失为 $\begin{array} { r } { \mathcal { L } ( G ^ { \star } | D ^ { \star } ) = - 2 \log 2 . } \end{array}$
+
+## 16.3.4.1 训练稳定性
+
+使用JS散度来训练生成对抗网络的一个问题是：当两个分布的支撑集没有重叠时，它们之间的JS散度恒等于常数log2.在最优判别器假设下，对生成网络来说，目标函数关于参数的梯度为0，即 $\begin{array} { r } { \frac { \partial \mathcal { L } ( G | D ^ { \star } ) } { \partial \theta } = 0 } \end{array}$
+
+图16.10给出了生成对抗网络中的梯度消失问题的示例. 当真实分布 $p _ { r }$ 和模型分布 $p _ { \theta }$ 没有重叠时，最优的判别器 $D ^ { \star }$ 对所有生成数据的输出都为0，即$D ^ { \star } ( G ( z ; \theta ) ) = 0 , \forall z .$ 因此，生成网络的梯度消失.
+
+![](images/36dd984cab1611630213d370a0860940cc5cdbdc6584cd0486384ad360466906.jpg)（描述：示意图，展示真实数据分布与生成数据分布无重叠时最优判别器的输出情况）  
+图16.10 生成对抗网络中的梯度消失问题
+
+在实际训练生成对抗网络时，一般不会将判别网络训练到最优，只进行一步或多步梯度下降，使得生成网络的梯度依然存在.另外，判别网络也不能太差，否则生成网络的梯度为错误的梯度，但是，如何在梯度消失和梯度错误之间取得平衡并不是一件容易的事，这个问题使得生成对抗网络在训练时稳定性比较差
+
+## 16.3.4.2 模式坍塌
+
+如果使用公式(16.32)作为生成网络的目标函数，将最优判别器 $D ^ { \star }$ 代入，可以得到
+
+$$
+\mathcal { L } ^ { \prime } ( G | D ^ { \star } ) = \mathbb { E } _ { \pmb { x } \sim p _ { \theta } ( \pmb { x } ) } \Big [ \log D ^ { \star } ( \pmb { x } ) \Big ]\tag{16.40}
+$$
+
+$$
+= \mathbb { E } _ { { \pmb x } \sim p _ { \theta } ( { \pmb x } ) } \Big [ \log \frac { p _ { r } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) } \cdot \frac { p _ { \theta } ( { \pmb x } ) } { p _ { \theta } ( { \pmb x } ) } \Big ]\tag{16.41}
+$$
+
+$$
+= - \mathbb { E } _ { { \pmb x } \sim p _ { \theta } ( { \pmb x } ) } \Big [ \log \frac { p _ { \theta } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) } \Big ] + \mathbb { E } _ { { \pmb x } \sim p _ { \theta } ( { \pmb x } ) } \Big [ \log \frac { p _ { \theta } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) + p _ { \theta } ( { \pmb x } ) } \Big ]\tag{16.42}
+$$
+
+$$
+= - \operatorname { K L } ( p _ { \theta } , p _ { r } ) + \mathbb { E } _ { { \pmb { x } } \sim p _ { \theta } ( { \pmb x } ) } { \Big [ } \log \left( 1 - D ^ { \star } ( { \pmb x } ) \right) { \Big ] }\tag{16.43}
+$$
+
+$$
+= - \operatorname { K L } ( p _ { \theta } , p _ { r } ) + 2 \operatorname { J S } ( p _ { r } , p _ { \theta } ) - 2 \log 2 - \operatorname { \mathbb { E } } _ { { \boldsymbol { x } } \sim p _ { r } ( { \boldsymbol { x } } ) } { \Big [ } \log D ^ { \star } ( { \boldsymbol { x } } ) { \Big ] } ,\tag{根据公式(16.39}
+$$
+
+(16.44)
+
+其中后两项和生成网络无关.因此
+
+$$
+\underset { \theta } { \arg \operatorname* { m a x } } \mathcal { L } ^ { \prime } ( G | D ^ { \star } ) = \underset { \theta } { \arg \operatorname* { m i n } } \mathrm { K L } ( p _ { \theta } , p _ { r } ) - 2 \mathrm { J S } ( p _ { r } , p _ { \theta } ) .\tag{16.45}
+$$
+
+这一推导提供了一个常见的启发式解释：在最优判别器附近，生成器更新可能更接近于受逆向KL散度 $\operatorname { K L } ( p _ { \theta } , p _ { r } )$ 主导．由于逆向KL更强调“不要把概率质量放到真实分布几乎没有质量的区域”，生成器就可能更倾向于集中在少数高概率模式上，而不是尽量覆盖所有真实模式.这有助于理解GAN中常见的模式坍塌（ModeCollapse）现象：模型并非完全学坏，而是只学会了少数几种“足以骗过判别器”的样本模式
+
+前向和逆向KL散度 因为KL散度是一种非对称的散度，在计算真实分布 $p _ { r }$ 和模型分布pe之间的KL散度时，按照顺序不同，有两种KL散度：前向KL散 $p _ { \theta }$ 度(Forward KL divergence) $\operatorname { K L } ( p _ { r } , p _ { \theta } )$ 和逆向 KL 散度(Reverse KL diver-gence ) KL $( p _ { \theta } , p _ { r } )$ .前向和逆向KL散度分别定义为
+
+$$
+\mathrm { K L } ( p _ { r } , p _ { \theta } ) = \int p _ { r } ( { \pmb x } ) \log \frac { p _ { r } ( { \pmb x } ) } { p _ { \theta } ( { \pmb x } ) } \mathrm { d } { \pmb x } ,\tag{16.46}
+$$
+
+$$
+\mathrm { K L } ( p _ { \theta } , p _ { r } ) = \int p _ { \theta } ( { \pmb x } ) \log \frac { p _ { \theta } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) } \mathrm { d } { \pmb x } .\tag{16.47}
+$$
+
+图16.11给出数据真实分布为一个高斯混合分布，模型分布为一个单高斯分布时，使用前向和逆向KL散度来进行模型优化的示例.黑色曲线为真实分布 $p _ { r }$ 的等高线，红色曲线为模型分布 $p _ { \theta }$ 的等高线.
+
+![](images/575e3cc4e19656338256e060b702778df4b485bcf7f0609bd1da08656daf2b67.jpg)（描述：示意图，展示真实分布与模型分布的等高线对比，用于说明前向和逆向KL散度的优化效果）
+
+![](images/9ffedb97e72730695e4f1422f828547e2ceeef3a7d3caa41d1742648134da8ed.jpg)（描述：示意图，展示前向KL散度的等高线分布，包含多个同心椭圆和红色轮廓线）  
+图 16.11 前向和逆向KL散度
+
+![](images/2df384f0dc22ada202a8e765fd9bfcd0e89b0f9ce3a45c2a6c44d37995df65d7.jpg)（描述：示意图，展示逆向KL散度的等高线分布，包含两个椭圆区域的同心圆轮廓）
+
+在前向KL散度中，
+
+(1)当 $p _ { r } ( { \pmb x } )  0$ 而 $p _ { \theta } ( { \pmb x } ) > 0$ 时， $\begin{array} { r } { p _ { r } ( { \pmb x } ) \log \frac { p _ { r } ( { \pmb x } ) } { p _ { \theta } ( { \pmb x } ) }  0 . } \end{array}$ 不管 $p _ { \theta } ( { \pmb x } )$ 如何取值，都对前向KL散度的计算没有贡献.
+
+(2)当 $p _ { r } ( { \pmb x } ) > 0$ 而 $p _ { \theta } ( { \pmb x } )  0$ 时， $\begin{array} { r } { p _ { r } ( { \pmb x } ) \log \frac { p _ { r } ( { \pmb x } ) } { p _ { \theta } ( { \pmb x } ) }  \infty } \end{array}$ ,前向KL散度会变得非常大.
+
+因此，前向KL散度会鼓励模型分布 $p _ { \theta } ( { \pmb x } )$ 尽可能覆盖所有真实分布$p _ { r } ( { \pmb x } ) > 0$ 的点，而不用回避 $p _ { r } ( { \pmb x } ) \approx 0$ 的点.
+
+在逆向KL散度中，
+
+(1)当 $p _ { r } ( { \pmb x } )  0$ 而 $p _ { \theta } ( { \pmb x } ) > 0$ 时 $\begin{array} { r } { { \mathbf \nabla } _ { p _ { \theta } } ( { \pmb x } ) \log \frac { p _ { \theta } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) } \to \infty } \end{array}$ 即当 $p _ { r } ( { \pmb x } )$ 接近于0,而 $p _ { \theta } ( { \pmb x } )$ 有一定的密度时，逆向KL散度会变得非常大.
+
+(2)当 $p _ { \theta } ( { \pmb x } )  0$ 时，不管 $p _ { r } ( { \pmb x } )$ 如何取值， $\begin{array} { r } { p _ { \theta } ( { \pmb x } ) \log \frac { p _ { \theta } ( { \pmb x } ) } { p _ { r } ( { \pmb x } ) }  0 } \end{array}$
+
+因此，逆向KL散度会鼓励模型分布 $p _ { \theta } ( { \pmb x } )$ 尽可能避开所有真实分布$p _ { r } ( { \pmb x } ) \approx 0$ 的点，而不需要考虑是否覆盖所有真实分布 $p _ { r } ( { \pmb x } ) > 0$ 的点.
+
+## 16.3.5 改进模型
+
+在生成对抗网络中，当真实分布和模型分布的支撑集相距较远时，JS散度难以提供连续反映“距离”的训练信号.由于通过优化交叉熵对应的对抗目标容易遇到训练稳定性和模式坍塌问题，一条重要改进路线就是改变分布差异的度量方式.
+
+## 16.3.5.1 W-GAN
+
+W-GAN是一种通过用Wasserstein距离替代JS散度来优化训练的生成对抗网络 [Arjovsky et al., 2017].
+
+Wasserstein 距离也称 为推土机距离，参见 第E.3.4节.
+
+对于真实分布 $p _ { r }$ 和模型分布 $p _ { \theta }$ ,它们的一阶Wasserstein距离为
+
+$$
+W _ { 1 } ( p _ { r } , p _ { \theta } ) = \operatorname* { i n f } _ { \gamma \sim \Gamma ( p _ { r } , p _ { \theta } ) } \mathbb { E } _ { ( \pmb { x } , \pmb { y } ) \sim \gamma } \Big [ \| \pmb { x } - \pmb { y } \| \Big ] ,\tag{16.48}
+$$
+
+其中 $\Gamma ( p _ { r } , p _ { \theta } )$ 是边际分布为 $p _ { r }$ 和 $p _ { \theta }$ 的所有可能的联合分布集合
+
+当两个分布没有重叠或者重叠非常少时，它们之间的KL散度可能为 $+ \infty$ JS散度在支撑集分离时变为常数log2，并不随着两个分布之间的距离而变化.而一阶Wasserstein距离依然可以衡量两个没有重叠分布之间的距离.
+
+## 数学小知识|Lipschitz连续函数
+
+在数学中，对于一个实数函数 f：R→R，如果满足函数曲线上任意两点连线的斜率一致有界，即任意两点的斜率都小于常数 $K > 0$
+
+$$
+| f ( x _ { 1 } ) - f ( x _ { 2 } ) | \leq K | x _ { 1 } - x _ { 2 } | ,\tag{16.49}
+$$
+
+则函数 f就称为K-Lipschitz连续函数,K称为Lipschitz 常数.
+
+Lipschitz连续要求函数在无限的区间上不能有超过线性的增长.如果一个函数可导，并满足Lipschitz连续，那么导数有界．如果一个函数可导，并且导数有界，那么函数为Lipschitz连续.
+
+两个分布 $p _ { r }$ 和 $p _ { \theta }$ 的一阶Wasserstein距离通常难以直接计算，但它有一个对偶形式：
+
+$$
+W _ { 1 } ( p _ { r } , p _ { \theta } ) = \operatorname* { s u p } _ { \| f \| _ { L } \leq 1 } \Big ( \mathbb { E } _ { { \pmb x } \sim p _ { r } } [ f ( { \pmb x } ) ] - \mathbb { E } _ { { \pmb x } \sim p _ { \theta } } [ f ( { \pmb x } ) ] \Big ) ,\tag{16.50}
+$$
+
+其中 $f : \mathbb { R } ^ { d } $ R为1-Lipschitz函数，满足
+
+$$
+\| f \| _ { L } \triangleq \operatorname* { s u p } _ { \pmb { x } \neq \pmb { y } } \frac { | f ( \pmb { x } ) - f ( \pmb { y } ) | } { \| \pmb { x } - \pmb { y } \| } \le 1 .\tag{16.51}
+$$
+
+公式(16.50)称为Kantorovich-Rubinstein对偶定理.
+
+Kantorovich-Rubinstein对偶定理说明，一阶Wasserstein距离可以写成一组1-Lipschitz函数下的期望差上确界. 若把约束放宽为K-Lipschitz连续，只需除以常数K作尺度修正，即
+
+$$
+W _ { 1 } ( p _ { r } , p _ { \theta } ) = \frac { 1 } { K } \operatorname* { s u p } _ { \| f \| _ { L } \leq K } \Big ( \mathbb { E } _ { { \pmb x } \sim p _ { r } } [ f ( { \pmb x } ) ] - \mathbb { E } _ { { \pmb x } \sim p _ { \theta } } [ f ( { \pmb x } ) ] \Big ) .\tag{16.52}
+$$
+
+参见习题16-9.
+
+评价网络 然而，要计算公式(16.52)中的上确界也并不容易.实践中通常用一个受Lipschitz约束的神经网络族来近似这个函数集合．令 $f ( { \pmb x } ; \phi )$ 为一个神经网络，假设存在参数集合Φ，对于所有的 $\phi \in \Phi , f ( \pmb { x } ; \phi )$ 为K-Lipschitz连续函数，那么公式（16.52）中的上界可以近似转换为
+
+$$
+\operatorname* { m a x } _ { \phi \in \Phi } \Big ( \mathbb { E } _ { { \pmb x } \sim p _ { r } } [ f ( { \pmb x } ; \phi ) ] - \mathbb { E } _ { { \pmb x } \sim p _ { \theta } } [ f ( { \pmb x } ; \phi ) ] \Big ) ,\tag{16.53}
+$$
+
+这里忽略了常数 $\textstyle { \frac { 1 } { K } }$ ，并不影响网络的优化.
+
+其中 $f ( { \pmb x } ; \phi )$ 称为评价网络（Critic Network）. 和标准GAN中的判别网络的值域为[0,1]不同，评价网络 $f ( { \pmb x } ; \phi )$ 的最后一层为线性层，其值域没有限制.这样只需要找到一个网络 $f ( { \pmb x } ; \phi )$ 使其在两个分布 $p _ { r }$ 和 $p _ { \theta }$ 下的期望的差最大.即对于真实样本， $f ( { \pmb x } ; \phi )$ 的打分要尽可能高；对于模型生成的样本， $f ( { \pmb x } ; \phi )$ 的打分要尽可能低.
+
+为了使得 $f ( { \pmb x } ; \phi )$ 满足K-Lipschitz连续，一种近似的方法是限制参数的取值范围.因为神经网络为连续可导函数，满足K-Lipschitz连续可以近似为其关于x的偏导数的模 $\| \frac { \partial f ( \pmb { x } ; \phi ) } { \partial \pmb { x } }$ 小于某个上界.由于这个偏导数的大小一般和参数的取值范围相关，我们可以通过限制参数 $\phi$ 的取值范围来近似，令 $\phi \in [ - c , c ]$ , C为一个比较小的正数，比如0.01.
+
+生成网络生成网络的目标是使得评价网络 $f ( { \pmb x } ; \phi )$ 对其生成样本的打分尽可能高，即
+
+$$
+\operatorname* { m a x } _ { \theta } \mathbb { E } _ { z \sim p ( z ) } \left[ f \Big ( G ( z ; \theta ) ; \phi \Big ) \right] .\tag{16.54}
+$$
+
+因为 $f ( { \pmb x } ; \phi )$ 不再是Sigmoid概率输出，生成网络参数θ更不容易遇到由判别器饱和引起的梯度消失问题.W-GAN的目标也不直接依赖两个分布密度的比率，在一定程度上缓解了原始GAN中的训练不稳定和模式坍塌问题
+
+算法16.2给出W-GAN的训练过程.和原始GAN相比，W-GAN的评价网络最后一层不使用Sigmoid函数，损失函数不取对数.
+
+算法 16.2 W-GAN的训练过程  
+输入：训练集D，对抗训练迭代次数T，每次评价网络的训练迭代次数K，小  
+批量样本数量M,参数限制大小 $c ;$   
+1 随机初始化 $\theta ,$ φ;  
+2 for $t \gets 1$ to T do  
+//训练评价网络 $f ( x ; \phi )$   
+3 for k ← 1 to K do  
+//采集小批量训练样本  
+4 从训练集D中采集M个样本 $\{ \pmb { x } ^ { ( m ) } \} , 1 \leq m \leq M ;$   
+5 从分布 $\mathcal { N } ( \mathbf { 0 } , \pmb { I } )$ 中采集M个样本 $\{ z ^ { ( m ) } \} , 1 \leq m \leq M ;$   
+$/ /$ 计算评价网络参数φ的梯度  
+6 $g _ { \phi } = \frac { \partial } { \partial \phi } \biggl [ \frac { 1 } { M } \sum _ { m = 1 } ^ { M } \biggl ( f ( \mathbf { x } ^ { ( m ) } ; \phi ) - f \Bigl ( G ( z ^ { ( m ) } ; \theta ) ; \phi \Bigl ) \biggr ) \biggr ]$   
+7 $\phi  \phi + \alpha \cdot \mathrm { R M S P r o p } ( \phi , g _ { \phi } )$ // 使用RMSProp算法更新 $\phi$   
+8 $\phi  \mathrm { c l i p } ( \phi , - c , c )$ //权重裁剪（参数裁剪)  
+9 end  
+$/ /$ 训练生成网络 $G ( z ; \theta )$   
+10 从分布 $\mathcal { N } ( \mathbf { 0 } , \pmb { I } )$ 中采集M个样本 $\{ z ^ { ( m ) } \} , 1 \leq m \leq M ;$   
+$/ /$ 更新生成网络参数θ  
+11 $g _ { \theta } = \frac { \partial } { \partial \theta } \biggl [ \frac { 1 } { M } \sum _ { m = 1 } ^ { M } f \Bigl ( G ( z ^ { ( m ) } ; \theta ) ; \phi \Bigl ) \biggl ]$ 2  
+12 $\theta \gets \theta + \alpha \cdot \mathrm { R M S P r o p } ( \theta , g _ { \theta } )$ .n $/ /$ 使用RMSProp算法更新θ  
+13 end  
+输出：生成网络 $G ( z ; \theta )$
+
+需要说明的是，原始W-GAN中使用权重裁剪只是为了近似满足Lipschitz约束，但这种做法往往会带来优化困难或表达能力不足.后续工作WGAN-GP(Wasserstein GAN with Gradient Penalty)用梯度惩罚替代简单的权重裁剪，在实践中通常更加稳定.就教材主线而言，理解W-GAN的关键并不是记住某一种具体技巧，而是把握两个思想：一是用更合适的距离度量替代JS散度，二是通过Lipschitz约束让评价网络的打分具有“距离”意义.
+
+## 16.3.5.2 条件生成对抗网络
+
+标准生成对抗网络只能从噪声向量z中无条件地生成样本．如果希望控制生成结果的类别、属性或风格，可以将条件变量c同时输入生成网络和判别网络，从而得到条件生成对抗网络（Conditional Generative Adversarial Network，$\operatorname { c G A N } )$ .其目标函数可以写为
+
+$$
+\operatorname* { m i n } _ { \theta } \operatorname* { m a x } _ { \phi } \bigg ( \mathbb { E } _ { ( { \pmb x } , { \pmb c } ) \sim p _ { r } } [ \log D ( { \pmb x } , { \pmb c } ; \phi ) ]\tag{16.55}
+$$
+
+$$
++ \mathbb { E } _ { z \sim p ( z ) , c \sim p ( c ) } [ \log ( 1 - D ( G ( z , c ; \theta ) , c ; \phi ) ) ] \biggr ) .\tag{16.56}
+$$
+
+条件信息c可以是类别标签、文本描述、语义分割图甚至另一张图像.这样，生成模型不再只是学习“如何生成”，还需要学习“在给定条件下如何生成”.条件生成对抗网络为后续的图像到图像转换、文本到图像生成等任务奠定了基础.
+
+## 16.3.5.3 InfoGAN
+
+在很多应用中，我们不仅希望生成样本，还希望生成过程具有一定的可解释性. InfoGAN（Information Maximizing GAN）在生成网络输入中额外引入一个潜在码c，并最大化潜在码c与生成样本 $G ( z , c )$ 之间的互信息，从而鼓励不同维度的潜在码控制不同的语义属性.其核心思想是：如果某个潜在变量确实控制了样本的某种可解释因素，那么由该潜在变量生成的样本中应该保留关于它的信息.
+
+InfoGAN说明，对抗训练不仅可以用于逼近真实分布，还可以用于学习具有可解释结构的隐变量表示.这也体现了生成模型和表示学习之间的紧密联系.GAN在生成建模中的地位随着扩散模型和流匹配方法的发展，高质量图像和视频生成任务中出现了更多稳定可控的选择.GAN的主要困难在于训练不稳定性和模式坍塌问题较难完全避免，而扩散模型通过迭代去噪把生成问题分解为一系列局部预测任务，从另一个角度缓解了这些困难，然而，GAN并不是简单“被替代”的方法：在需要极快推断速度（单步生成）、对抗性图像转换（如pix2pix、CycleGAN类任务）以及数据增强等场景中，GAN仍有独特优势.此外，GAN中判别器的思想也可以整合进混合训练方法中，如用判别器辅助扩散模型的训练以提升生成质量
+
+## 16.4 扩散模型
+
+扩散模型是一类重要的深度生成模型.它的基本思想不是一步生成一个复杂样本，而是先定义一个固定的前向随机过程，把真实样本逐步扰动为近似高斯噪声：再学习一个反向过程，从噪声一步步恢复数据，这样，原本困难的高维生成问题就被分解为一系列局部的去噪问题，因此训练常常更稳定，也更便于引入条件控制.
+
+给定观测变量 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ ，扩散模型引入中间变量 ${ \pmb x } _ { 1 } , { \pmb x } _ { 2 } , \cdots , { \pmb x } _ { T }$ .其中， $\mathbf { \boldsymbol { x } } _ { t }$ 表示第t个噪声水平下的中间状态， ${ \pmb x } _ { T }$ 接近一个简单先验分布（通常取标准高斯分布）.于是，扩散模型的联合分布可写为
+
+$$
+p _ { \theta } ( \pmb { x } _ { 0 : T } ) = p ( \pmb { x } _ { T } ) \prod _ { t = 1 } ^ { T } p _ { \theta } ( \pmb { x } _ { t - 1 } \vert \pmb { x } _ { t } ) ,\tag{16.57}
+$$
+
+其中 $\pmb { x } _ { 1 : T }$ 都可以视为隐变量，相应的边际分布
+
+$$
+p _ { \theta } ( { \pmb x } _ { 0 } ) = \int p _ { \theta } ( { \pmb x } _ { 0 : T } ) \mathrm { d } { \pmb x } _ { 1 : T }\tag{16.58}
+$$
+
+就是模型对真实数据分布 $p _ { r } ( { \pmb x } )$ 的近似.
+
+扩散模型的核心由两部分构成：一部分是人为设定的前向扩散过程，把样本$\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 逐步加上高斯噪声，得到随机变量序列 ${ \pmb x } _ { 1 } , { \pmb x } _ { 2 } , \cdots , { \pmb x } _ { T }$ .当步数T足够大时， ${ \pmb x } _ { T }$ 将接近一个简单分布，比如标准高斯分布.另一部分是由神经网络学习的反向去噪过程，使其能够从 ${ \pmb x } _ { T }$ 开始，一步步恢复出 ${ \pmb x } _ { T - 1 } , { \pmb x } _ { T - 2 } , \cdots , { \pmb x } _ { 0 }$ .图16.12给出了这一基本流程：上半部分是从数据到噪声的前向过程，下半部分是由神经网络参数化的反向去噪过程
+
+![](images/ca5f4bc05c6d44f8c1007666b535c0a983d373ceeaf9a0ca8e53b1585997a97f.jpg)（描述：示意图，展示扩散模型的前向扩散和反向去噪过程，包含从清晰猫图像逐步添加噪声到纯噪声，再通过神经网络逐步恢复图像的流程）  
+图16.12 扩散模型的基本流程
+
+扩散模型也可以看作一种特殊的层级变分自编码器：前向分布 $q ( \pmb { x } _ { 1 : T } | \pmb { x } _ { 0 } )$ 由人为固定，反向分布$p _ { \theta } ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } )$ 由神经网络学习.
+
+这种建模方式有两个直接好处.第一，前向过程由我们自己设计，通常可以写成解析形式，因此训练时能够直接在任意噪声水平上构造样本；第二，反向过程虽然未知，但每一步只需要解决一个“稍微去噪一点”的局部问题，比一次性生成高维复杂样本要容易得多.
+
+## 16.4.1 前向扩散过程
+
+在最常见的离散时间扩散模型中，前向过程被定义为一个马尔可夫链：
+
+$$
+q ( \pmb { x } _ { 1 : T } | \pmb { x } _ { 0 } ) = \prod _ { t = 1 } ^ { T } q ( \pmb { x } _ { t } | \pmb { x } _ { t - 1 } ) ,\tag{16.59}
+$$
+
+其中每一步的条件分布定义为
+
+$$
+q ( \pmb { x } _ { t } | \pmb { x } _ { t - 1 } ) = \mathcal { N } ( \pmb { x } _ { t } ; \sqrt { 1 - \beta _ { t } } \pmb { x } _ { t - 1 } , \beta _ { t } \pmb { I } ) ,\tag{16.60}
+$$
+
+$\beta _ { t } \in ( 0 , 1 )$ 为第t步的噪声强度.这个定义意味着：在每一个时间步，样本都会保留一部分原始信号，同时叠加一部分新的高斯噪声.
+
+序列 $\{ \beta _ { t } \} _ { t = 1 } ^ { T }$ 称为噪声调度（Noise Schedule）.如果 $\beta _ { t }$ 过大，那么在早期步骤中就会过快破坏样本结构；如果 $\beta _ { t }$ 过小，则需要很多步才能把样本扰动到简单分布.实际中常见的设计包括线性调度、余弦调度等.它们的共同目标是：在前期尽量保留更多语义结构，在后期逐渐增加噪声，使最终分布接近各向同性高斯分布.
+
+$$
+\alpha _ { t } = 1 - \beta _ { t } , \qquad \bar { \alpha } _ { t } = \prod _ { s = 1 } ^ { t } \alpha _ { s } ,\tag{16.61}
+$$
+
+则可以证明，给定初始样本 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ ,任意时刻t的随机变量 $\mathbf { \boldsymbol { x } } _ { t }$ 都可以直接写为
+
+$$
+\begin{array} { r } { q ( \pmb { x } _ { t } | \pmb { x } _ { 0 } ) = \mathcal { N } ( \pmb { x } _ { t } ; \sqrt { \bar { \alpha } _ { t } } \pmb { x } _ { 0 } , ( 1 - \bar { \alpha } _ { t } ) \pmb { I } ) . } \end{array}\tag{16.62}
+$$
+
+因此， $\mathbf { \boldsymbol { x } } _ { t }$ 可以通过一次采样直接得到：
+
+$$
+\begin{array} { r } { \pmb { x } _ { t } = \sqrt { \bar { \alpha } _ { t } } \pmb { x } _ { 0 } + \sqrt { 1 - \bar { \alpha } _ { t } } \pmb { \epsilon } , \qquad \ \epsilon \sim \mathcal { N } ( \mathbf { 0 } , I ) . } \end{array}\tag{16.63}
+$$
+
+从公式(16.63)可以看出，随着t增大， $\hat { \alpha } _ { t }$ 不断减小，原始样本 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 的贡献越来越弱，而噪声项的贡献越来越强.第t步的信噪比（Signal-to-Noise Ratio,SNR）定义为
+
+$$
+\mathrm { S N R } ( t ) = \frac { \bar { \alpha } _ { t } } { 1 - \bar { \alpha } _ { t } } .\tag{16.64}
+$$
+
+公式(16.63)这个闭式表达非常重要，因为它意味着训练时不必真的把噪声一步一步加到第t步，而是可以直接从 $\scriptstyle { \mathbf { x } _ { 0 } }$ 构造任意时刻的带噪样本 ${ \mathbf { } } _ { \pmb { x } _ { t } }$
+
+信噪比越大，样本中保留的有效信息越多；信噪比越小，样本越接近纯噪声
+
+图16.13从信噪比的角度刻画了公式(16.63):随着t增大,样本中的信号成分$\sqrt { \bar { \alpha } _ { t } } \pmb { x } _ { 0 }$ 逐渐减弱，而噪声成分 $\sqrt { 1 - \bar { \alpha } _ { t } } .$ ε逐渐增强，对应的信噪比也持续下降.
+
+![](images/46239bf35ffc1a87f981072e51377fb84bf7fffd1a554671514adeaf3e7c52f9.jpg)（描述：示意图，展示前向扩散过程中信号与噪声随时间t变化的相对占比，蓝色代表信号，橙色代表噪声）  
+图16.13 前向扩散中信号与噪声的相对占比变化
+
+## 16.4.2 反向去噪过程
+
+扩散模型的关键在于学习前向过程的逆过程.虽然从 $\mathbf { \boldsymbol { x } } _ { t }$ 一步恢复出 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 通常是困难的，但从 $\mathbf { \boldsymbol { x } } _ { t }$ 恢复 ${ \mathbf { } } x _ { t - 1 }$ 只是一个局部去噪问题.
+
+设参数化模型为 $p _ { \theta }$ ，则反向生成过程定义为
+
+$$
+p _ { \theta } ( \pmb { x } _ { 0 : T } ) = p ( \pmb { x } _ { T } ) \prod _ { t = 1 } ^ { T } p _ { \theta } ( \pmb { x } _ { t - 1 } \vert \pmb { x } _ { t } ) ,\tag{16.65}
+$$
+
+其中一般取 $p ( { \pmb x } _ { T } ) = \mathcal { N } ( { \bf 0 } , I )$ ,并将每一步反向转移分布建模为高斯分布：
+
+$$
+p _ { \theta } ( \pmb { x } _ { t - 1 } \vert \pmb { x } _ { t } ) = \mathcal { N } ( \pmb { x } _ { t - 1 } ; \pmb { \mu } _ { \theta } ( \pmb { x } _ { t } , t ) , \sigma _ { t } ^ { 2 } \pmb { I } ) ,\tag{16.66}
+$$
+
+其中均值项 $\mu _ { \theta } ( x _ { t } , t )$ 为待学习的函数，t表示时间步.在很多经典实现中，反向方差 $\sigma _ { t } ^ { 2 }$ 通常取为预先给定的常数或与真实后验方差 $\tilde { \beta } _ { t }$ 相关的固定值，因此反向去噪的主要目标是如何学习 $\mu _ { \theta } ( x _ { t } , t )$
+
+## 16.4.3 训练
+
+和变分自编码器类似，扩散模型也可以从最大化对数似然的变分下界(Variational Lower Bound, VLB) 出发. 给定样本 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ ,有
+
+$$
+\log p _ { \theta } ( \pmb { x } _ { 0 } ) \geq \mathbb { E } _ { q } \left[ \log \frac { p _ { \theta } ( \pmb { x } _ { 0 : T } ) } { q ( \pmb { x } _ { 1 : T } | \pmb { x } _ { 0 } ) } \right] .\tag{16.67}
+$$
+
+实际训练中通常最小化负的变分下界.将其展开后，可得损失项
+
+$$
+\begin{array} { l } { \mathcal { L } _ { \mathrm { V L B } } = \displaystyle \mathbb { E } _ { q } \big [ - \log p _ { \theta } ( { \boldsymbol x } _ { 0 } | { \boldsymbol x } _ { 1 } ) \big ] + \sum _ { t = 2 } ^ { T } \mathbb { E } _ { q } \big [ \operatorname { K L } ( q ( { \boldsymbol x } _ { t - 1 } | { \boldsymbol x } _ { t } , { \boldsymbol x } _ { 0 } ) \| p _ { \theta } ( { \boldsymbol x } _ { t - 1 } | { \boldsymbol x } _ { t } ) ) \big ] } \\ { ~ + ~ \operatorname { K L } ( q ( { \boldsymbol x } _ { T } | { \boldsymbol x } _ { 0 } ) \| p ( { \boldsymbol x } _ { T } ) ) . ~ } \end{array}
+$$
+
+扩散模型本质上仍然是最大似然学习，只不过通过引入一串中间隐变量，把困难的密度建模问题转化为多个局部的分布匹配问题.
+
+其中最后一项与参数θ无关.因此，除去常数项后， ${ \mathcal { L } } _ { \mathrm { V L B } }$ 主要依赖模型给出的反向分布 $p _ { \theta } ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } )$ 与真实后验 $q ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } , \pmb { x } _ { 0 } )$ 之间的差异．换句话说，扩散模型训练的核心，就是在每一个时间步t上学习一个局部去噪过程.
+
+由于前向链是线性高斯模型，真实后验分布的闭式形式为
+
+$$
+q ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } , \pmb { x } _ { 0 } ) = \mathcal { N } ( \pmb { x } _ { t - 1 } ; \tilde { \pmb { \mu } } _ { t } ( \pmb { x } _ { t } , \pmb { x } _ { 0 } ) , \tilde { \beta } _ { t } \pmb { I } ) ,\tag{16.69}
+$$
+
+其中
+
+$$
+\tilde { \beta } _ { t } = \frac { 1 - \bar { \alpha } _ { t - 1 } } { 1 - \bar { \alpha } _ { t } } \beta _ { t } ,\tag{16.70}
+$$
+
+$$
+\tilde { \pmb { \mu } } _ { t } ( \pmb { x } _ { t } , \pmb { x } _ { 0 } ) = \frac { \sqrt { \bar { \alpha } _ { t - 1 } } \beta _ { t } } { 1 - \bar { \alpha } _ { t } } \pmb { x } _ { 0 } + \frac { \sqrt { \alpha _ { t } } ( 1 - \bar { \alpha } _ { t - 1 } ) } { 1 - \bar { \alpha } _ { t } } \pmb { x } _ { t } .\tag{16.71}
+$$
+
+由于 $q ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } , \pmb { x } _ { 0 } )$ 和 $p _ { \theta } ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } )$ 都是高斯分布，在方差固定或按预设形式处理时，中间每一项KL散度都可以化简为带权均方误差形式.训练目标
+
+可写为
+
+$$
+\mathcal { L } ( \theta ) = \sum _ { t = 1 } ^ { T } \mathbb { E } _ { \boldsymbol { x } _ { 0 } , \boldsymbol { x } _ { t } } \Big [ \| \tilde { \mu } _ { t } ( \boldsymbol { x } _ { t } , \boldsymbol { x } _ { 0 } ) - \mu _ { \theta } ( \boldsymbol { x } _ { t } , t ) \| ^ { 2 } \Big ] ,\tag{16.72}
+$$
+
+如果我们知道当前状态 $\mathbf { \boldsymbol { x } } _ { t }$ 以及原始样本 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ ,那么“最优的一步去噪分布”有解析表达.
+
+从形式上看，反向一步的真实后验均值 $\tilde { \pmb { \mu } } _ { t } ( \pmb { x } _ { t } , \pmb { x } _ { 0 } )$ 已经有解析表达，因此似乎也可以直接让网络去回归它.事实上，这种做法当然是可行的；但它通常不是最自然的参数化.原因在于， $\tilde { \pmb { \mu } } _ { t } ( \pmb { x } _ { t } , \pmb { x } _ { 0 } )$ 本质上只是 $\mathbf { \boldsymbol { x } } _ { t }$ 与 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 的一个线性组合，其中 $\mathbf { \boldsymbol { x } } _ { t }$ 是当前已知输入，而真正未知的是其中与 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 等价的信息．若直接预测 $\tilde { \mu } _ { t }$ 网络实际上需要同时“复现”已知项并“恢复”未知项，这会把确定部分与待估计部分混在一起，相比之下，直接预测 $\scriptstyle { \pmb x } _ { 0 }$ 往往更能把学习目标集中在真正需要恢复的那部分信息上.另外，既然 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 可以通过 $\mathbf { \boldsymbol { x } } _ { t }$ 和 $\epsilon$ 反推出来，我们也可以让网络去预测€.
+
+训练时不必真的把噪声一步一步加到第t步，而是可以直接从 $\scriptstyle { \mathbf { x } _ { 0 } }$ 构造任意时刻的带噪样本 ${ \mathbf { } } _ { { \mathbf { } } _ { } } { \mathbf { } } _ { { \mathbf { } } _ { } }$
+
+从训练主线看，扩散模型先从最大似然的变分下界出发，把整体学习问题分解为各时间步上的局部去噪；再利用线性高斯前向过程，把这些局部分布匹配进一步化为均方误差形式；最后选择一个更适合实现的参数化目标（如预测 $\epsilon \mathrm { , } \mathbf { \nabla } _ { \cdot } \mathbf { x } _ { 0 }$ 分数函数或v)来训练网络.
+
+## 16.4.3.1 预测原始样本 $\scriptstyle { \boldsymbol { x } } _ { 0 }$
+
+由于真实后验 $q ( \pmb { x } _ { t - 1 } | \pmb { x } _ { t } , \pmb { x } _ { 0 } )$ 是高斯分布，其均值由公式(16.71)给出，因此一种直接想法是让网络输出原始样本的估计 $\hat { x } _ { 0 } ( x _ { t } , t )$ ．只要用 $\hat { x } _ { 0 } ( x _ { t } , t )$ 代替其中的 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ ，就可以构造出模型的反向均值 $\mu _ { \theta } ( x _ { t } , t )$ .这说明，网络即使不直接输出${ \boldsymbol { x } } _ { t - 1 }$ ，也可以通过先估计 $\scriptstyle { \pmb x } _ { 0 }$ 来间接确定每一步的去噪分布.
+
+若网络预测的是 $\hat { x } _ { 0 } ( x _ { t } , t )$ ，则在忽略与θ无关的常数后，可将训练目标写成
+
+$$
+\mathcal { L } _ { \boldsymbol { x } _ { 0 } } ( \theta ) = \sum _ { t = 1 } ^ { T } w _ { t } \mathbb { E } _ { \boldsymbol { x } _ { 0 } , \epsilon } \Big [ \| \boldsymbol { x } _ { 0 } - \hat { \boldsymbol { x } } _ { 0 } ( \boldsymbol { x } _ { t } , t ) \| ^ { 2 } \Big ] ,\tag{16.73}
+$$
+
+许多扩散模型通常不把“直接预测后验均值”作为首选，而更常采用几种等价但更自然的参数化方式.这些参数化在不同时间步上的尺度更统一，也更方便与后续的采样公式、连续时间视角和数值求解器对应起来.我们将在下面四个小节中分别介绍.
+
+其中 $w _ { t }$ 仅依赖于时间步t和噪声调度.
+
+## 16.4.3.2 预测噪声 ∈
+
+更常见的做法是让网络直接预测加到样本中的噪声 $\epsilon _ { \theta } ( x _ { t } , t )$ .由
+
+$$
+\pmb { x } _ { 0 } = \frac { 1 } { \sqrt { \bar { \alpha } _ { t } } } \left( \pmb { x } _ { t } - \sqrt { 1 - \bar { \alpha } _ { t } } \epsilon \right)\tag{16.74}
+$$
+
+由公式 $( 1 6 . 6 3 ) { \pmb x } _ { t } ~ =$ $\sqrt { \bar { \alpha } _ { t } } \pmb { x } _ { 0 } + \sqrt { 1 - \bar { \alpha } _ { t } } \pmb { \epsilon }$ 推导可得.
+
+可得对应的原始样本估计
+
+$$
+\hat { x } _ { 0 } ( x _ { t } , t ) = \frac { 1 } { \sqrt { \bar { \alpha } _ { t } } } \left( x _ { t } - \sqrt { 1 - \bar { \alpha } _ { t } } \epsilon _ { \theta } ( x _ { t } , t ) \right) .\tag{16.75}
+$$
+
+https://nndl.ai/
+
+进一步代入公式(16.71)，可将反向均值写为
+
+$$
+{ \mu } _ { \theta } ( { x } _ { t } , t ) = \frac { 1 } { \sqrt { { \alpha } _ { t } } } \left( { { x } _ { t } } - \frac { { { \beta } _ { t } } } { \sqrt { 1 - { { \bar { \alpha } } _ { t } } } } { { \epsilon } _ { \theta } } ( { { x } _ { t } } , t ) \right) .\tag{16.76}
+$$
+
+因此，“预测噪声”是对同一个反向去噪过程的另一种参数化方式.
+
+进一步利用公式(16.63)和公式(16.74)，就可以把这个目标等价地改写为噪声预测问题.在完整形式下，其目标函数可以写成
+
+$$
+\mathcal { L } _ { \epsilon } ( \theta ) = \sum _ { t = 1 } ^ { T } \lambda _ { t } \mathbb { E } _ { \pmb { x } _ { 0 } , \epsilon } \Big [ \| \epsilon - \epsilon _ { \theta } ( \pmb { x } _ { t } , t ) \| ^ { 2 } \Big ] ,\tag{16.77}
+$$
+
+其中 $\lambda _ { t }$ 同样只依赖于时间步t.进一步忽略这些仅与t有关的权重，就得到最常用的简化训练目标
+
+$$
+\begin{array} { r } { \mathcal { L } _ { \mathrm { s i m p l e } } ( \theta ) = \mathbb { E } _ { \mathbf { x } _ { 0 } , t , \epsilon } \Bigl [ \| \epsilon - \epsilon _ { \theta } ( \mathbf { x } _ { t } , t ) \| ^ { 2 } \Bigr ] . } \end{array}\tag{16.78}
+$$
+
+这个目标看似简单，却非常有效.其本质在于：如果网络能够准确预测噪声，那么它就能够恢复 $\hat { \mathbf { x } } _ { 0 }$ ，进而构造近似最优的反向均值 $\mu _ { \theta } ( x _ { t } , t )$
+
+## 16.4.3.3 预测分数函数
+
+在概率建模中，分数函数（ScoreFunction）是指对数密度关于样本的梯度
+
+$$
+\begin{array} { r } { \pmb { s } ( \pmb { x } ) = \nabla _ { \pmb { x } } \log p ( \pmb { x } ) . } \end{array}\tag{16.79}
+$$
+
+它描述了在当前点附近，数据分布的对数密度增长最快的方向.换句话说，分数函数并不直接给出概率值本身，而是刻画了分布在局部空间中的“几何形状”：若沿着 $\nabla _ { x } \log p ( { \pmb x } )$ 的方向移动，样本就会被推向更高概率的区域.因此，在生成模型中，学习分数函数等价于学习一个“把样本拉回数据流形附近”的方向场，而不必显式写出完整的归一化密度函数.
+
+这一思想在扩散模型中尤其自然.对每一个噪声水平t，带噪样本都服从一个分布 $p _ { t } ( { \pmb x } )$ ；如果能够学习其分数函数 $\nabla _ { x } \log p _ { t } ( \pmb { x } )$ ，就等于学会了“在当前噪声尺度下，应当朝哪个方向去噪”.因此，预测分数函数的一个重要好处在于：它把扩散模型从“离散时间上的逐步恢复样本”推广为“连续时间上学习一个随噪声水平变化的去噪方向场”.
+
+在给定 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 时，条件分布 $q ( \pmb { x } _ { t } | \pmb { x } _ { 0 } )$ 是高斯分布，其分数函数为
+
+$$
+\nabla _ { \pmb { x } _ { t } } \log q ( \pmb { x } _ { t } | \pmb { x } _ { 0 } ) = - \frac { \pmb { x } _ { t } - \sqrt { \bar { \alpha } _ { t } } \pmb { x } _ { 0 } } { 1 - \bar { \alpha } _ { t } } = - \frac { 1 } { \sqrt { 1 - \bar { \alpha } _ { t } } } \pmb { \epsilon } .\tag{16.80}
+$$
+
+这说明，预测噪声与预测分数函数本质上只差一个与时间步有关的尺度因子.因此，两者在表达能力上是等价的，只是输出对象不同.分数函数的监督信号来
+
+自去噪分数匹配（Denoising Score Matching, DSM):向数据添加已知噪声后，分数函数等于噪声方向的负值除以噪声标准差.DDPM中的噪声预测目标正是DSM在特定参数化下的等价形式 [Song et al., 2021b].
+
+## 16.4.3.4 预测速度
+
+为了更直观地理解速度参数化，可以把扩散过程看成在由原始样本 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 与噪声∈张成的二维子空间内逐步旋转的过程.扩散状态满足
+
+预测分数函数更接近连续时间分数模型和随机微分方程的表述，预测噪声则更贴近离散时间推导.
+
+$$
+\pmb { x } _ { t } = \sqrt { \bar { \alpha } _ { t } } \pmb { x } _ { 0 } + \sqrt { 1 - \bar { \alpha } _ { t } } \pmb { \epsilon } .\tag{16.81}
+$$
+
+这里， $\sqrt { \bar { \alpha } _ { t } }$ 与 $\sqrt { 1 - \bar { \alpha } _ { t } }$ 刻画了当前状态在“图像方向”和“噪声方向”上的权重.由于 $\bar { \alpha } _ { t } + ( 1 - \bar { \alpha } _ { t } ) = 1$ ，因此可以把它们看成某个角度 $\theta _ { t }$ 对应的余弦和正弦，即
+
+速度参数化的几何示意图：
+
+$$
+\sqrt { \bar { \alpha } _ { t } } = \cos \theta _ { t } , \qquad \sqrt { 1 - \bar { \alpha } _ { t } } = \sin \theta _ { t } .\tag{16.82}
+$$
+
+于是 $\mathbf { \boldsymbol { x } } _ { t }$ 可以改写为
+
+$$
+\begin{array} { r } { \pmb { x } _ { t } = \cos \theta _ { t } \pmb { x } _ { 0 } + \sin \theta _ { t } \pmb { \epsilon } . } \end{array}\tag{16.83}
+$$
+
+![](images/d821bdbf869f97fd7b294785dd782b708baeeec2c75f3be5299fb0ef8d86c103.jpg)（描述：二维平面中的几何示意图，展示向量x_t在由x_0和ε张成的子空间中随角度θ_t旋转的过程）  
+$\hat { \alpha } _ { t }$ 可以看成一个“旋转进度条”，它把抽象的时间步t转化成了更直观的几何位置.
+
+若只关注 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 与 $\epsilon$ 张成的二维子空间中的几何关系，那么扩散过程可以理解为状态从“更接近原始图像”逐步旋转到“更接近纯噪声”的过程，而 $\hat { \alpha } _ { t }$ 则决定了当前状态在这条轨迹上的位置.
+
+速度参数化（v-parameterization)定义为
+
+$$
+{ \pmb v } = \sqrt { \bar { \alpha } _ { t } } { \pmb \epsilon } - \sqrt { 1 - \bar { \alpha } _ { t } } { \pmb x } _ { 0 } .\tag{16.84}
+$$
+
+把式(16.82)代入上式，可得
+
+$$
+\begin{array} { r } { \pmb { v } = \cos \theta _ { t } \epsilon - \sin \theta _ { t } \pmb { x } _ { 0 } . } \end{array}\tag{16.85}
+$$
+
+这正是与式(16.83)对应的一个标准正交旋转．也就是说， ${ \mathbf { } } _ { { \mathbf { } } _ { \pmb { x } _ { t } } }$ 对应圆周上的径向方向，而υ对应与其正交的切向方向.于是， $\mathbf { \boldsymbol { x } } _ { t }$ 决定了当前状态在“图像-噪声”平面中的位置，而v则描述了该状态沿扩散轨迹继续演化的瞬时方向.速度变量并不是物理意义上的真实速度，而是一种更对称、更几何化的参数化方式
+
+因此，我们可以让网络直接预测速度 $\hat { v } .$ 由公式(16.81)和(16.84)可得对应的原始样本估计
+
+$$
+\begin{array} { r } { \hat { \pmb x } _ { 0 } = \sqrt { \bar { \alpha } _ { t } } \pmb x _ { t } - \sqrt { 1 - \bar { \alpha } _ { t } } \hat { \pmb v } . } \end{array}\tag{16.86}
+$$
+
+## 16.4.3.5 四种预测目标之间的关系
+
+从整体上看，预测 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 、预测∈、预测分数函数以及预测v，本质上都在描述同一个反向去噪过程，只是参数化方式不同.它们之间可以相互转换.这四种预测在表达能力上并没有本质差别；真正的差别主要体现在训练目标的尺度、不同时间步上的数值性质，以及它们与离散时间推导、连续时间视角和快速采样器之间的适配方式.
+
+（1）预测 $\scriptstyle { \pmb x } _ { 0 }$ :当t很大时，样本中的原始信息已经很弱，等于要求模型几乎从强噪声中直接恢复干净样本，数值波动较大；但当t很小时，这一任务又相对容易.
+
+（2）预测∈：当t很小时，噪声分量本来就很弱，梯度信号可能偏小；但当t很大时，噪声占主导，预测往往更容易.
+
+（3）预测分数函数：本质上与预测∈只差一个与时间步有关的尺度因子，因此表达能力等价；不过它更自然地对应连续时间分数模型与反向SDE表述，在理论分析与连续时间采样器推导中更方便.
+
+(4）预测 $\pmb { v } :$ 它把 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 与∈的信息更对称地结合起来，往往能在整个时间轴上保持更平衡的数值范围，因此在一些进阶模型中更受青睐.
+
+值得注意的是，尽管四种预测在数学上可以相互转换，但当数据的内在维数远小于其所处空间的维数时，不同参数化的表现可能存在显著差异.
+
+![](images/92973d7c910e028fde28e79db703dd9d8bfe6a2e4610d0c5d00fe215f71b4684.jpg)（描述：该图是关于去噪过程的示意图，展示了在不同时间步上对数据进行去噪的流程，与正文中的单步去噪能力训练方法相关）
+
+在实际训练中，通常从 $\{ 1 , 2 , \cdots , T \}$ 中均匀采样一个时间步t，构造相应的 $\mathbf { \Delta } _ { \mathbf { \mathcal { X } } _ { t } }$ ，再用公式(16.78)更新网络参数.也就是说，训练时网络学习的是“任意噪声水平上的单步去噪能力”，而不必在一次前向传播中显式累加所有时间步的损失.
+
+## 16.4.4 扩散模型的采样方法
+
+模型训练完成后，网络已经学会在不同噪声水平下预测 $\hat { \mathbf { x } } _ { 0 }$ 一 $\hat { \epsilon } .$ v或分数函数.接下来的问题就变成：如何利用这些预测结果，从纯噪声 $\mathbf { \boldsymbol { x } } _ { T } \sim \mathcal { N } ( \mathbf { \boldsymbol { 0 } } , I )$ 出发，逐步得到 $\pmb { x } _ { T - 1 } , \pmb { x } _ { T - 2 } , \cdots , \pmb { x } _ { 0 } ?$ 从这个意义上说，扩散模型的采样本质上是在数值求解一个反向去噪过程：去噪网络决定每一步“应当朝哪个方向恢复”，而采样器决定“以什么离散化方式前进、是否在中间注入随机性，以及需要多少步才能得到质量足够好的样本”.
+
+最早的去噪扩散概率模型（Denoising Diffusion Probabilistic Model,DDPM)采样直接按照离散时间上的反向马尔可夫链逐步去噪；随后，去噪扩散隐式模型（Denoising Diffusion Implicit Model, DDIM）指出可以在保持相同
+
+已有理论分析表明[Liet al., 2025]，在这种低内在维数的情况下，直接预测 $\scriptstyle { \mathbf { x } _ { 0 } }$ 可能是最优方案，而预测噪声€或预测速度v都可能导致训练退化. 其直觉在于：数据本身可以被压缩到低维流形上，但前向过程所添加的高维噪声无法被同样压缩，这使得以噪声或速度为预测目标时，网络需要在一个与数据结构不匹配的空间中工作.
+
+训练目标的前提下，采用更高效的非马尔可夫生成路径[Ho et al., 2020; Song et al., 2021a].
+
+## 16.4.4.1 DDPM采样:随机的逐步去噪
+
+在DDPM中，最直接的做法是把训练得到的反向条件分布
+
+$$
+p _ { \theta } ( \pmb { x } _ { t - 1 } \mid \pmb { x } _ { t } ) = \mathcal { N } ( \pmb { x } _ { t - 1 } ; \pmb { \mu } _ { \theta } ( \pmb { x } _ { t } , t ) , \sigma _ { t } ^ { 2 } I )\tag{16.87}
+$$
+
+逐步串联起来，从 $t = T$ 一直采样到t = 1. 在噪声预测参数化下，若网络给出$\hat { \pmb { \epsilon } } = \pmb { \epsilon } _ { \theta } ( \pmb { x } _ { t } , t )$ ,则首先由
+
+$$
+\hat { \pmb { x } } _ { 0 } = \frac { 1 } { \sqrt { \bar { \alpha } _ { t } } } \left( \pmb { x } _ { t } - \sqrt { 1 - \bar { \alpha } _ { t } } \hat { \epsilon } \right)\tag{16.88}
+$$
+
+恢复出当前对干净样本的估计，再据此构造反向均值.把它整理后，可得常见的一步更新公式
+
+$$
+\boldsymbol { x } _ { t - 1 } = \frac { 1 } { \sqrt { \alpha _ { t } } } \left( \boldsymbol { x } _ { t } - \frac { \beta _ { t } } { \sqrt { 1 - \bar { \alpha } _ { t } } } \hat { \boldsymbol { \epsilon } } \right) + \sigma _ { t } \boldsymbol { z } , \qquad \boldsymbol { z } \sim \mathcal { N } ( \mathbf { 0 } , I ) .\tag{16.89}
+$$
+
+若取 $\sigma _ { t } ^ { 2 } = \tilde { \beta } _ { t }$ ，就得到标准的祖先采样（ancestral sampling）形式；在最后一步通常不再额外加入随机噪声.由于每一步都显式从条件高斯分布中抽样，这种方法与训练时假设的随机反向过程最一致，通常具有较好的稳定性与样本质量，但缺点也很明显：为了逼近连续的去噪轨迹，往往需要数百步甚至上千步的网络评估，推断速度较慢.
+
+从直观上看，DDPM采样的特点可以概括为两点：一方面，它不仅沿着网络预测的“去噪方向”前进，还在每一步加入适量随机扰动，因此同一个初始噪声可以对应多种可能的生成路径；另一方面，正因为这种随机性存在，采样过程更接近真正的概率生成过程，但也更难在很少的步数下保持质量.
+
+## 16.4.4.2 DDIM采样:确定性与少步加速
+
+DDPM的一个核心瓶颈在于采样步数太多.为此，DDIM指出：在保持相同训练目标的前提下，可以把原来的反向马尔可夫链推广为一类非马尔可夫生成过程，并构造出更高效的采样路径.在DDIM中，一步更新通常写为
+
+$$
+\begin{array} { r } { x _ { t - 1 } = \sqrt { \bar { \alpha } _ { t - 1 } } \hat { x } _ { 0 } + \sqrt { 1 - \bar { \alpha } _ { t - 1 } - \sigma _ { t } ^ { 2 } } \hat { \epsilon } + \sigma _ { t } z , \qquad z \sim \mathcal { N } ( \mathbf { 0 } , I ) , } \end{array}\tag{16.90}
+$$
+
+其中 $\hat { \mathbf { x } } _ { 0 }$ 和 $\hat { \epsilon }$ 由当前网络预测得到，而 $\sigma _ { t }$ 不再必须取为DDPM中的后验方差.常见的写法是令
+
+$$
+\sigma _ { t } ( \eta ) = \eta \sqrt { \frac { 1 - \bar { \alpha } _ { t - 1 } } { 1 - \bar { \alpha } _ { t } } } \sqrt { 1 - \frac { \bar { \alpha } _ { t } } { \bar { \alpha } _ { t - 1 } } } , \qquad \eta \in [ 0 , 1 ] .\tag{16.91}
+$$
+
+https://nndl.ai/
+
+其中 $\eta$ 控制生成路径中的随机性：当 $\eta = 0$ 时，采样过程变为确定性的；当 $\eta$ 取较大值时，则保留更多随机性.
+
+DDIM之所以重要，不只是因为它给出了一条具体公式，更重要的是它揭示了一个事实：训练目标并不唯一决定采样路径.同一个去噪网络，可以对应多种不同的反向离散化方式.这样一来，人们就可以不再拘泥于“必须按训练时的随机链一步不差地往回走”，而是主动寻找更高效的近似路径.实践中，DDIM常常可以减少采样步数，同时仍保持较好的样本质量，因此成为扩散模型早期常用的加速采样方法之一.
+
+事实上，DDPM和DDIM都可以被统一理解为连续时间动力系统的不同离散化方式.这一更深层的连续时间视角，以及在此基础上发展出的高阶快速采样算法，将在第16.5节介绍流匹配之后统一讨论.
+
+## 16.4.5 去噪网络与条件控制
+
+扩散模型的训练目标虽然可以有不同参数化形式，但在实现层面，最终都要落到一个核心模块上：去噪网络.它接收带噪样本 $\mathbf { \boldsymbol { x } } _ { t }$ 、当前噪声水平以及可能的条件信息 $^ c$ ，输出 $\hat { \mathbf { x } } _ { 0 }$ 、ê、θ或分数函数等预测结果.换言之，前面讨论的“四种预测模式”回答的是“网络应该预测什么”，而本小节进一步回答“网络如何完成这种预测，以及条件信息如何进入网络并影响整个去噪过程”.
+
+## 16.4.5.1 时间步编码与噪声水平表示
+
+去噪网络首先必须知道当前样本处于哪一个噪声水平.因为同样的输入模式，在t较小时只被轻微扰动，网络需要保留更多原始细节；而在t较大时样本几乎被噪声淹没，网络则更依赖全局统计规律来恢复结构.如果不告诉网络当前的时间步t或对应噪声强度，那么“轻度去噪”和“重度去噪”就会被混在一起，学习目标会变得含糊.
+
+因此，扩散模型通常会把t先映射为一个连续向量，再注入网络各层中.其作用与序列模型中的位置编码类似，但这里编码的不是“位置”，而是当前的噪声水平.在离散时间DDPM中，常见做法是先对t构造正弦余弦形式的时间步嵌入，再通过多层感知器映射到各层所需维度；在连续时间或噪声参数化的模型中，也常直接使用 $\sigma _ { t }$ 、log $\sigma _ { t }$ 或 $\log \frac { { \bar { \alpha } } _ { t } } { 1 - { \bar { \alpha } } _ { t } }$ 等量来刻画噪声强度.无论采用哪种具体形式其目标都是一致的：让网络能够根据当前噪声水平自适应地调整特征提取与去噪强度.
+
+从函数近似的角度看，时间步编码实际上把原本只依赖于 $\mathbf { \boldsymbol { x } } _ { t }$ 的映射扩展为
+
+$$
+f _ { \theta } : ( { \pmb x } _ { t } , t , { \pmb c } ) \longmapsto \hat { \pmb y } ,\tag{16.92}
+$$
+
+其中 $\hat { y }$ 表示某一种预测目标.这样，同一个网络就能够共享参数地处理所有时间步，而不必为每一个t单独训练一个模型.
+
+## 16.4.5.2 条件信息如何注入网络
+
+条件扩散模型的目标并不是“无约束地生成任意样本”，而是在给定条件c时，从条件分布中采样，即
+
+$$
+p _ { \theta } ( \pmb { x } _ { t - 1 } \mid \pmb { x } _ { t } , \pmb { c } ) .\tag{16.93}
+$$
+
+这里的条件 $^ c$ 可以有很多形式，例如类别标签、文本描述、语义分割图、姿态骨架、参考图像或音频提示等.不同条件的共同作用，都是把原本宽泛的生成空间收缩到与任务要求相符的子空间中.
+
+从实现上看，条件信息进入去噪网络的方式大致可以分为三类：
+
+（1）直接拼接或加和：当条件本身与输入具有相同或相近的空间结构时可以把它与 $\mathbf { \boldsymbol { x } } _ { t }$ 在通道维上拼接，或映射后逐元素加到特征图中.例如，语义分割图、边缘图、深度图等局部条件，常适合采用这种方式
+
+（2）特征调制：把条件向量映射成缩放和平移参数，对中间特征做仿射调制.这种方式适合把全局条件以较轻量的形式注入到各层特征中.
+
+（3）交叉注意力：把文本、标签或其他模态编码成一组条件词元（Token），再通过交叉注意力与图像特征交互.这种方式尤其适合文本到图像、图像到视频等多模态条件生成，也是隐空间扩散模型中常见的条件注入手段[Rombachet al., 2022].
+
+从直观上看，局部条件更适合通过空间对齐的方式注入，而全局语义条件更适合通过注意力或特征调制的方式注入，条件注入的位置也很重要：若只在输入层注入，条件信号在深层可能逐渐减弱；而若在多个尺度上重复注入，则更有利于条件信息贯穿整个逐步去噪过程
+
+## 16.4.5.3 引导机制:从分类器引导到无分类器引导
+
+即使已经把条件c输入给去噪网络，生成结果对条件的遵从程度仍然可能不够强.因此，扩散模型中还常进一步使用引导（guidance）机制，在采样阶段显式强化条件信号.
+
+一种经典方法是分类器引导（Classifier Guidance). 其基本思想是:先训练一个噪声条件分类器 $p _ { \varphi } ( y \mid x _ { t } )$ ，再在采样时利用
+
+$$
+\nabla _ { \pmb { x } _ { t } } \log p _ { \varphi } ( \pmb { y } \mid \pmb { x } _ { t } )\tag{16.94}
+$$
+
+来修正反向去噪方向，从而提高生成样本与目标类别y的一致性.它的优点是概念直接、控制明确；但缺点也很明显：需要额外训练一个在不同噪声水平下仍有效的分类器，工程代价较高.
+
+更常用的方法是无分类器引导（Classifier-Free Guidance，CFG）[Hoet al.,2022]. 它不再单独训练分类器，而是在训练去噪网络时，以一定概率随机丢弃条件信息，使同一个网络同时学会两种预测：
+
+$$
+\begin{array} { r } { \epsilon _ { \theta } ( \boldsymbol { x } _ { t } , \boldsymbol { c } , t ) , \qquad \epsilon _ { \theta } ( \boldsymbol { x } _ { t } , \boldsymbol { \emptyset } , t ) . } \end{array}\tag{16.95}
+$$
+
+采样时，再把有条件与无条件的预测线性组合为
+
+$$
+\hat { \epsilon } _ { \theta } ( x _ { t } , c , t ) = ( 1 + w ) \epsilon _ { \theta } ( x _ { t } , c , t ) - w \epsilon _ { \theta } ( x _ { t } , \emptyset , t ) ,\tag{16.96}
+$$
+
+$w \geq 0$ 为引导强度.这里的直观含义是：先由无条件模型给出“总体上自然的生成方向”，再由有条件模型给出“更符合条件的修正方向”，两者相减后相当于强化了与条件相关的成分.
+
+无分类器引导之所以有效，可以从概率分布的角度给出更清晰的解释.注意到噪声预测与分数函数之间的关系 $\epsilon _ { \theta } ( x _ { t } , c , t ) \propto - \nabla _ { x _ { t } } \log p ( x _ { t } | c )$ ,将CFG的组合公式转换为对数概率梯度的形式可得
+
+$$
+\begin{array} { r } { \nabla _ { \boldsymbol { x } _ { t } } \log \tilde { p } ( \boldsymbol { x } _ { t } | \boldsymbol { c } ) = \nabla _ { \boldsymbol { x } _ { t } } \log p ( \boldsymbol { x } _ { t } | \boldsymbol { c } ) + \boldsymbol { w } \cdot \nabla _ { \boldsymbol { x } _ { t } } \log p ( \boldsymbol { c } | \boldsymbol { x } _ { t } ) . } \end{array}\tag{16.97}
+$$
+
+对两边进行积分可知，CFG实际上等价于从一个修正后的目标分布中采样：
+
+$$
+\tilde { p } ( \pmb { x } _ { t } | \pmb { c } ) \propto p ( \pmb { x } _ { t } ) \cdot p ( \pmb { c } | \pmb { x } _ { t } ) ^ { 1 + w } .\tag{16.98}
+$$
+
+这个表达式清楚地表明：CFG并不是在从原始的条件数据分布 $p ( \pmb { x } _ { t } | \pmb { c } )$ 中采样，而是通过指数1+w放大了条件似然 $p ( { \pmb x } | { \pmb x } _ { t } )$ 的作用.当 $w = 0$ 时退化为贝叶斯后验 $p ( \pmb { x } _ { t } | \pmb { c } )$ ;当 $w > 0$ 时，目标分布越来越集中在使条件匹配度 $p ( { \pmb x } | { \pmb x } _ { t } )$ 最大的区域.这解释了为什么增大 $w$ 能提高条件一致性，但同时也会带来代价：多样性下降，过大的引导强度甚至可能导致样本过饱和、细节失真或出现不自然伪影.因此，在实际应用中，引导强度往往需要在“条件一致性”和“样本自然性”之间做权衡.
+
+从更高的层面看，条件控制并不是扩散模型生成结束后的后处理，而是贯穿于整个逐步去噪过程之中，也正因为如此，扩散模型能够比较自然地支持文本到图像、图像编辑、修复、超分辨率以及可控视频生成等任务：不同任务的关键区别，主要不在于改变生成机制本身，而在于如何设计条件表示、如何把条件信息注入去噪网络，以及在采样阶段如何适度地施加引导.
+
+## 16.4.5.4 U-Net 结构与其他骨干网络
+
+一种常见的去噪网络是U形网络（U-Net)结构[Ronneberger et al., 2015].这类结构最初用于图像分割任务，其核心思想是通过“编码器-解码器+跳跃连接”的形式，同时兼顾大范围上下文和局部精细细节．对于扩散去噪而言，这种结构尤其自然，因为去噪本身就是一个既依赖全局语义、又依赖局部纹理修复的过程：
+
+（1）在编码端逐步下采样，扩大感受野，提取更高层、更全局的语义信息；
+
+（2）在解码端逐步上采样，恢复空间分辨率，把高层语义重新映射回像素级输出；
+
+（3）通过跳跃连接把浅层特征直接传递到解码端，从而保留边缘、纹理和局部结构等细节信息.
+
+如果只有编码器而没有跳跃连接，网络虽然能更容易理解“图像里是什么”，却往往难以精确恢复“局部长什么样”；而单纯依赖浅层局部特征，又容易缺乏全局一致性.U-Net恰好在这两者之间取得了平衡，因此很适合作为扩散模型的去噪骨干.
+
+扩散模型中的U-Net通常并不是最原始的版本，而是在其基础上进一步加入了多种增强模块.例如，残差块有助于稳定深层训练；自注意力模块能够建模远距离依赖；交叉注意力模块则可把文本、类别、布局或参考图像等条件信息注入到中间特征中.这说明去噪网络的任务并不只是“局部滤波”式地消去噪声，而是在多尺度特征空间中综合利用上下文与条件信息，逐步推断出更合理的样本
+
+图16.14给出了图像扩散中常见的去噪网络示意：编码端逐步汇聚上下文，解码端逐步恢复分辨率，时间步和条件信息则在多个层级注入网络，实际模型中，时间步与条件信息通常会在多个层级中注入，而不仅仅只作用于一个位置
+
+![](images/62e3c7b2439eb71a3ba52e37199190a361f0e20a405a54495cae64c467cf6571.jpg)（描述：图16.14是扩散模型中常见的U-Net式去噪网络结构示意图，展示了编码器、解码器、瓶颈层以及时间步和条件信息的注入方式）  
+图 16.14 扩散模型中常见的U-Net 式去噪网络
+
+随着模型规模增大，纯卷积U-Net之外也出现了基于Transformer的扩散骨干，例如 DiT（Diffusion Transformer）一类结构 [Peebles et al.，2023]. 这类方法通常把隐变量切分成图块（patch）序列，再用Transformer进行全局建模.与 $\mathrm { U - N e t }$ 相比，Transformer骨干往往更便于随模型规模扩展，并且与大规模预训练和统一多模态建模更容易结合；但从本质上看，它们仍然是在完成同一件事：在给定噪声水平和条件信息的情况下，预测反向去噪所需的目标量.
+
+## 16.4.6 隐空间扩散模型
+
+前面介绍的去噪网络、时间步编码以及条件注入机制，大多是在“某个表示空间中进行逐步去噪”这一统一框架下展开的.最直接的做法是在像素空间中扩散，但对于高分辨率图像而言，像素张量维度很高，每一步去噪都要处理巨大的特征图，训练和采样的代价都比较大.于是，一个自然的问题是：扩散过程是否一定要在原始像素空间中进行?
+
+隐空间扩散模型（Latent Diffusion Model，LDM）给出的答案是否定的.它的基本思想是：先用自动编码器把图像压缩到一个更紧凑的隐空间，再在这个隐空间中训练扩散模型，最后把生成得到的隐变量解码回像素空间.这样做并不是简单地“先降维再生成”，而是试图把生成任务拆成两个层次：
+
+（1）自动编码器负责把图像映射到一个更适合建模的表示空间，并在解码时恢复局部纹理与细节；
+
+（2）扩散模型则主要在这个表示空间中学习高层语义结构、空间布局以及条件控制下的逐步生成过程.
+
+从这个角度看，隐空间扩散模型其实是前面两节内容的自然延伸：前面“去噪网络与条件控制”讨论的是在给定表示空间中如何逐步去噪并注入条件，而这里进一步讨论的是为什么要把这个表示空间从像素空间换成隐空间，以及这样做会带来什么收益和代价
+
+## 16.4.6.1 隐空间扩散模型的基本框架
+
+隐空间扩散模型通常分为两个阶段.
+
+第一阶段是训练自动编码器.给定图像x，编码器E把它映射到隐变量 $z =$ $E ( { \pmb x } )$ ,解码器 $D$ 再根据 $_ z$ 恢复图像 $\hat { \pmb x } = D ( \pmb z )$ .这里的隐空间既要足够紧凑，以降低后续扩散建模的代价；又不能过于粗糙，否则会在压缩过程中丢失过多语义与细节信息.
+
+第二阶段是在隐空间中训练扩散模型.若记
+
+$$
+z _ { 0 } = E ( { \pmb x } ) ,\tag{16.99}
+$$
+
+则前向加噪过程写为
+
+$$
+\begin{array} { r } { z _ { t } = \sqrt { \bar { \alpha } _ { t } } z _ { 0 } + \sqrt { 1 - \bar { \alpha } _ { t } } \epsilon , \epsilon \sim \mathcal { N } ( \mathbf { 0 } , I ) , } \end{array}\tag{16.100}
+$$
+
+https://nndl.ai/
+
+对应的噪声预测目标可写为
+
+$$
+\mathcal { L } _ { \mathrm { L D M } } ( \theta ) = \mathbb { E } _ { \boldsymbol { x } , t , \epsilon } \Big [ \| \boldsymbol { \epsilon } - \boldsymbol { \epsilon } _ { \theta } ( \boldsymbol { z } _ { t } , t ) \| ^ { 2 } \Big ] .\tag{16.101}
+$$
+
+可以看到，这个目标与像素空间扩散模型在形式上几乎完全一致，真正变化的是：模型不再对 $\mathbf { \boldsymbol { x } } _ { t }$ 去噪，而是对隐变量 $ { \boldsymbol { z } } _ { t }$ 去噪.因此，LDM并不是重新发明了一套新的扩散训练方法，而是把前面已经介绍过的扩散训练与采样框架，迁移到了一个更紧凑、更偏语义的表示空间中.
+
+如果需要条件生成，还可以把文本、类别标签、分割图或布局等信息编码为条件表示c，并通过拼接、条件规范化或交叉注意力等方式注入去噪网络.于是，条件隐空间扩散的目标可写为
+
+$$
+\begin{array} { r } { \mathcal { L } _ { \mathrm { L D M } } ( \theta ) = \mathbb { E } _ { \mathbf { x } , c , t , \epsilon } \Big [ \| \epsilon - \epsilon _ { \theta } ( z _ { t } , t , c ) \| ^ { 2 } \Big ] . } \end{array}\tag{16.102}
+$$
+
+比如文本到图像模型经常先用文本编码器把文本提示词映射为一组条件词元，再通过交叉注意力与隐空间特征交互.
+
+图16.15给出了隐空间扩散模型的典型结构：先用自动编码器把高维图像压缩到隐空间，再在隐空间中执行扩散与去噪，并通过交叉注意力等机制把文本条件注入去噪网络.
+
+![](images/22b614ac56cba78317b61efec315a83c956d363803c42488759f2476a3cabb99.jpg)（描述：该图为隐空间扩散模型的基本框架示意图，展示了从图像输入到编码器、隐变量、前向加噪、去噪网络（含交叉注意力机制）、解码器再到生成图像的完整流程）  
+图16.15 隐空间扩散模型的基本框架
+
+隐空间扩散模型的优势主要体现在三个方面.首先，隐空间维度通常远低于原始像素空间，因此无论训练还是采样，每一步需要处理的张量都更小，计算与显存开销明显降低.其次，自动编码器已经在一定程度上把局部冗余压缩掉，使得扩散模型可以把更多建模能力集中在对象结构、语义关系和全局布局等更高层的信息上.再次，条件信息通过交叉注意力等机制注入隐空间去噪网络后，往往比在高分辨率像素空间中直接建模更高效，也更容易扩展到文本到图像、图像编辑、多模态生成等场景.
+
+不过，这种做法并不是没有代价，由于扩散过程发生在隐空间中，最终生成质量不仅取决于去噪网络本身，还强烈依赖自动编码器的压缩与重建能力．如果隐空间过于粗糙，或者解码器无法很好地恢复细节，那么后续扩散过程即使已经在隐空间中生成了“正确的语义结构”，也可能在还原到像素空间时出现纹理缺失、细节模糊甚至伪影.因此，隐空间扩散模型本质上是在计算效率与信息保真之间做折中：隐空间压缩得越强，生成越高效，但也越容易损失细节；隐空间保留的信息越多，重建质量越高，但扩散建模的成本也会随之上升
+
+这里存在一个更深层的问题：隐空间的表示主要由自动编码器的重建目标所决定，而并非为扩散模型的生成目标量身设计．简单增加隐空间的通道维数虽然可以保留更多信息、提升重建质量，但扩散模型在这个更高维的隐空间中进行生成时，效果往往反而会下降[Yao et al.,2025]. 这表明重建效果的提升并不必然带来生成质量的提升，两个目标之间存在固有的张力.
+
+针对这一问题，一类后续工作尝试调节隐空间的数据表征，使其更加契合扩散模型 “从粗到细”的生成特性 [Ning et al., 2025; Skorokhodov et al., 2025].其基本思想是：如果隐空间中的表示能够按照语义层次有序组织—低频的全局结构在早期去噪步骤中就可以被捕获，高频的局部细节留到后期再逐步填充—那么扩散模型的建模难度就会降低，生成质量也会随之提升
+
+StableDiffusion（稳定扩散模型）是这一路线的代表性模型之一，其核心思想可以概括为：先压缩，再扩散，最后解码.它表明，扩散模型并不一定要在原始像素空间中工作；只要隐空间具有足够好的语义表达能力和重建能力，扩散过程完全可以在隐空间中完成.事实上，隐空间扩散模型中使用的编码器也不必局限于传统的 VAE架构. 例如，已有研究表明[Zheng et al., 2025]，扩散模型可以直接在预训练视觉基础模型（如DINOv2）的特征空间中进行学习，只需训练一个轻量级的解码器将特征映射回像素空间即可．这进一步拓宽了隐空间扩散模型的设计空间，说明只要特征空间具备足够的语义表达能力，扩散建模就不必依赖端到端训练的自动编码器.也正因为如此，隐空间扩散模型成为许多大规模文本到图像系统中的一个关键技术节点：前面的去噪网络、时间步建模、交叉注意力和无分类器引导等技术，大多都可以自然地迁移到这一框架中，并在更可承受的计算成本下运行.
+
+## 16.5 流匹配
+
+扩散模型的核心思路是“先加噪，再去噪”:通过预先设计一个破坏数据的随机过程，再让网络学习如何反向恢复.一个自然的问题是：能不能不绕这个弯，直接学习一个从简单分布到数据分布的变换？
+
+流匹配（Flow Matching）正是沿着这一思路的方法[Lipman et al., 2023].它把生成过程想象为粒子在空间中的流动：从一团高斯噪声出发，每个粒子沿着一个速度场平滑地移动，最终在目标数据分布上停下．只要学会了这个速度场，生成样本就等价于求解一个常微分方程.
+
+与扩散模型相比，流匹配的常见特点在于：(1）不需要先定义一个固定的前向加噪过程，训练目标更简洁；(2）传输路径可以被设计得更直，从而有机会减少采样步数；(3）概念上更加直观—网络学到的就是“粒子在每个时刻该往哪个方向移动”.
+
+![](images/3607882f77f41413f8c9df4f45ec528ed1a68c46aaa763fcc3d05a311dc1ffaa.jpg)（描述：示意图，展示流匹配中粒子在不同时间点的移动路径，用于解释其数学框架）
+
+为了理解流匹配的数学框架，我们先简要回顾微分方程的基本概念
+
+## 数学小知识|常微分方程与随机微分方程
+
+常微分方程（Ordinary Differential Equation,ODE）描述一个变量随时间的演化规则. 给定一个速度场(Velocity Field) v(x, t),ODE
+
+$$
+\frac { d \pmb { x } } { d t } = \pmb { v } ( \pmb { x } , t )
+$$
+
+规定了在每个时刻t、每个位置x处的运动方向和速度.从初始点 $\scriptstyle { \pmb x } _ { 0 }$ 出发，沿速度场积分即可得到任意时刻的位置 $\mathbf { \Delta x } _ { t } .$ 这条轨迹称为一条流线对应的映射 $\phi _ { t } \colon \pmb { x } _ { 0 } \mapsto \pmb { x } _ { t }$ 称为流映射.
+
+ODE通常无法求得解析解，需要用数值方法近似求解．最简单的是欧拉法（EulerMethod）：将时间区间分为N小步，每步沿当前速度前进一小段 ${ \mathbf { \nabla } } : { \pmb x } _ { t + \Delta t } \approx { \pmb x } _ { t } + v ( { \pmb x } _ { t } , t ) \Delta t .$ 步数越多，近似越精确，但计算开销也越大.
+
+在ODE中加入随机扰动项，就得到随机微分方程（Stochastic Dif-ferential Equation,SDE):
+
+$$
+\begin{array} { r } { d \mathbf { x } = v ( \mathbf { x } , t ) d t + \sigma ( t ) d \mathbf { w } , } \end{array}
+$$
+
+其中 w为布朗运动（Brownian Motion）—一种连续时间的随机游走.SDE定义的不再是一条确定的轨迹，而是一族随机轨迹
+
+扩散模型的前向加噪过程本质上就是一个SDE：确定性部分让信号逐步衰减，随机部分不断注入噪声.
+
+本节先从连续标准化流出发，介绍流匹配的理论根基和直观图景：然后给出条件流匹配这一核心训练方法；再回头用统一的连续时间视角审视扩散模型理清两类方法的联系与差异；最后讨论采样加速和路径选择等实际问题
+
+## 16.5.1 连续标准化流
+
+标准化流（NormalizingFlow）是一类通过一系列可逆变换把简单分布映射为复杂分布的生成模型.其数学基础是概率分布的变量替换公式.
+
+雅可比矩阵参见第B.3节.
+
+## 数学小知识｜雅可比行列式与变量替换
+
+函数 $\begin{array} { r } { \boldsymbol { y } = \boldsymbol { f } ( \boldsymbol { x } ) } \end{array}$ 的雅可比矩阵的行列式 $\operatorname* { d e t } \left( { \frac { \partial { \pmb y } } { \partial { \pmb x } } } \right)$ 称为雅可比行列式(Jacobian Determinant).雅可比行列式的绝对值描述了从x到y的映射在局部的体积缩放因子
+
+如果x服从分布 $p _ { \pmb { x } } ( \pmb { x } )$ ，且 $\begin{array} { r } { \boldsymbol { y } = \boldsymbol { f } ( \boldsymbol { x } ) } \end{array}$ 为可逆可微映射，那么y的概率密度满足变量替换公式：
+
+$$
+p _ { y } ( \pmb { y } ) = p _ { \pmb { x } } \big ( f ^ { - 1 } ( \pmb { y } ) \big ) \left| \operatorname* { d e t } \frac { \partial f ^ { - 1 } } { \partial \pmb { y } } \right| = p _ { \pmb { x } } ( \pmb { x } ) \left| \operatorname* { d e t } \frac { \partial f } { \partial \pmb { x } } \right| ^ { - 1 } ,\tag{16.103}
+$$
+
+其中 $\textstyle { \frac { \partial f } { \partial \mathbf { x } } }$ 为变换f的雅可比矩阵.
+
+![](images/7598e2bae6d1837d5b1b6796844d00b043a4df00ed95b60dd8a68146b4f7ea89.jpg)（描述：示意图，展示变量变换前后概率密度的变化，包含两个概率分布曲线和空间拉伸与密度降低的关系说明）
+
+直观上，可逆变换在局部对空间进行拉伸或压缩，为了保持概率总量守恒，密度必须相应地缩放，缩放因子正是雅可比行列式的绝对值的倒数.以一维情形为例，若 $y = 2 x$ ,则 $p _ { y } ( y ) = p _ { x } ( y / 2 ) \cdot | 1 / 2 |$ 密度被“拉伸”后需相应缩小，使得总概率仍为1.
+
+给定基础分布 $p _ { 0 } ( z _ { 0 } )$ (如标准高斯分布），标准化流通过一系列可逆且可微的变换 $f _ { 1 } , f _ { 2 } , \cdots , f _ { K }$ 逐步将 $z _ { \mathrm { 0 } }$ 映射为 $z _ { K }$ ，使其分布逼近目标数据分布x（如图16.16所示). 每一步变换后的密度都可以通过公式(16.103)精确计算.但离散标准化流的每一步变换为了保证可逆性和雅可比行列式的高效计算，结构设计受到较大限制.
+
+![](images/d5f5e362e927b929c01d57fd88b00c19c1e2c7e2c9e2761d686c684a8f26fa9a.jpg)（描述：示意图，展示标准化流通过一系列可逆变换从基础分布逐步映射到目标数据分布的过程）  
+图16.16 标准化流的基本结构  
+连续标准化流(Continuous Normalizing Flow,CNF) [Chen et al., 2018]
+
+则直接定义一个连续时间的动力系统，用神经网络参数化的速度场 $v _ { \theta } ( { \pmb x } , t )$ 来定义一个常微分方程(ODE):
+
+$$
+\frac { d \pmb { x } _ { t } } { d t } = v _ { \theta } ( \pmb { x } _ { t } , t ) , \qquad t \in [ 0 , 1 ] ,\tag{16.104}
+$$
+
+其中 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 服从基础分布 $p _ { 0 }$ （如标准高斯）， $\scriptstyle { \mathbf { { \vec { x } } } } _ { 1 }$ 的分布即为模型生成的数据分布.这个ODE定义了一个从t = 0到t = 1的连续流映射 $\cdot _ { \phi _ { t } }$ :给定初始点 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ ,沿速度场积分就得到终点 ${ \pmb x } _ { 1 } = \phi _ { 1 } ( { \pmb x } _ { 0 } )$
+
+这里 $\mathbf { \boldsymbol { x } } _ { 0 } , \mathbf { \boldsymbol { x } } _ { 1 }$ 的定义刚好和扩散模型相反.
+
+与离散标准化流相比，CNF不必专门把每一层设计成易求逆、易求雅可比行列式的结构；只要速度场满足适当的光滑性或Lipschitz条件，ODE定义的流映射就具有可逆性.
+
+可以把概率密度 $p _ { t } ( { \pmb x } )$ 想象为一种“流体”，速度场 $v _ { \theta }$ 则规定了流体在每个时刻、每个位置的流动方向和速率.流体在运动过程中总量守恒，只是从一处流向另一处.这个守恒关系由连续性方程（Continuity Equation）精确刻画：
+
+$$
+\frac { \partial p _ { t } ( { \pmb x } ) } { \partial t } + \nabla \cdot ( p _ { t } ( { \pmb x } ) v _ { \theta } ( { \pmb x } , t ) ) = 0 .\tag{16.105}
+$$
+
+第一项是密度随时间的变化，第二项是速度场 $v _ { \theta }$ 对密度 $p _ { t }$ 的输运效应；两者之和为零，正对应概率总量守恒. 公式(16.105)可以看作变量替换公式(16.103)在连续时间下的微分形式
+
+$\begin{array} { r } { \nabla \cdot \pmb { v } = \sum _ { i } \frac { \partial v _ { i } } { \partial x _ { i } } } \end{array}$ 称为向量场v的散度，衡量向量场在某点的“散开”或“汇聚”程度：散度为正表示该点在发射流体(密度降低)，散度为负则表示流体在汇聚(密度升高).
+
+沿着一条流线，对数密度的变化可由瞬时变量替换公式（InstantaneousChange of Variables)给出:
+
+$$
+\log p _ { 1 } ( { \pmb x } _ { 1 } ) = \log p _ { 0 } ( { \pmb x } _ { 0 } ) - \int _ { 0 } ^ { 1 } \nabla \cdot { \boldsymbol v } _ { \theta } ( { \pmb x } _ { t } , t ) d t .\tag{16.106}
+$$
+
+也就是说，要计算终点 $\mathbf { \boldsymbol { x } } _ { 1 }$ 的似然，只需沿着流线积累速度场的散度.
+
+然而，计算散度 $\nabla$ $v _ { \theta }$ 的代价与数据维度d成正比，且训练时每一步都需要对ODE进行数值积分，这使得直接最大化对数似然的训练成本很高．流匹配方法正是为了解决这个难题而提出的：用一个更简单的回归目标来训练CNF，绕开似然和散度计算
+
+## 16.5.2 条件流匹配
+
+流匹配的核心目标是训练速度场 $v _ { \theta } ( { \pmb x } , t )$ ，使其定义的流能把基础分布 $p _ { 0 }$ 映射为数据分布 $p _ { 1 } \approx p _ { \mathrm { d a t a } }$ .假设存在一条理想的概率路径 $p _ { t } ( { \pmb x } )$ (从 $p _ { 0 }$ 到 $p _ { 1 } )$ 及其对应的目标速度场 ${ u } _ { t } ( \pmb { x } )$ ，最自然的训练目标是
+
+$$
+\mathcal { L } _ { \mathrm { F M } } ( \theta ) = \mathbb { E } _ { t \sim \mathcal { U } [ 0 , 1 ] } \mathbb { E } _ { { \pmb x } \sim { \pmb p } _ { t } ( { \pmb x } ) } \left\| v _ { \theta } ( { \pmb x } , t ) - u _ { t } ( { \pmb x } ) \right\| ^ { 2 } .\tag{16.107}
+$$
+
+https://nndl.ai/
+
+这就是边际流匹配目标.然而，边际分布 $p _ { t } ( { \pmb x } )$ 和目标速度场 $u _ { t } ( \pmb { x } )$ 都没有解析形式，无法直接计算
+
+条件流匹配（Conditional FlowMatching，CFM）的关键洞察是：虽然直接建模“整体如何从噪声变成数据”很困难，但如果固定一个具体的数据点 $\scriptstyle { \mathbf { { x } } } _ { 1 }$ 作为终点，再设计一条从噪声到它的路径，就变得非常简单—最简单的就是一条直线.
+
+这个思路可以用一个类比来理解：城市里几百万辆车的整体流动规律难以直接描述，但每一辆车自己的行驶路径（起点到目的地）却很容易描述.如果我们知道每辆车的个体路径，就可以通过平均得到整体的车流规律.
+
+数学上，这对应于把边际概率路径写成条件路径的混合：
+
+$$
+p _ { t } ( { \pmb x } ) = \int p _ { \mathrm { d a t a } } ( \pmb x _ { 1 } ) p _ { t | 1 } ( \pmb x | \pmb x _ { 1 } ) d \pmb x _ { 1 } ,\tag{16.108}
+$$
+
+其中 $p _ { t | 1 } ( \pmb { x } | \pmb { x } _ { 1 } )$ 是以数据点 $\scriptstyle { \mathbf { { x } } } _ { 1 }$ 为终点的条件概率路径.对应地，在时刻t的位置$_ { \textbf { \em x } }$ 处，可能有多条来自不同数据点的条件路径经过边际速度场就是这些条件速度的加权平均：
+
+$$
+u _ { t } ( \pmb { x } ) = \mathbb { E } _ { \pmb { x } _ { 1 } \sim p _ { 1 \mid t } ( \cdot | \pmb { x } ) } \left[ u _ { t } ( \pmb { x } | \pmb { x } _ { 1 } ) \right] .\tag{16.109}
+$$
+
+尽管边际速度场 $u _ { t } ( \pmb { x } )$ 本身无法直接计算，但可以证明直接对条件速度场做回归和对边际速度场做回归的梯度是一致的．这意味着训练时我们只需要处理简单的条件目标，就能在梯度意义上优化同一个边际目标—网络会在每个位置上学习“平均”所有经过的条件路径.
+
+具体来说，定义从噪声 $\scriptstyle { \mathbf { { x } } _ { 0 } }$ 到数据 $\mathbf { \boldsymbol { x } } _ { 1 }$ 的线性插值路径：
+
+$$
+\begin{array} { r } { x _ { t } = ( 1 - t ) { \pmb x } _ { 0 } + t { \pmb x } _ { 1 } , \qquad { \pmb x } _ { 0 } \sim \mathcal { N } ( \mathbf { 0 } , I ) , \quad { \pmb x } _ { 1 } \sim p _ { \mathrm { d a t a } } , } \end{array}\tag{16.110}
+$$
+
+对应的条件速度场为 $u _ { t } ( { \pmb x } _ { t } | { \pmb x } _ { 1 } ) = { \pmb x } _ { 1 } - { \pmb x } _ { 0 }$ ,即从 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 到 $\scriptstyle { \mathbf { { x } } } _ { 1 }$ 的匀速直线运动.条件流匹配的训练目标定义为
+
+$$
+{ \mathcal L } _ { \mathrm { C F M } } ( \theta ) = \mathbb E _ { t \sim \mathcal U [ 0 , 1 ] } \mathbb E _ { { \boldsymbol x } _ { 1 } \sim p _ { \mathrm { d a t a } } } \mathbb E _ { { \boldsymbol x } _ { 0 } \sim p _ { 0 } } \left. \boldsymbol v _ { \theta } ( { \boldsymbol x } _ { t } , t ) - ( { \boldsymbol x } _ { 1 } - { \boldsymbol x } _ { 0 } ) \right. ^ { 2 } ,\tag{16.111}
+$$
+
+其中 $\mathbf { \boldsymbol { x } } _ { t }$ 由公式(16.110)给出. 可以证明 ${ \mathcal { L } } _ { \mathrm { C F M } }$ 与边际流匹配目标 $\mathcal { L } _ { \mathrm { F M } }$ 具有相同的梯度，因此优化条件目标在梯度意义上等价于优化边际目标.训练时只需采样$\mathbf { \boldsymbol { x } } _ { 1 } \sim p _ { \mathrm { d a t a } } , \mathbf { \boldsymbol { x } } _ { 0 } \sim \mathcal { N } ( \mathbf { \boldsymbol { 0 } } , I ) , t \sim \mathcal { U } [ 0 , 1 ]$ ，构造插值点 $\mathbf { \mathcal { x } } _ { t }$ 和目标速度 ${ \pmb x } _ { 1 } - { \pmb x } _ { 0 }$ ,然后做回归即可．这与扩散模型的噪声预测训练非常相似，但概念上更加透明：网络直接学习的就是“从当前位置到目标的速度”.
+
+图16.17展示了条件流匹配的核心思想：每条彩色直线是一条从噪声点到数据点的条件路径，网络学习的边际速度场（黑色箭头）是这些条件方向在每个位置上的加权平均.
+
+![](images/29a2161575a0b8292873e26f07e18c571020ad9845c2168be977994a58001540.jpg)（描述：示意图，展示条件流匹配中从噪声点到数据点的条件路径（红色线）和边际速度场（黑色箭头）随时间t的变化过程）  
+图 16.17 条件流匹配示意
+
+采样时，从 $\mathbf { \boldsymbol { x } } _ { 0 } \sim \mathcal { N } ( \mathbf { \boldsymbol { 0 } } , I )$ 出发，用ODE求解器对速度场 $v _ { \theta }$ 进行数值积分，从 $t = 0$ 积分到t=1即可得到生成样本.由于流匹配的传输路径通常比较平直，在实践中往往只需较少的积分步数（如20\~50步）即可获得高质量样本.
+
+## 16.5.3 扩散模型的连续时间视角
+
+有了ODE和SDE的概念框架之后，我们可以从连续时间的角度重新审视扩散模型.此前介绍的DDPM是在离散时间步 $t = 1 , 2 , \cdots , T$ 上定义的马尔可夫链：每一步向样本中添加少量高斯噪声.如果把时间步数T取得非常大、每步加的噪声非常小，这个离散过程就会逼近一个连续时间的随机过程—形式上正是一个SDE.
+
+前向 SDE 以扩散模型中最常用的方差保持(Variance Preserving,VP)扩散为例，其前向过程可写为
+
+$$
+d \mathbf { { x } } = - \frac { 1 } { 2 } \beta ( t ) \mathbf { { x } } d t + \sqrt { \beta ( t ) } d \mathbf { { w } } ,\tag{16.112}
+$$
+
+其中 $\beta ( t ) > 0$ 为噪声调度函数，w表示布朗运动.直观上，第一项让信号x按指数速率衰减，第二项以相匹配的幅度注入高斯噪声；两者配合使 $\mathbf { \boldsymbol { x } } _ { t }$ 的方差在整个过程中保持有界(这也是“方差保持”名字的由来).
+
+反向SDE 与前向过程对应的反向时间过程满足
+
+$$
+d \pmb { x } = \left[ - \frac { 1 } { 2 } \beta ( t ) \pmb { x } - \beta ( t ) \nabla _ { \pmb { x } } \log p _ { t } ( \pmb { x } ) \right] d t + \sqrt { \beta ( t ) } d \bar { \bf w } ,\tag{16.113}
+$$
+
+其中 $\bar { \bf w }$ 为反向时间的布朗运动， $\nabla _ { x } \log p _ { t } ( \pmb { x } )$ 是带噪分布 $p _ { t } ( { \pmb x } )$ 的分数函数.对比公式(16.112)和公式(16.113)可以看到：反向过程比前向过程多了一个正比于分数函数的漂移项—这正是“把样本往数据密度高的区域推”的修正.只要能够在每个时刻估计当前带噪分布的分数函数，就能沿着反向SDE把样本从纯噪声逐步推回数据分布
+
+这就把扩散模型的采样过程统一为一个数学问题：如何高效数值求解反向SDE. DDPM和DDIM都可以看作这个连续SDE的某种离散化—前者更接近原始随机SDE的逐步模拟，后者则对应某种确定性或弱随机的近似路径.
+
+概率流ODE 对同一个前向SDE（公式(16.112)），还存在一个与之共享相同边际分布的确定性过程，称为概率流ODE：
+
+$$
+d \pmb { x } = \left[ - \frac { 1 } { 2 } \beta ( t ) \pmb { x } - \frac { 1 } { 2 } \beta ( t ) \nabla _ { \pmb { x } } \log p _ { t } ( \pmb { x } ) \right] d t .\tag{16.114}
+$$
+
+它与反向SDE的区别在于不再显式引入随机噪声，因此生成轨迹在给定初值后完全确定—不同初值唯一对应不同的生成样本．概率流ODE的意义有两点：其一，采样可以直接借助常微分方程的数值求解器（如Runge-Kutta等）来完成，并据此设计出若干高阶快速采样器[Lu et al.,2022];其二，它为扩散模型和流匹配之间的联系提供了一座桥梁.
+
+## 16.5.4 与扩散模型的联系
+
+有了扩散模型的连续时间表述，流匹配与扩散模型之间的联系就变得清晰了.扩散模型的概率流ODE(公式(16.114))本身就定义了一个从噪声到数据的确定性流，因此扩散模型也可以从连续流的角度来理解，只不过其速度场是通过“先定义前向SDE，再推导分数函数”间接得到的.从训练目标看，扩散模型训练的是噪声预测 $\epsilon _ { \theta }$ 或分数函数 $\nabla _ { x } \log p _ { t } ( \pmb { x } )$ ，而流匹配训练的是速度场 $v _ { \theta }$ ，两者之间在特定参数化下存在转换关系.从这个意义上说，它们共享连续时间生成建模的同一组数学工具.
+
+两者的关键区别在于传输路径的形状.扩散模型由于噪声调度 $\{ \beta _ { t } \}$ 的设计，传输路径通常是弯曲的；而流匹配的线性插值路径（公式(16.110)）是直线．直线路径往往使速度场更平滑，OQDE也更容易用较少的步数近似求解.因此，流四配在实践中常见的潜在优势包括训练目标更简洁、采样步数更少，以及可以方便地替换不同的插值路径或耦合方式
+
+## 16.5.5 采样加速
+
+无论是扩散模型还是流匹配，采样都需要对ODE或SDE进行多步数值求解.如何在保持质量的前提下减少步数，是实际应用中的核心问题.
+
+## 16.5.5.1 预测-校正采样与高阶快速求解器
+
+在连续时间视角下，预测-校正（Predictor-Corrector，PC）采样是一种很自然的采样方法.其中，预测器沿反向SDE走一步，把样本从较大的噪声水平推进到较小的噪声水平；校正器则在当前噪声尺度上做若干次Langevin更新，利用分数函数把样本进一步推回更合理的高概率区域.前者负责“全局推进”，后者负责“局部修正”．这种分工有助于减小离散化误差，并在一定程度上提高样本质量.
+
+从工程角度看，PC采样虽然概念清晰，却往往仍然较慢，因为每个噪声尺度上还要额外做若于次校正.另一条思路是把采样明确看作一个数值求解问题，并针对扩散模型的特殊结构设计更高效的专用求解器.一个代表性例子是DPM-Solver（DPM-Solver），即面向扩散概率模型的高阶求解器：它把采样解释为对扩散ODE的求解，利用问题本身的解析结构构造高阶求解器，从而在不重新训练模型的前提下减少所需步数
+
+## 16.5.5.2 一致性模型与少步生成
+
+除了改进数值求解器，还有一条不同的加速路线：通过蒸馏或一致性建模，直接训练能够用极少步甚至一步生成样本的新模型
+
+在其原始论文中，DPM-Solver 在若干数据集上只需10到20次函数评估就能得到高质量样本，并相对此前无训练加速采样器带来4～16倍的速度提升.
+
+一致性模型（ConsistencyModel）的核心思想是直接学习从噪声到数据的映射，使得ODE轨迹上同一条路径的任意两点都映射到相同的起始数据点，即满足自一致性（self-consistency）[Song et al.，2023]. 形式上，一致性函数$f _ { \theta } ( \pmb { x } _ { t } , t )$ 满足:对同一ODE轨迹上的任意 $t _ { 1 } , t _ { 2 }$ ,有 $f _ { \theta } ( \pmb { x } _ { t _ { 1 } } , t _ { 1 } ) = f _ { \theta } ( \pmb { x } _ { t _ { 2 } } , t _ { 2 } )$
+
+一致性模型有两种训练方式：一致性蒸馏（ConsistencyDistillation）从预训练的扩散模型中蒸馏知识，通过最小化同一ODE轨迹上相邻两点的一致性损失来训练；一致性训练（ConsistencyTraining）则不依赖预训练模型，直接从数据中学习.训练完成后，一致性模型可以在单步内从纯噪声生成数据，也可以通过少量步骤迭代细化以提升质量，在生成速度和质量之间提供了灵活的权衡.
+
+在一致性模型和流匹配的基础上，流图（Flow Map）框架[Boff et al.,2025试图直接学习流的映射函数而非速度场，为少步生成提供了另一种理论视角.
+
+## 16.5.6 最优传输与路径选择
+
+流匹配框架中的一个重要自由度是：如何选择从噪声到数据的传输路径?在前面的讨论中，我们使用了最简单的独立耦合：随机采样一个噪声 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 和一个数据点 $\scriptstyle { \mathbf { { x } } } _ { 1 }$ ，然后用线性插值连接它们.这种做法存在一个关键问题：路径交叉（如图16.18(a)所示).虽然ODE的解具有唯一性，不同的边际轨迹不会交叉，但不同数据点对应的条件路径可能在空间中大量相交.当两条条件路径在某个中间时刻t经过同一个空间位置时，它们指向不同的目标 $\scriptstyle { \pmb { x } } _ { 1 }$ ，导致训练时网络在该位置收到相互矛盾的梯度信号.这不仅增大了训练方差，也使得学到的边际速度场变得弯曲，采样时需要更多的ODE求解步数才能保证精度.
+
+![](images/b876208958018ff2b43d44460558476dffcf015d875bfa1dae3f423498023fd9.jpg)（描述：示意图，展示多个从P0到P1的路径交叉情况，用于说明条件路径在空间中相交的问题）  
+(a)独立耦合:路径交叉
+
+![](images/621e77ecf77ca0255b6d44eb732245317be10616663dea8c9cd4a1529e641966.jpg)（描述：示意图，展示独立耦合与最优传输耦合中路径交叉与不交叉的对比）  
+(b)最优传输耦合:路径不交叉  
+图16.18 独立耦合与最优传输耦合的对比
+
+最优传输条件流匹配（Optimal Transport Conditional Flow Matching，OT-CFM） [Tong et al., 2024] 的想法是：用最优传输（Optimal Transport，OT）来改善噪声与数据之间的配对方式，使得整体传输代价最小.最优传输的经典结果表明，对于高斯源分布和一般目标分布，最优传输映射倾向于把“近”的噪声点分配给“近”的数据点，从而减少路径的交叉和总距离.
+
+在实际训练中，对整个数据集求全局最优传输耦合计算量太大.OT-CFM采用了一种实用的小批量最优传输（Mini-batchOT）近似:在每个训练批次中，对批次内的 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 和 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 1 }$ 求解一个小规模的最优传输问题（通常是线性指派问题），用得到的最优配对替代随机配对．虽然这只是全局OT的近似，但通常能够减少路径交叉，使学到的速度场更平滑，从而加速训练收敛并提高生成质量.
+
+除了最优传输耦合，矫正流（Rectified Flow)[Liu et al., 2023]提出了另一种改善路径的思路：迭代矫正.矫正流学习的速度场可以用条件期望来表示：
+
+$$
+v ( z , t ) = \mathbb { E } \left[ \pmb { x } _ { 1 } - \pmb { x } _ { 0 } \ | \ \pmb { x } _ { t } = z \right] ,\tag{16.115}
+$$
+
+即在时刻t经过点z的所有条件路径方向的平均值.当路径交叉严重时，这个平均值会偏离任何一条具体路径的方向，导致速度场弯曲.
+
+矫正流的核心思想是通过迭代来减少交叉：先用独立耦合训练一个初始的流模型，然后用这个模型生成 $( \pmb { x } _ { 0 } , \pmb { x } _ { 1 } )$ 配对——即从噪声 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 出发，用训练好的ODE生成对应的 $\mathbf { \boldsymbol { x } } _ { 1 }$ —再用这些新配对重新训练模型．由于新配对中的 $\scriptstyle { \mathbf { { \vec { x } } } } _ { 0 }$ 和$\scriptstyle { \mathbf { { x } } } _ { 1 }$ 之间已经存在ODE流的对应关系，重新训练时的路径会更直、交叉更少．这一过程可以迭代多次，使传输路径逐步接近直线，从而有机会让模型在很少的步数内生成质量较高的样本.
+
+## 16.5.7 应用
+
+流匹配可以作为大规模生成系统中的一条重要技术路线.在图像生成领域，一些文本到图像系统采用基于矫正流的流匹配框架，并与DiT（DiffusionTransformer）等骨干网络结合，以改善生成质量和采样效率[Esser et al.2024].在视频生成领域，流匹配的直线传输路径也有助于在有限步数内生成时间上连贯的视频帧
+
+从更广的视角看，流匹配与扩散模型之间的边界并不绝对—两者的核心技术（条件控制、无分类器引导、隐空间建模等）可以高度共享，在连续时间表述下，二者都可以理解为学习从简单分布到数据分布的动力系统；流匹配通过更直接的速度场回归和可设计的路径，提供了另一条高效技术路线.
+
+## 16.6 总结和扩展阅读
+
+本章围绕“如何学习并生成复杂数据分布”这一核心问题，介绍了四条代表性的技术路线：变分自编码器、生成对抗网络、扩散模型和流匹配.四类模型虽然形式差异很大，但本质上都在回答同一个问题：如何把一个简单分布逐步变成真实数据分布.
+
+如果从方法论上看，这四类模型分别代表了四种典型思路：
+
+（1）变分自编码器：通过引入隐变量与近似后验，把复杂生成过程转化为“生成模型+推断模型”的联合学习问题.其优势在于概率解释清晰、训练目标明确，并且便于学习连续、规整的隐空间表示.
+
+（2）生成对抗网络：通过生成器和判别器之间的对抗博弈来逼近真实数据分布．它不要求显式写出样本密度，因此常能生成较锐利的样本，但训练是一个极小极大问题，容易出现不稳定和模式坍塌.
+
+（3）扩散模型：通过“逐步加噪+逐步去噪”的方式，把一次困难的生成任务拆解为很多局部、相对容易的去噪问题.它在训练稳定性、生成质量以及条件控制方面表现较好，但通常需要较多采样步数，计算成本更高.
+
+（4）流匹配：通过直接学习一个从噪声到数据的连续速度场，把生成过程建模为常微分方程的求解.它在概念上比扩散模型更简洁，传输路径更直，训练和采样都可以从数值求解角度进行优化，是大规模生成系统中的一条重要技术路线.
+
+从更统一的视角看，这四类模型都体现了生成建模中的几个共同思想，第一，高维复杂分布通常难以直接建模，因此往往需要借助隐变量、对抗训练或分步变换来降低难度；第二，生成模型不仅是“生成新样本”的工具，也可以作为表示学习、条件控制、数据增强和逆问题求解的基础：第三，生成模型的发展强调不同思想之间的组合，例如先学习隐空间，再在隐空间中引入更强的生成器，或者把文本、布局、类别等条件注入整个生成过程
+
+表16.1从生成模型的统一视角、评估方式和应用边界给出了一个简要对照这里也把自回归生成列入表中：它通过链式法则分解 $\begin{array} { r } { p ( \pmb { x } ) = \prod _ { i } p ( x _ { i } | \boldsymbol { x } _ { < i } ) } \end{array}$ ,在文本和序列生成中十分重要，虽然不是本章的主要展开对象，但有助于理解显式似然模型与采样式生成模型之间的差异.
+
+表16.1 几类生成建模路线的统一视角与评估重点
+<table><tr><td>路线</td><td>概率与采样视角 主要优势</td><td>点</td><td>评估时的常见盲</td></tr><tr><td>量模型</td><td>VAE/隐变最大化ELBO，用近概率解释清晰，隐重构好不等于样 似后验  $q _ { \phi } ( z | x )$  学习</td><td>辅助空间较规整</td><td>本自然；KL项过 强可能导致后验 坍塌.</td></tr><tr><td>模型</td><td>GAN/隐式直接学习从噪声到样单步生成快，样本容易只看少量样 本的映射，不显式给出可很锐利 密度</td><td></td><td>本质量，忽略多样 性和模式坍塌.</td></tr><tr><td></td><td>自回归模型按顺序分解联合分布，似然目标明确，适采样误差会累积， 逐步采样</td><td>合离散序列</td><td>长程一致性和解 码策略影响很大.</td></tr><tr><td>型</td><td>扩散/分数模学习多噪声水平下的训练稳定，条件控采样成本高，视觉</td><td>制灵活</td><td>质量不等于语义</td></tr><tr><td></td><td>去噪或分数函数</td><td></td><td>正确或条件忠实. 流匹配/连续学习从噪声到数据的路径清晰，少步采路径选择、数值求</td></tr></table>
+
+生成模型的评估不能只依赖单一指标.对数似然或ELBO更接近密度估计目标，但不一定对应人眼感知质量；基于特征分布的样本质量指标可以衡量真实样本和生成样本的整体接近程度，但可能忽略条件是否被正确满足、样本是否足够多样、是否包含训练数据记忆；下游任务指标可以衡量生成数据是否有用，但会受到任务模型和数据划分的影响.因此，在实际使用中通常需要同时检查保真度、多样性、条件一致性、下游效用、不确定性校准和安全边界.对于带条件的生成任务，还应特别检查模型是否真正使用了条件信息，而不是只生成看似合理但与条件不一致的样本
+
+在分子设计、材料设计和科学计算等场景中，生成模型往往不是一次性输出结果的工具，而是嵌入到设计一筛选一验证一反馈的闭环中.模型先提出候选结构，再由模拟器、规则约束、专家判断或真实实验评估其性质；评估结果反过来更新训练集或重加权采样策略.这一过程和主动学习密切相关：当实验代价很高时，系统不应只追求看起来最优的样本，还应考虑不确定性、可合成性、约束满足和探索覆盖面.这样才能避免模型在训练分布附近反复生成相似候选，或在缺少证据的区域给出过度自信的建议
+
+如果希望继续深入理解变分自编码器，建议先抓住两个最核心的问题：一是为什么要引入隐变量，二是为什么要用变分下界替代直接最大化对数似然.围绕这两个问题，原始VAE论文和随机梯度变分推断工作给出了最关键的思想框架，而教程性综述则更适合理清“生成模型、推断网络、重参数化技巧、ELBO分解”之间的关系 [Doersch, 2016; Kingma et al., 2014; Rezende et al., 2014]. 阅读这条线索时，建议重点把握：ELBO到底近似了什么，重参数化技巧到底解决了什么问题.
+
+如果希望进一步理解生成对抗网络，建议不要只停留在“样本看起来很真”这一经验现象上，而要重点理解其背后的极小极大优化与分布判别思想.原始GAN论文最值得反复推敲的是判别器最优解及其与JS散度的关系；DCGAN适合帮助读者理解早期生成网络中较稳定的卷积结构设计；W-GAN则代表了从“对抗训练不稳定”这一现象出发，对距离度量和优化目标所做的重要改进[Arjovsky et al., 2017; Goodfellow et al., 2014; Radford et al., 2016]. 阅读这一部分时，建议重点思考：GAN究竟是在学习一个密度函数，还是在学习一种把简单噪声映射到真实样本空间的机制.
+
+如果希望进一步理解扩散模型，建议按“离散扩散→快速采样→分数函数与连续时间视角 →隐空间扩散”这一顺序阅读[Ho et al., 2020; Rombachet al., 2022; Song et al., 2021a,b]. DDPM奠定了离散时间扩散训练与采样的基本框架，DDIM说明了为何在保持训练目标不变时仍可构造更快的确定性采样路径，分数模型与随机微分方程给出了统一的连续时间理论视角，而隐空间扩散展示了扩散模型如何扩展到高分辨率生成系统.阅读这一部分时，可以始终围绕一个问题展开：扩散模型真正学习的，到底是“逐步恢复样本”的能力，还是“刻画数据分布局部几何结构”的能力.
+
+如果希望进一步理解流匹配，建议从连续标准化流的基本思想出发，沿着“Neural ODE → 条件流匹配 → 最优传输与矫正流”的线索阅读[Chen et al.,2018; Lipman et al., 2023; Liu et al., 2023; Tong et al., 2024]. Neural ODE给出了连续时间生成模型的基本框架，条件流匹配则解决了“如何绕开似然计算直接训练速度场”这一核心问题，最优传输和矫正流进一步从路径优化的角度提升了生成效率.阅读时，建议重点思考：流匹配与扩散模型在训练目标上的区别，到底只是参数化的不同，还是反映了对“生成”这件事的不同理解.
+
+总体来看，深度生成模型的发展，本质上是在不断寻找更稳定、更可控、更高效的方式，把简单分布转化为复杂数据分布．理解了本章中的隐变量表示、重参数化、对抗训练、分布匹配、噪声预测、速度场学习、条件控制等关键思想，后续再进入多模态生成、可控生成以及更大规模的预训练生成系统时，就更容易把新方法放回到清晰的知识坐标中.
+
+# 附 录
+
+## 数学基础
+
+本附录汇总本书后续会反复使用的数学工具，包括线性代数、微积分、数学优化、概率论和信息论等．和第一版相比，这一版在组织上更强调这些工具与深度学习模型、训练和推理过程的联系：线性映射对应神经网络中的线性层，矩阵微积分与链式法则对应反向传播，概率论与信息论则分别对应不确定性建模和常见损失函数.
+
+记号约定 除特别说明外，本书默认向量为列向量.标量通常用斜体小写字母表示，如x,y,a；向量通常用黑斜体小写字母表示，如x,y,a；矩阵通常用黑斜体大写字母表示，如A,X，W；张量用花体字母表示，如.A.一个D维列向量写作 $\pmb { x } = [ x _ { 1 } ; x _ { 2 } ; \cdots ; x _ { D } ] \in \mathbb { R } ^ { D }$ ，与之对应的行向量记为 $[ x _ { 1 } , x _ { 2 } , \cdots , x _ { D } ]$ .矩阵转置统一记为.若没有特别说明，本书中的数据矩阵默认按列堆叠样本，即$\pmb { X } = [ \pmb { x } ^ { ( 1 ) } , \cdots , \pmb { x } ^ { ( N ) } ] \in \mathbb { R } ^ { D \times N }$

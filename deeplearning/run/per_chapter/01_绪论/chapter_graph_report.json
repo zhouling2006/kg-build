@@ -1,0 +1,12 @@
+{
+  "book": "深度学习",
+  "chapter": "第1章 绪论",
+  "out": "F:\\xschem\\new\\deeplearning\\run\\per_chapter\\01_绪论\\chapter_graph.json",
+  "n_index": 15,
+  "n_topic": 18,
+  "n_tree_edges": 32,
+  "n_rel_edges": 21,
+  "dup_titles": [],
+  "missing_refs": [],
+  "leaf_mismatch": false
+}

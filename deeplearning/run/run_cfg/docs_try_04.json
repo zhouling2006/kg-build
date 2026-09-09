@@ -1,0 +1,10 @@
+{
+  "graph": "f:/xschem/deeplearning/run/per_chapter/04_前馈神经网络/chapter_graph.json",
+  "chapter_md": "f:/xschem/deeplearning/run/chapters/04_前馈神经网络.md",
+  "out_dir": "f:/xschem/deeplearning/run/docs_all/04_前馈神经网络",
+  "subject_name": "深度学习",
+  "subject_tag": "前馈神经网络",
+  "samples": [],
+  "model": "qwen3.7-plus",
+  "tracker": "gen_docs_04_try"
+}

@@ -1,0 +1,167 @@
+{
+  "book": "深度学习",
+  "source": "F:\\xschem\\deeplearning\\_mineru\\nndl-v2\\full.md",
+  "source_type": "book_md",
+  "chapters": [
+    {
+      "no": 1,
+      "no_raw": "第1章",
+      "title": "绪论",
+      "heading": "## 第1章 绪论",
+      "start_line": 241,
+      "end_line": 725,
+      "char_len": 25141,
+      "md_file": "chapters/01_绪论.md"
+    },
+    {
+      "no": 2,
+      "no_raw": "第2章",
+      "title": "机器学习概述",
+      "heading": "# 第2章 机器学习概述",
+      "start_line": 725,
+      "end_line": 1863,
+      "char_len": 46800,
+      "md_file": "chapters/02_机器学习概述.md"
+    },
+    {
+      "no": 3,
+      "no_raw": "第3章",
+      "title": "线性模型",
+      "heading": "## 第3章 线性模型",
+      "start_line": 1863,
+      "end_line": 3032,
+      "char_len": 47323,
+      "md_file": "chapters/03_线性模型.md"
+    },
+    {
+      "no": 4,
+      "no_raw": "第4章",
+      "title": "前馈神经网络",
+      "heading": "## 第4章 前馈神经网络",
+      "start_line": 3032,
+      "end_line": 4012,
+      "char_len": 42475,
+      "md_file": "chapters/04_前馈神经网络.md"
+    },
+    {
+      "no": 5,
+      "no_raw": "第5章",
+      "title": "卷积神经网络",
+      "heading": "## 第5章 卷积神经网络",
+      "start_line": 4012,
+      "end_line": 4924,
+      "char_len": 37260,
+      "md_file": "chapters/05_卷积神经网络.md"
+    },
+    {
+      "no": 6,
+      "no_raw": "第6章",
+      "title": "循环神经网络",
+      "heading": "## 第6章 循环神经网络",
+      "start_line": 4924,
+      "end_line": 5809,
+      "char_len": 40134,
+      "md_file": "chapters/06_循环神经网络.md"
+    },
+    {
+      "no": 7,
+      "no_raw": "第7章",
+      "title": "网络优化与正则化",
+      "heading": "# 第7章 网络优化与正则化",
+      "start_line": 5809,
+      "end_line": 7276,
+      "char_len": 59535,
+      "md_file": "chapters/07_网络优化与正则化.md"
+    },
+    {
+      "no": 8,
+      "no_raw": "第8章",
+      "title": "注意力机制与Transformer",
+      "heading": "# 第8章 注意力机制与Transformer",
+      "start_line": 7276,
+      "end_line": 8175,
+      "char_len": 39402,
+      "md_file": "chapters/08_注意力机制与Transformer.md"
+    },
+    {
+      "no": 9,
+      "no_raw": "第9章",
+      "title": "图神经网络",
+      "heading": "## 第9章 图神经网络",
+      "start_line": 8175,
+      "end_line": 9042,
+      "char_len": 34773,
+      "md_file": "chapters/09_图神经网络.md"
+    },
+    {
+      "no": 10,
+      "no_raw": "第10章",
+      "title": "无监督学习",
+      "heading": "## 第10章 无监督学习",
+      "start_line": 9042,
+      "end_line": 9746,
+      "char_len": 28588,
+      "md_file": "chapters/10_无监督学习.md"
+    },
+    {
+      "no": 11,
+      "no_raw": "第11章",
+      "title": "模型独立的学习方式",
+      "heading": "# 第11章 模型独立的学习方式",
+      "start_line": 9746,
+      "end_line": 10609,
+      "char_len": 41329,
+      "md_file": "chapters/11_模型独立的学习方式.md"
+    },
+    {
+      "no": 12,
+      "no_raw": "第12章",
+      "title": "深度强化学习",
+      "heading": "## 第12章 深度强化学习",
+      "start_line": 10609,
+      "end_line": 11814,
+      "char_len": 54759,
+      "md_file": "chapters/12_深度强化学习.md"
+    },
+    {
+      "no": 13,
+      "no_raw": "第13章",
+      "title": "大语言模型与智能体",
+      "heading": "# 第13章 大语言模型与智能体",
+      "start_line": 11814,
+      "end_line": 12693,
+      "char_len": 37554,
+      "md_file": "chapters/13_大语言模型与智能体.md"
+    },
+    {
+      "no": 14,
+      "no_raw": "第14章",
+      "title": "概率图模型",
+      "heading": "## 第14章 概率图模型",
+      "start_line": 12693,
+      "end_line": 14074,
+      "char_len": 62266,
+      "md_file": "chapters/14_概率图模型.md"
+    },
+    {
+      "no": 15,
+      "no_raw": "第15章",
+      "title": "深度信念网络",
+      "heading": "## 第15章 深度信念网络",
+      "start_line": 14074,
+      "end_line": 14775,
+      "char_len": 33862,
+      "md_file": "chapters/15_深度信念网络.md"
+    },
+    {
+      "no": 16,
+      "no_raw": "第16章",
+      "title": "深度生成模型",
+      "heading": "## 第16章 深度生成模型",
+      "start_line": 14775,
+      "end_line": 16383,
+      "char_len": 86361,
+      "md_file": "chapters/16_深度生成模型.md"
+    }
+  ]
+}

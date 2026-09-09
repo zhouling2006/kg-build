@@ -1,0 +1,7 @@
+{
+  "skeleton": "F:\\xschem\\deeplearning\\run\\per_chapter\\04_前馈神经网络\\chapter_skeleton.json",
+  "chapter": "第4章 前馈神经网络",
+  "out": "F:\\xschem\\deeplearning\\run\\per_chapter\\04_前馈神经网络\\relations.json",
+  "model": "qwen3.7-plus",
+  "tracker": "relate_cn4"
+}

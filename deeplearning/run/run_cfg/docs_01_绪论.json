@@ -1,0 +1,10 @@
+{
+  "graph": "F:\\wholeextract\\deeplearning\\run\\per_chapter\\01_绪论\\chapter_graph.json",
+  "chapter_md": "F:\\xschem\\new\\deeplearning\\run\\chapters\\01_绪论.md",
+  "out_dir": "F:\\wholeextract\\deeplearning\\run\\docs_all\\01_绪论",
+  "subject_name": "深度学习",
+  "subject_tag": "神经网络",
+  "samples": [],
+  "model": "qwen3.7-plus",
+  "tracker": "gen_docs_01_绪论"
+}
