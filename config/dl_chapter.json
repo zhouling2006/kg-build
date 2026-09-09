@@ -1,0 +1,34 @@
+{
+  "domain": "深度学习",
+  "pipeline": "whole_chapter",
+  "source": "deeplearning/_mineru/nndl-v2/full.md",
+  "source_pdf": "deeplearning/nndl-v2.pdf",
+  "source_type": "book_md",
+  "model": "qwen3.7-plus",
+  "subject_name": "深度学习",
+  "subject_tag": "神经网络",
+  "samples": [],
+  "chapter_out_dir": "deeplearning/run",
+  "chapter_mode": {
+    "title_re": "^#{1,6}\\s*第\\s*([0-9]+|[一二三四五六七八九十百]+)\\s*章",
+    "truncate_book_at": [
+      "附录",
+      "答案",
+      "参考文献",
+      "索引"
+    ],
+    "strip_sections": [
+      "习题",
+      "练习",
+      "思考题",
+      "复习题",
+      "自测题",
+      "本章小结",
+      "本章的重要概念",
+      "重要概念",
+      "数学软件实验",
+      "实验"
+    ],
+    "exclude_chapters": []
+  }
+}

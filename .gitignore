@@ -1,0 +1,28 @@
+# --- secrets / env (keep only the template) ---
+.env
+*.env
+!.env.example
+
+# --- python ---
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+*.egg-info/
+
+# --- tooling / ide ---
+.idea/
+.vscode/
+.codebuddy/
+
+# --- os ---
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# --- heavy / regenerable data (rebuilt by the pipeline, do not commit) ---
+*.pdf
+deeplearning/_mineru/
+deeplearning/run/
