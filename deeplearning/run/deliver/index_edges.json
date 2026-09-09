@@ -1,0 +1,589 @@
+{
+  "edges": [
+    {
+      "edge_id": "359994a2-2cd4-41ec-a6f0-5a9dfab30e6d",
+      "source_node_id": "f10edb5e-813a-4147-8733-808647caa039",
+      "target_node_id": "a9262d35-0d0c-40d0-a576-4775db03f09f",
+      "source_title": "第1章 绪论",
+      "target_title": "人工智能概述与发展脉络",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "62603bf9-aa6d-40ee-9d0f-0ae4583e49f3",
+      "source_node_id": "a9262d35-0d0c-40d0-a576-4775db03f09f",
+      "target_node_id": "fccfd8c7-f33f-4a1a-a997-b2b7f72c3e77",
+      "source_title": "人工智能概述与发展脉络",
+      "target_title": "人工智能基本概念与流派",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "23047e30-3226-435d-8ac7-683aaed0d9d9",
+      "source_node_id": "fccfd8c7-f33f-4a1a-a997-b2b7f72c3e77",
+      "target_node_id": "68cc7e8e-bf43-4d7d-84d6-762c205fe544",
+      "source_title": "人工智能基本概念与流派",
+      "target_title": "人工智能的定义与研究范畴",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "98362606-8fc6-42de-a829-cead880e58a4",
+      "source_node_id": "fccfd8c7-f33f-4a1a-a997-b2b7f72c3e77",
+      "target_node_id": "12176eb6-16c8-439f-bf5e-3ede5d6b662a",
+      "source_title": "人工智能基本概念与流派",
+      "target_title": "人工智能的主要研究流派",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "25d1a478-4036-47ae-8ca8-9e97263d3364",
+      "source_node_id": "a9262d35-0d0c-40d0-a576-4775db03f09f",
+      "target_node_id": "232a8143-f8e2-4822-bf5e-e4f2dd9e554c",
+      "source_title": "人工智能概述与发展脉络",
+      "target_title": "人工智能的发展阶段",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "343d0a6b-b77e-4d4a-b9c0-a031e9bb2bc8",
+      "source_node_id": "232a8143-f8e2-4822-bf5e-e4f2dd9e554c",
+      "target_node_id": "89217e36-6dd0-46dc-8384-40def98a68f6",
+      "source_title": "人工智能的发展阶段",
+      "target_title": "人工智能的四个发展阶段",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "a56e183f-0aa3-47ce-973d-5f1ee377a5a3",
+      "source_node_id": "232a8143-f8e2-4822-bf5e-e4f2dd9e554c",
+      "target_node_id": "2fdb38da-2fbb-49cd-b09d-35e9dc8edc38",
+      "source_title": "人工智能的发展阶段",
+      "target_title": "大模型期的核心技术与范式",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "e85a06a6-61df-4bbc-a049-1f0e42ba10a1",
+      "source_node_id": "f10edb5e-813a-4147-8733-808647caa039",
+      "target_node_id": "2ac02e2f-5e3d-48e4-8bc8-3eb6c0172c80",
+      "source_title": "第1章 绪论",
+      "target_title": "机器学习与表示学习",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "2fc1e531-9825-4ee1-aeda-711408c7d436",
+      "source_node_id": "2ac02e2f-5e3d-48e4-8bc8-3eb6c0172c80",
+      "target_node_id": "9f57f15a-d2f3-4b6c-96e0-0c3d375f6b43",
+      "source_title": "机器学习与表示学习",
+      "target_title": "机器学习基础与传统流程",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "58eb8ad9-a2cd-4757-af14-5a07bcc32c95",
+      "source_node_id": "9f57f15a-d2f3-4b6c-96e0-0c3d375f6b43",
+      "target_node_id": "1e33240f-2092-4aa4-ae12-af6626a6ccec",
+      "source_title": "机器学习基础与传统流程",
+      "target_title": "机器学习的基本概念与泛化要求",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "bb0e612e-f252-4229-bdce-daf2a9292600",
+      "source_node_id": "9f57f15a-d2f3-4b6c-96e0-0c3d375f6b43",
+      "target_node_id": "5e232931-682f-4e8b-9c18-7b7398964b69",
+      "source_title": "机器学习基础与传统流程",
+      "target_title": "传统机器学习流程与特征工程瓶颈",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "2653f1e7-260c-4ce0-9f76-83123abda764",
+      "source_node_id": "2ac02e2f-5e3d-48e4-8bc8-3eb6c0172c80",
+      "target_node_id": "6a2f1ac0-25d7-4619-9cc0-a1cd790eb1c1",
+      "source_title": "机器学习与表示学习",
+      "target_title": "表示学习与数据表示方法",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "e972e922-e7eb-4c2e-b1cf-88e70a7fcb60",
+      "source_node_id": "6a2f1ac0-25d7-4619-9cc0-a1cd790eb1c1",
+      "target_node_id": "17a7e680-bcc1-42e4-9695-1339e842ac10",
+      "source_title": "表示学习与数据表示方法",
+      "target_title": "表示学习与语义鸿沟",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "c45ee780-31c0-4977-9178-488206bc29f4",
+      "source_node_id": "6a2f1ac0-25d7-4619-9cc0-a1cd790eb1c1",
+      "target_node_id": "28285b75-37fb-4165-aff2-de26c117763a",
+      "source_title": "表示学习与数据表示方法",
+      "target_title": "局部表示与分布式表示",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "22e8b2b2-b34a-4071-a94a-5f50c756d7d7",
+      "source_node_id": "6a2f1ac0-25d7-4619-9cc0-a1cd790eb1c1",
+      "target_node_id": "8701b723-eb22-4df8-ad19-13f7300a7353",
+      "source_title": "表示学习与数据表示方法",
+      "target_title": "深层表示的学习机制",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "4b28bff3-2373-42d8-a92c-3fc2e7b9ae6d",
+      "source_node_id": "f10edb5e-813a-4147-8733-808647caa039",
+      "target_node_id": "fcccee81-5eb0-48b0-ad0d-7ee6c37d7d32",
+      "source_title": "第1章 绪论",
+      "target_title": "深度学习与神经网络",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "fd5af685-9793-4ca0-b0fe-0ca2cb85f8fc",
+      "source_node_id": "fcccee81-5eb0-48b0-ad0d-7ee6c37d7d32",
+      "target_node_id": "978ef7db-a70d-46a7-b751-99824b37bd7e",
+      "source_title": "深度学习与神经网络",
+      "target_title": "深度学习核心机制",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "4dc384b7-0378-4955-b0c2-eafa1c77ac56",
+      "source_node_id": "978ef7db-a70d-46a7-b751-99824b37bd7e",
+      "target_node_id": "7ac5e7a3-7d27-4103-aa07-80fffb241270",
+      "source_title": "深度学习核心机制",
+      "target_title": "深度学习的定义与贡献度分配问题",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "18363fb0-2561-415e-b5f3-6fd75ed3bed6",
+      "source_node_id": "978ef7db-a70d-46a7-b751-99824b37bd7e",
+      "target_node_id": "8c97ef97-5d8d-49b5-884f-f7570cb0bc61",
+      "source_title": "深度学习核心机制",
+      "target_title": "端到端学习机制",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "4d3b9cdf-c507-4d1b-b4cc-f633f28eabee",
+      "source_node_id": "fcccee81-5eb0-48b0-ad0d-7ee6c37d7d32",
+      "target_node_id": "eda1961c-91f2-414b-9cc8-be04d4a617f8",
+      "source_title": "深度学习与神经网络",
+      "target_title": "神经网络的生物学基础与数学模型",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "c13b5e74-03e2-46ba-88e7-00fc51c1e50d",
+      "source_node_id": "eda1961c-91f2-414b-9cc8-be04d4a617f8",
+      "target_node_id": "ece1b128-b4f3-4d73-a526-58ebfed2be29",
+      "source_title": "神经网络的生物学基础与数学模型",
+      "target_title": "生物神经元结构与赫布规则",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "986f5944-9387-4788-adea-b47585b944fa",
+      "source_node_id": "eda1961c-91f2-414b-9cc8-be04d4a617f8",
+      "target_node_id": "98b1c7e3-2880-4e64-82b5-9f2f9bba8ba5",
+      "source_title": "神经网络的生物学基础与数学模型",
+      "target_title": "人工神经网络的数学模型与学习能力",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "1370b4e8-a06e-4384-9672-647e1af0496a",
+      "source_node_id": "fcccee81-5eb0-48b0-ad0d-7ee6c37d7d32",
+      "target_node_id": "73433d21-be08-4133-937b-b98d9c0c187b",
+      "source_title": "深度学习与神经网络",
+      "target_title": "神经网络的主流结构",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "8f03aac9-32db-412a-a8ee-3aae81f8ce74",
+      "source_node_id": "73433d21-be08-4133-937b-b98d9c0c187b",
+      "target_node_id": "f192315a-209d-4406-831a-102bfa97ee2c",
+      "source_title": "神经网络的主流结构",
+      "target_title": "前馈网络与记忆网络",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "2b467e22-0cf1-4a47-b540-281c828c2d78",
+      "source_node_id": "73433d21-be08-4133-937b-b98d9c0c187b",
+      "target_node_id": "9a9ba03c-341f-4de9-80d6-600a86e01a26",
+      "source_title": "神经网络的主流结构",
+      "target_title": "注意力网络与图网络",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "836abf41-e5d2-472b-b9ad-21536c664ddf",
+      "source_node_id": "fcccee81-5eb0-48b0-ad0d-7ee6c37d7d32",
+      "target_node_id": "54a5fd8f-2af0-4c0f-bf2e-5563934d93f4",
+      "source_title": "深度学习与神经网络",
+      "target_title": "神经网络的发展历程",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "289577e7-4852-4603-9cca-49d30ff3fcbb",
+      "source_node_id": "54a5fd8f-2af0-4c0f-bf2e-5563934d93f4",
+      "target_node_id": "0e1a9257-1ba3-49e2-9dea-c9e2bf5bb411",
+      "source_title": "神经网络的发展历程",
+      "target_title": "神经网络的六个发展阶段",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "fdcf7fe2-064d-4353-a2c6-5d270c903b97",
+      "source_node_id": "f10edb5e-813a-4147-8733-808647caa039",
+      "target_node_id": "363af1b0-24b8-45c8-9d14-94f3304764ac",
+      "source_title": "第1章 绪论",
+      "target_title": "知识体系与工程实践",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "5ca793e7-d53d-41fa-89cd-460c0beb06df",
+      "source_node_id": "363af1b0-24b8-45c8-9d14-94f3304764ac",
+      "target_node_id": "fd8e6bfa-1c9b-4e9d-8a2f-b1e4f04fc311",
+      "source_title": "知识体系与工程实践",
+      "target_title": "全书知识体系与主线",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "ff1a8512-cf78-4ea1-a724-abe513ca6caa",
+      "source_node_id": "fd8e6bfa-1c9b-4e9d-8a2f-b1e4f04fc311",
+      "target_node_id": "eeb0b4a5-e4bd-419c-93a2-9d09dcb14a5a",
+      "source_title": "全书知识体系与主线",
+      "target_title": "三大知识域与五条学习主线",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "61737e65-4400-4e32-ba90-4461a6a9edee",
+      "source_node_id": "363af1b0-24b8-45c8-9d14-94f3304764ac",
+      "target_node_id": "a79d27bd-b155-47fc-9176-060ffb031c9b",
+      "source_title": "知识体系与工程实践",
+      "target_title": "深度学习框架与计算抽象",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "d8b401e3-4e4d-4e9c-810c-ebfe1e287c33",
+      "source_node_id": "a79d27bd-b155-47fc-9176-060ffb031c9b",
+      "target_node_id": "cd68187e-c7c6-43be-92ea-d91e0861a46b",
+      "source_title": "深度学习框架与计算抽象",
+      "target_title": "深度学习框架的核心抽象与主流工具",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "2026d81b-ee20-4b8d-bf49-3b7944cb0be4",
+      "source_node_id": "fd79363f-30ac-42df-9fb3-3a65785dc437",
+      "target_node_id": "4dbb8db4-10bb-4d7f-831d-dc8fd33e7d1f",
+      "source_title": "第4章 前馈神经网络",
+      "target_title": "前馈网络的结构与表示能力",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "267d5a37-9f83-48b7-8850-3703add970b4",
+      "source_node_id": "4dbb8db4-10bb-4d7f-831d-dc8fd33e7d1f",
+      "target_node_id": "eb90a4c3-c664-40f3-941a-536370752266",
+      "source_title": "前馈网络的结构与表示能力",
+      "target_title": "神经元与网络拓扑结构",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "9ce7dd6c-6dd5-46da-9b02-a28c6c08e39c",
+      "source_node_id": "eb90a4c3-c664-40f3-941a-536370752266",
+      "target_node_id": "85ccc2f5-50ed-447d-b126-071f56179735",
+      "source_title": "神经元与网络拓扑结构",
+      "target_title": "人工神经元模型",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "19edbe9b-9d62-4350-90c3-067206211c26",
+      "source_node_id": "eb90a4c3-c664-40f3-941a-536370752266",
+      "target_node_id": "b34bb315-f7b4-4a6a-90c3-84e6a60fa284",
+      "source_title": "神经元与网络拓扑结构",
+      "target_title": "前馈神经网络计算机制",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "bcdb68f7-41bc-49c7-b608-c19bd116124a",
+      "source_node_id": "4dbb8db4-10bb-4d7f-831d-dc8fd33e7d1f",
+      "target_node_id": "763d5340-56ac-43e3-a0c4-d3b38b668ae3",
+      "source_title": "前馈网络的结构与表示能力",
+      "target_title": "通用近似定理",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "6b18b2ab-77c7-40c3-bf63-36f0cb67d3f1",
+      "source_node_id": "fd79363f-30ac-42df-9fb3-3a65785dc437",
+      "target_node_id": "92d88420-46b8-4f14-a526-ee3d2410b967",
+      "source_title": "第4章 前馈神经网络",
+      "target_title": "前馈网络的参数学习",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "a39dd210-e7e9-4213-ae28-354038c85726",
+      "source_node_id": "92d88420-46b8-4f14-a526-ee3d2410b967",
+      "target_node_id": "9667773a-2c85-4613-9597-7668fabdf432",
+      "source_title": "前馈网络的参数学习",
+      "target_title": "机器学习应用与学习目标",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "0425fe39-347e-4d51-b833-ebdef7af5a2a",
+      "source_node_id": "9667773a-2c85-4613-9597-7668fabdf432",
+      "target_node_id": "644cd2cc-b812-4073-a5de-f7c24fa45220",
+      "source_title": "机器学习应用与学习目标",
+      "target_title": "前馈网络作为特征转换器",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "51fadb21-fb18-4f9b-8874-0d4ce9ac319d",
+      "source_node_id": "9667773a-2c85-4613-9597-7668fabdf432",
+      "target_node_id": "f89c84e1-ca8b-40e3-849a-d1d50b1afdee",
+      "source_title": "机器学习应用与学习目标",
+      "target_title": "正则化经验风险与参数更新",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "6debd6ff-130f-48f6-a1d2-ba52a2ac3357",
+      "source_node_id": "92d88420-46b8-4f14-a526-ee3d2410b967",
+      "target_node_id": "32569ee9-8b04-4f10-8c5d-6663eb7e5606",
+      "source_title": "前馈网络的参数学习",
+      "target_title": "反向传播算法",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "45e866c7-aba0-438c-8718-d192bf9715d3",
+      "source_node_id": "32569ee9-8b04-4f10-8c5d-6663eb7e5606",
+      "target_node_id": "68d2f569-1ddd-4194-a7ac-5acc20ae0f46",
+      "source_title": "反向传播算法",
+      "target_title": "误差项与反向传播推导",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "d5136dbd-2b78-4d82-b190-908ac8862079",
+      "source_node_id": "32569ee9-8b04-4f10-8c5d-6663eb7e5606",
+      "target_node_id": "4850bf05-5585-4481-bd87-7454e2382427",
+      "source_title": "反向传播算法",
+      "target_title": "反向传播训练流程",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "60203b58-dfcd-4b09-be2c-2796b9331e0e",
+      "source_node_id": "fd79363f-30ac-42df-9fb3-3a65785dc437",
+      "target_node_id": "c9feea95-2f9a-4a22-88f4-a06e64b6f4e3",
+      "source_title": "第4章 前馈神经网络",
+      "target_title": "自动微分与梯度计算",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "cffea61b-8f57-4759-9227-b7ce4192df92",
+      "source_node_id": "c9feea95-2f9a-4a22-88f4-a06e64b6f4e3",
+      "target_node_id": "9149a18c-1ab1-4414-bc5d-b6698da29cc3",
+      "source_title": "自动微分与梯度计算",
+      "target_title": "传统求导方法对比",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "df8e79f1-e1aa-4e84-9dc2-23c383f88863",
+      "source_node_id": "9149a18c-1ab1-4414-bc5d-b6698da29cc3",
+      "target_node_id": "c82037ad-32f0-4b5b-9293-133866bb492f",
+      "source_title": "传统求导方法对比",
+      "target_title": "数值微分与符号微分",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "b7c7b700-7143-4790-a093-1df31e448d39",
+      "source_node_id": "c9feea95-2f9a-4a22-88f4-a06e64b6f4e3",
+      "target_node_id": "2a42952b-078a-4424-bac7-81190aef4e7d",
+      "source_title": "自动微分与梯度计算",
+      "target_title": "自动微分机制",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "ad0be4bf-9dc3-43d0-a1d6-90d14181e4a1",
+      "source_node_id": "2a42952b-078a-4424-bac7-81190aef4e7d",
+      "target_node_id": "6bb3acb9-034c-4e15-b13b-d691ea0389d2",
+      "source_title": "自动微分机制",
+      "target_title": "自动微分原理与计算图",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "31cf6662-fdd2-4dbb-a2b9-0d6ac0971ce1",
+      "source_node_id": "2a42952b-078a-4424-bac7-81190aef4e7d",
+      "target_node_id": "b732ea75-de36-4e43-8c6e-1c9e0998cfd7",
+      "source_title": "自动微分机制",
+      "target_title": "前向模式与反向模式自动微分",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "9adf988a-2cff-4467-9ef6-1573b45df86a",
+      "source_node_id": "2a42952b-078a-4424-bac7-81190aef4e7d",
+      "target_node_id": "d5e1d2dd-3db1-465a-8c16-3ea7faaedc3d",
+      "source_title": "自动微分机制",
+      "target_title": "静态计算图与动态计算图",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "04e6ce10-3138-437c-b1c2-f30eb8bc5265",
+      "source_node_id": "fd79363f-30ac-42df-9fb3-3a65785dc437",
+      "target_node_id": "05f8929f-79ad-4e06-8727-f17d3fbd058e",
+      "source_title": "第4章 前馈神经网络",
+      "target_title": "训练中的优化问题",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "4bc3908a-ba18-4490-b4f7-2955337f5fbd",
+      "source_node_id": "05f8929f-79ad-4e06-8727-f17d3fbd058e",
+      "target_node_id": "ca5be743-a7dd-4cba-8cd9-574a448b6876",
+      "source_title": "训练中的优化问题",
+      "target_title": "优化困难与梯度异常",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "3abb678f-3ec6-4f3d-87eb-013882ea9934",
+      "source_node_id": "ca5be743-a7dd-4cba-8cd9-574a448b6876",
+      "target_node_id": "95569f95-f39d-4b89-b838-64b960497198",
+      "source_title": "优化困难与梯度异常",
+      "target_title": "非凸优化问题",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "b3663c52-d457-44ac-a877-7625e0b4e11f",
+      "source_node_id": "ca5be743-a7dd-4cba-8cd9-574a448b6876",
+      "target_node_id": "abe1529a-95e7-4e09-a7e0-3a4cc971a178",
+      "source_title": "优化困难与梯度异常",
+      "target_title": "梯度消失与梯度爆炸",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "69e7ef48-7daf-4835-bf10-d41e61a56df6",
+      "source_node_id": "fd79363f-30ac-42df-9fb3-3a65785dc437",
+      "target_node_id": "5c3b05d0-69e2-44fb-887c-a8fb3a92a76a",
+      "source_title": "第4章 前馈神经网络",
+      "target_title": "激活函数与非线性结构",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "00a22445-202c-4d63-8d34-de619918047a",
+      "source_node_id": "5c3b05d0-69e2-44fb-887c-a8fb3a92a76a",
+      "target_node_id": "279ce6f2-7262-4a65-9a77-e6fd91527614",
+      "source_title": "激活函数与非线性结构",
+      "target_title": "逐元素激活函数",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "74eb2b94-b725-46ce-90f6-4fe3a8f927e8",
+      "source_node_id": "279ce6f2-7262-4a65-9a77-e6fd91527614",
+      "target_node_id": "c0e0e1c8-688a-48c0-9d99-bece247ecaad",
+      "source_title": "逐元素激活函数",
+      "target_title": "Sigmoid型函数",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "bd9c40cd-d77c-4f2e-b67c-50f66f694f91",
+      "source_node_id": "279ce6f2-7262-4a65-9a77-e6fd91527614",
+      "target_node_id": "d1eec128-29c0-421a-baa8-f1072fdd4cbf",
+      "source_title": "逐元素激活函数",
+      "target_title": "ReLU函数及其变体",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "6a2425d3-d82e-43e7-8fe3-c5394397890d",
+      "source_node_id": "279ce6f2-7262-4a65-9a77-e6fd91527614",
+      "target_node_id": "b5d7353a-23c5-4c5f-a443-0a6d83a7592e",
+      "source_title": "逐元素激活函数",
+      "target_title": "Swish与GELU函数",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "4c7683bf-f47e-4de4-a7e6-d9c87d93229d",
+      "source_node_id": "5c3b05d0-69e2-44fb-887c-a8fb3a92a76a",
+      "target_node_id": "48e39a8b-d361-4215-9d69-6e4f6967907c",
+      "source_title": "激活函数与非线性结构",
+      "target_title": "门控与复杂非线性单元",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "7dc1ba79-ef00-4ec2-8e60-8e1e92f79926",
+      "source_node_id": "48e39a8b-d361-4215-9d69-6e4f6967907c",
+      "target_node_id": "4afb804f-b6e4-4ebf-8a18-08b1b08e36d0",
+      "source_title": "门控与复杂非线性单元",
+      "target_title": "门控线性单元",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "acaaed87-3de3-430c-936e-7681fe8e1d75",
+      "source_node_id": "48e39a8b-d361-4215-9d69-6e4f6967907c",
+      "target_node_id": "194c23e9-e682-44d2-ab97-d637033bb2c9",
+      "source_title": "门控与复杂非线性单元",
+      "target_title": "Maxout单元",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "6d2cd2a5-95bb-46fe-bfd7-922be456afdc",
+      "source_node_id": "77e68f7a-cfd6-4b44-8473-756d6a3468fe",
+      "target_node_id": "f10edb5e-813a-4147-8733-808647caa039",
+      "source_title": "深度学习",
+      "target_title": "第1章 绪论",
+      "relation_type": "contains",
+      "note": ""
+    },
+    {
+      "edge_id": "126a8c64-f264-4ea4-8388-6ef33033a20d",
+      "source_node_id": "77e68f7a-cfd6-4b44-8473-756d6a3468fe",
+      "target_node_id": "fd79363f-30ac-42df-9fb3-3a65785dc437",
+      "source_title": "深度学习",
+      "target_title": "第4章 前馈神经网络",
+      "relation_type": "contains",
+      "note": ""
+    }
+  ]
+}
